@@ -22,6 +22,14 @@ Do not use for CI failure triage — that is qa-fix-plan-build (Aaron).
 - Canonical new-test precedent: PR #2191 (`b35add9667`, `:robot: add notebook api http tests`).
 - Extension precedent: `03190d4c13` (edge-case-first), `1cd1fb1622` (new HTTP + strengthen existing).
 
+## Functional categories (Angelo 2026-09-09)
+
+Inherit categories from the module inventory. Every phase title must include the
+category (`Phase N — <Category>: <File> — …`). Summary tables include a Category
+column. Prefer ordering phases by category clusters (e.g. all Categories, then
+CRUD, then AI) while keeping one deliverable file per phase. Never leave a proposed
+test Uncategorized.
+
 ## Sequence of work
 
 1. Name the file `docs/YYYYMMDD-<module>-TEST-COVERAGE-PLAN.markdown`. Open with
