@@ -24,6 +24,13 @@ documents the expected delta.
 - Katherine audit rule: net assertion drop or removed test = FAIL unless plan authorized
   (see qa-fix-audit).
 
+## Functional categories (Angelo 2026-09-09)
+
+Inherit categories from the module inventory. Hygiene phases and merge/relocation
+rows must show Category. Prefer reconciling within a category before cross-category
+merges. Flag files that were Uncategorized in inventory — placement/rename work
+should land them under the correct category path or `describe()` when practical.
+
 ## Sequence of work
 
 1. Name the file `docs/YYYYMMDD-<module>-TEST-HYGIENE-PLAN.markdown`. Open with
