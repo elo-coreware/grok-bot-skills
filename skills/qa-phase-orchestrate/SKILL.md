@@ -12,16 +12,61 @@ A develop CI run failed, a phase finished, an audit returned, Margaret handed a 
 
 ## REQUIRED INPUTS AND ACCESS
 
-- docs/ for the current plan. Direct messages to Aaron, Margaret, Katherine.
+- docs/ for the current plan. Direct messages to Aaron, Tindall, Margaret, Katherine.
 - Read-only git and gh. You never edit the repo and never run test commands.
 - Authority: `.cursor/rules/test-failure-triage.mdc` on develop. Repo rules win if they conflict with this skill.
-- Related skills: `qa-fix-plan-build` (Aaron; includes required feature-history / git archaeology), `qa-root-cause-investigate` (Aaron; deeper ESCALATED / UNKNOWN follow-up), `qa-phase-fix` (Margaret).
+- Related skills: `qa-fix-plan-build` (Aaron), `qa-module-test-inventory` (Tindall),
+  `qa-coverage-plan-build` (Tindall), `qa-suite-hygiene-plan-build` (Tindall),
+  `qa-root-cause-investigate` (Aaron / Tindall), `qa-phase-fix` (Margaret).
+
+## MODULE BACKLOG RANKING (coverage / hygiene)
+
+Coverage work has no CI trigger. When no fix plan is active and Margaret is idle,
+rank modules for Tindall:
+
+1. Bug-fix commit density over trailing 6 months on `app/` under module globs
+   (`:bug:`, `fix(` in subject)
+2. Surface symbol count from a light inventory pass (or prior Tindall inventory)
+3. Inverse of current test file count (under-tested modules rank higher)
+4. Float **payments** and **auth** modules to the top when scores tie
+
+Assign Tindall one module at a time: inventory → coverage and/or hygiene plan PRs.
 
 ## SEQUENCE OF WORK
 
-1. Read the newest docs/*-FAILING-TESTS-FIX-PLAN.markdown. If none covers the latest develop CI run, hand the run URL to Aaron for qa-ci-log-pull → qa-validity-scan → qa-fix-plan-build (plan-build **must** include the per-phase feature-history / git archaeology pass), and wait for the plan PR.
+1. Read the newest plan in docs/ matching one of:
+   - `*-FAILING-TESTS-FIX-PLAN.markdown`
+   - `*-TEST-COVERAGE-PLAN.markdown`
+   - `*-TEST-HYGIENE-PLAN.markdown`
 
-2. When Aaron reports the plan PR is open, **reject it back to Aaron** if any phase lacks symbol + cited SHA/PR (or explicit UNKNOWN with search notes) + classification + Implementer instructions. Otherwise assign Katherine qa-validity-scan on every test file listed in that plan **and** ask her to challenge feature-history classifications (adversarial: do proposed fixes match intended product/framework behavior?). Authority: `.cursor/commands/automated-tests-validity-detection.md`. Her verdict is binding: FAIL returns to Aaron (PR stays draft); PASS or PASS WITH NOTES — she marks the PR ready, then Gene's plan-content approval. Plan PRs are not blocked on Bugbot unless `cursor[bot]` already commented; then she triages those threads.
+   **Fix plan:** If none covers the latest develop CI run, hand the run URL to Aaron
+   for qa-ci-log-pull → qa-validity-scan → qa-fix-plan-build (plan-build **must**
+   include the per-phase feature-history / git archaeology pass), and wait for the
+   plan PR.
+
+   **Coverage / hygiene:** If no module plan is in flight and the fix loop is idle,
+   pick the top module from the backlog ranking and assign Tindall
+   qa-module-test-inventory → qa-coverage-plan-build and/or qa-suite-hygiene-plan-build.
+
+2. When a plan PR is open:
+
+   **Fix plan (Aaron):** Reject back to Aaron if any phase lacks symbol + cited SHA/PR
+   (or explicit UNKNOWN with search notes) + classification + Implementer instructions.
+   Assign Katherine qa-validity-scan mode (b) on every test file listed **and** ask her
+   to challenge feature-history classifications.
+
+   **Coverage plan (Tindall):** Assign Katherine qa-validity-scan mode (d) on every
+   proposed phase. Reject back to Tindall if proposals lack app/ file:line citations
+   or propose prohibited service unit tests.
+
+   **Hygiene plan (Tindall):** Assign Katherine qa-validity-scan mode (b) on every
+   existing test file listed, plus verify authorization records (expected assertion
+   delta, rename records, merge equivalence).
+
+   Authority: `.cursor/commands/automated-tests-validity-detection.md`. Her verdict is
+   binding: FAIL returns to the plan author (PR stays draft); PASS or PASS WITH NOTES —
+   she marks the PR ready, then Gene's plan-content approval. Plan PRs are not blocked
+   on Bugbot unless `cursor[bot]` already commented; then she triages those threads.
 
 3. On Gene approval, notify Angelo that the plan PR is ready to merge, with the comment URL. Never merge it yourself. For a **new** plan, wait until Angelo merges once. After that, phase work does **not** wait on his merges. Gene does **not** approve plan content when feature-history is missing or every ESCALATED/UNKNOWN cluster is unevidenced.
 
@@ -31,9 +76,28 @@ A develop CI run failed, a phase finished, an audit returned, Margaret handed a 
    - Open a draft docs plan-update PR
    Do **not** assign Margaret until that plan update is merged (or Angelo/Gene explicitly waives merge and pastes the instructions into Margaret's assign). Scaffolding-only OPEN phases with clear plan fixes and SCAFFOLDING history notes may skip the deeper investigate.
 
-5. Assign Margaret the next **implementable** OPEN phase whose plan row already has clear implementer instructions. Skip infra-only phases Angelo owns. Prefer the plan's recommended fix order among remaining OPEN phases. Exactly one phase **implementing** at a time (shared computer and `test_tenant_1` / `test_landlord_1`). Ready-but-unmerged PRs do not count as in flight.
+5. Assign Margaret the next **implementable** OPEN phase whose plan row already has
+   clear implementer instructions and work type (Fix / Author / Reconcile). Skip
+   infra-only phases Angelo owns. Prefer the plan's recommended order among remaining
+   OPEN phases. Fix, coverage, and hygiene phases share one implement slot — exactly
+   one phase **implementing** at a time (shared computer and `test_tenant_1` /
+   `test_landlord_1`). Ready-but-unmerged PRs do not count as in flight.
 
-   Base branch for her: the latest unmerged phase PR that Katherine dual-PASSed, else `origin/develop`. Tell her that base explicitly. Point her at the **plan section** for this phase (not only chat). Remind her: draft, handoff commit, `cursor review` as Angelo via GitHub MCP (not WIP), implement in-scope Bugbot items, re-invoke after any new commit, cloud-agent `composer test:single` with quoted output, do not mark ready. Angelo himself runs/observes `run-tests-phase.yaml` for now — do not block Margaret on workflow_dispatch. Authority: `.cursor/rules/test-failure-triage.mdc`. Scaffolding failures: fix the test. Contract failures: escalate, write an ESCALATED plan row, leave the test red. Never invert assertions to match a bug. "No app changes" means escalate, not invert. Framework-semantics (PR 5778) are allowed. She must not patch `app/` unless Angelo assigned that specific bug (or the plan's implementer instructions explicitly authorize named app files).
+   Base branch for her: the latest unmerged phase PR that Katherine dual-PASSed, else
+   `origin/develop`. Tell her that base explicitly, the work type, and the branch
+   naming convention. Point her at the **plan section** for this phase (not only chat).
+   Remind her: draft, handoff commit with work-type prefix, `cursor review` as Angelo
+   via GitHub MCP (not WIP), implement in-scope Bugbot items, re-invoke after any new
+   commit, cloud-agent `composer test:single` with quoted output, do not mark ready.
+   Angelo himself runs/observes `run-tests-phase.yaml` for now — do not block Margaret
+   on workflow_dispatch. Authority: `.cursor/rules/test-failure-triage.mdc`.
+   Scaffolding failures: fix the test. Contract failures: escalate, write an ESCALATED
+   plan row, leave the test red. Author: do not invent assertions beyond the plan.
+   Reconcile: match the plan's authorized assertion delta. Never invert assertions to
+   match a bug. "No app changes" means escalate, not invert. Framework-semantics
+   (PR 5778) are allowed. She must not patch `app/` unless Angelo assigned that
+   specific bug (or the plan's implementer instructions explicitly authorize named app
+   files).
 
 6. When Margaret reports the PR is open, **do not assign Katherine yet**. Confirm `cursor[bot]` has a review whose `commit_id` equals HEAD. If not, send Margaret back to comment `cursor review`. If in-scope Bugbot findings are unfixed, send her back to implement (she must not skip by calling them false positives). If the phase inverted contract assertions or added `app/` without Angelo's go-ahead / plan authorization, send it back before audit. Do not gate audit on `run-tests-phase` Actions while Angelo owns that dispatch.
 

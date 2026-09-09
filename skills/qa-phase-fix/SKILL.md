@@ -1,18 +1,35 @@
 ---
 name: qa-phase-fix
 description: >-
-  use this when Gene assigns exactly one OPEN implementable phase, or when
-  Katherine FAILs that phase PR
+  Use when Gene assigns exactly one OPEN implementable phase (fix, author, or
+  reconcile), or when Katherine FAILs that phase PR
 ---
 # qa-phase-fix
 
 ## WHEN TO USE
 
-Gene assigns exactly one OPEN implementable phase from the current plan. Never start a second phase while you are still implementing or waiting on Katherine for the current one. Ready unmerged PRs from earlier phases are not a reason to stop. Also use this when Katherine FAILs the current phase PR — stay on that branch, implement, re-invoke Bugbot.
+Gene assigns exactly one OPEN implementable phase from the current plan (fix plan,
+coverage plan, or hygiene plan). Never start a second phase while you are still
+implementing or waiting on Katherine for the current one. Ready unmerged PRs from
+earlier phases are not a reason to stop. Also use this when Katherine FAILs the
+current phase PR — stay on that branch, implement, re-invoke Bugbot.
+
+## WORK TYPES
+
+Each phase row names one work type:
+
+- **Fix** — repair failing tests from a fix plan (existing behavior, unchanged).
+- **Author** — create or extend tests from a coverage plan phase. Use only assertions
+  and structure authorized in that phase row. Escalate rather than invent assertions
+  the plan did not authorize.
+- **Reconcile** — execute authorized merges, deletions, renames, and `git mv`
+  relocations from a hygiene plan. Report actual assertion delta against the plan's
+  stated number.
 
 ## REQUIRED INPUTS AND ACCESS
 
-- Phase number, its file/failure table, verify commands, and the **base branch** Gene names (`origin/develop` or the latest dual-PASS unmerged `fix/ci-tests-phase-*`).
+- Phase number, work type, its file/failure table, verify commands, and the **base
+  branch** Gene names (`origin/develop` or the latest dual-PASS unmerged phase branch).
 - qa-delegate-to-cursor for all repo work.
 - Authority: `.cursor/rules/test-failure-triage.mdc` (alwaysApply). If it conflicts with this skill, the repo rule wins.
 - On a Katherine FAIL return: her triage table (valid in-scope items only). Do not re-triage those. Do not dismiss a finding she marked valid.
@@ -32,7 +49,15 @@ The Bugbot invoke body is exactly `cursor review` (or `bugbot run`) — nothing 
 
 ## BRANCH NAMES
 
-Prefer `fix/ci-tests-phase-N-<slug>` (lowercase, hyphens). Cursor Cloud Agent may rename or push under `cursor/**` — that is acceptable when the launcher forces it; do not fight a rename mid-flight. Tell Gene the actual branch name. Do not treat `cursor/**` as a reason to skip verify.
+Prefer by plan type (lowercase, hyphens):
+
+- Fix plan: `fix/ci-tests-phase-N-<slug>`
+- Coverage plan: `test/coverage-<module>-phase-N-<slug>`
+- Hygiene plan: `test/hygiene-<module>-phase-N-<slug>`
+
+Cursor Cloud Agent may rename or push under `cursor/**` — that is acceptable when the
+launcher forces it; do not fight a rename mid-flight. Tell Gene the actual branch name.
+Do not treat `cursor/**` as a reason to skip verify.
 
 ## ACTIONS `run-tests-phase` — ANGELO OWNS FOR NOW
 
@@ -44,7 +69,9 @@ Prefer `fix/ci-tests-phase-N-<slug>` (lowercase, hyphens). Cursor Cloud Agent ma
 
 1. git fetch origin. Merge `origin/develop`. If Gene named a previous phase branch as base, merge that branch too (develop first, then the phase branch). On conflicts: list `git diff --name-only --diff-filter=U`, run `git merge --abort`, notify Gene, STOP. Never resolve conflicts yourself.
 
-2. Branch `fix/ci-tests-phase-N-<slug>` from that merged base when possible. On a FAIL return, stay on the existing branch. Open the PR as **draft** targeting `develop`. Never mark it ready. Never merge.
+2. Branch from that merged base using the naming convention for the work type. On a
+   FAIL return, stay on the existing branch. Open the PR as **draft** targeting
+   `develop`. Never mark it ready. Never merge.
 
 3. Build the delegation brief with the phase table / plan Implementer instructions as SCOPE and launch one Cursor Cloud Agent via qa-delegate-to-cursor (Composer 2.5 Fast: model `composer-2.5` with fast mode enabled).
 
@@ -62,9 +89,21 @@ Prefer `fix/ci-tests-phase-N-<slug>` (lowercase, hyphens). Cursor Cloud Agent ma
    `php -d memory_limit=2G artisan test:generate-schema-dump --env=testing`
    Commit all three schema files together. Keep the dump delta surgical — do not mass-rewrite unrelated dump noise (Bugbot TOO_LARGE risk).
 
-7. Update the plan doc: mark **this** phase COMPLETE with the actual failure-count delta and the branch name, or PARTIAL with ESCALATED rows for leftover contract failures. Do not touch other phases' rows except as already stacked on the base branch.
+7. Update the plan doc: mark **this** phase COMPLETE with the actual delta (failure
+   count for Fix; tests added for Author; assertion delta for Reconcile) and the
+   branch name, or PARTIAL with ESCALATED rows for leftover contract failures. Do not
+   touch other phases' rows except as already stacked on the base branch. Hygiene
+   Reconcile: assertion drop is FAIL unless it matches the plan's authorized delta.
 
-8. Commit as ":bug: fix phase N <slug>" and push. This is the **handoff commit**. Do not comment `cursor review` on WIP commits before this.
+8. Commit with the work-type prefix and push. This is the **handoff commit**. Do not
+   comment `cursor review` on WIP commits before this.
+
+   - Fix: `:bug: fix phase N <slug>`
+   - Author: `:white_check_mark: add <module> <slug> tests`
+   - Reconcile: `:recycle: <module> test hygiene <slug>`
+
+   For Reconcile phases, include in the handoff message the actual assertion-count
+   delta vs the plan's authorized number.
 
 9. On the handoff commit only, post `cursor review` under Angelo's identity per IDENTITY above. Wait until `cursor[bot]` has a review whose `commit_id` equals HEAD.
 
@@ -90,7 +129,8 @@ Prefer `fix/ci-tests-phase-N-<slug>` (lowercase, hyphens). Cursor Cloud Agent ma
 - No new application-behavior change unless Angelo assigned that specific bug or the plan authorizes named app files.
 - No polarity inversion or product-behavior assertion rewrite.
 - Verify output is pasted, not summarized — both in the Gene handoff **and** in the PR verify evidence comment.
-- Total assertion count across **this phase's** changed tests did not drop.
+- Total assertion count across **this phase's** changed tests did not drop, except
+  Reconcile phases where the hygiene plan authorized the exact delta.
 - `cursor review` was posted only on the handoff commit and on FAIL-fix commits, never on WIP, and every such comment's author is Angelo (not `cursor[bot]`).
 - A verify evidence comment exists on the PR for the handoff HEAD.
 - HEAD has a `cursor[bot]` review before handoff to Gene.
