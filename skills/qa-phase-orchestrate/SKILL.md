@@ -21,8 +21,9 @@ A develop CI run failed, a phase finished, an audit returned, Margaret handed a 
 
 ## MODULE BACKLOG RANKING (coverage / hygiene)
 
-Coverage work has no CI trigger. When no fix plan is active and Margaret is idle,
-rank modules for Tindall:
+Coverage work has no CI trigger. Aaron/Bill **may** draft plans (VERIFY none)
+while Margaret implements — Angelo 2026-09-09. When ranking modules for Tindall
+(idle or alongside a Fix implement), rank modules:
 
 1. Bug-fix commit density over trailing 6 months on `app/` under module globs
    (`:bug:`, `fix(` in subject)
