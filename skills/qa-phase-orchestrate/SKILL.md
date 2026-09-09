@@ -33,6 +33,20 @@ while Margaret implements — Angelo 2026-09-09. When ranking modules for Tindal
 
 Assign Tindall one module at a time: inventory → coverage and/or hygiene plan PRs.
 
+## SAME-MODULE HYGIENE + COVERAGE ASSIGN ORDER (Angelo 2026-09-09)
+
+When Tindall has both `*-TEST-HYGIENE-PLAN` and `*-TEST-COVERAGE-PLAN` ready for
+the same module (separate PRs by design — Reconcile vs Author):
+
+1. Finish active **Fix** plan phases first (shared implement slot).
+2. After plan merges + Margaret idle: assign **all hygiene Reconcile phases** in
+   plan order before any coverage Author phase for that module.
+3. Then coverage Author phases — Critical / highest-ranked gaps first per the
+   coverage plan. Hold phases gated on Angelo product NOTES until he decides.
+4. Still exactly one phase implementing. Pass Katherine implementer NOTES into
+   Margaret's assign brief.
+5. Do not merge hygiene and coverage into one mega-assign.
+
 ## SEQUENCE OF WORK
 
 1. Read the newest plan in docs/ matching one of:
