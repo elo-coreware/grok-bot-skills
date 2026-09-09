@@ -26,6 +26,27 @@ Each phase row names one work type:
   relocations from a hygiene plan. Report actual assertion delta against the plan's
   stated number.
 
+## SAME-MODULE HYGIENE + COVERAGE (Angelo 2026-09-09)
+
+When Tindall shipped both a hygiene plan and a coverage plan for the same module:
+
+1. **CI Fix phases still win the implement slot** — finish the active fix-plan phase
+   before any Forms/Reconcile/Author work from Tindall plans.
+2. **Hygiene (Reconcile) before Coverage (Author)** — clean/relocate/delete weak
+   existing tests before writing new ones onto those paths.
+3. **One phase at a time** — never run a hygiene phase and a coverage phase in
+   parallel. Stack ready unmerged PRs as usual.
+4. **Coverage Critical rows first** when Gene starts Author work (destroy/status/
+   submission destroy/notification templates/category gaps as the plan ranks them).
+5. **Skip or ESCALATE** coverage rows that depend on open Angelo product NOTES
+   (e.g. missing controller methods, unknown module-permission) — do not invent
+   product behavior.
+6. Honor Katherine implementer notes on the plan PRs (assertion-delta caveats,
+   dependency order such as "home for X before delete Y").
+
+Gene names the exact phase and work type each assign. Do not self-start the other
+plan while one phase is open.
+
 ## REQUIRED INPUTS AND ACCESS
 
 - Phase number, work type, its file/failure table, verify commands, and the **base
