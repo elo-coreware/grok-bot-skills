@@ -36,8 +36,10 @@ Preferred posting path (in order):
    <path>` only when `gh auth status` shows Angelo / `elo-coreware`.
 
 After posting, verify authorship of the newest issue comment. Accept only when
-`user.login` is `elo-coreware`. If the comment lands as `cursor[bot]`, STOP. Do
-not treat a bot-authored comment as success. Tell Gene Angelo must re-auth.
+`user.login` is `elo-coreware` (or Angelo's current login). If `gh`/MCP returns
+403, is unauthenticated, or the comment lands as `cursor[bot]`, STOP. Do not treat
+a bot-authored comment as success. Never fall back to the Cursor PR-management API
+or any integration token that posts as `cursor[bot]`. Tell Gene Angelo must re-auth.
 
 Because the comment posts under his name: the signature block is mandatory, and
 never write a claim you cannot evidence.
@@ -66,12 +68,21 @@ never write a claim you cannot evidence.
 | Gate | Status |
 |------|--------|
 | 1 Local sweep (zero unfixed valid in-scope) | pass |
-| 2 cursor[bot] on HEAD | pass |
-| 3 CI checks | pass |
+| 2 cursor[bot] on reviewed-sha | pass |
+| 3 CI checks (green on final-sha) | pass |
 | 4 Mergeable with develop | pass |
 | 5 Implementation plan retired | pass / N/A |
 
 **SHAs:** reviewed `<reviewed-sha>` → final `<final-sha>`
+
+Gate 2 is asserted against `reviewed-sha`, not `final-sha`. When a plan retirement
+commit moved HEAD, state the deletion-only delta explicitly:
+`git diff <reviewed-sha>..<final-sha> --name-only` returned only the plan path, so
+no new Bugbot review was required. CI is green on `final-sha`.
+
+**Merge state:** `mergeable` / `mergeStateStatus` / draft — call out `BLOCKED`
+(needs your approving review), `UNSTABLE`, or `isDraft: true` (you must mark the
+PR ready) when present.
 
 **Findings ledger:** valid fixed (N), dismissed false positive (N), out of scope (N).
 Split by source: local /bugbot vs cursor[bot]. List any fix commits with SHAs.
@@ -136,6 +147,9 @@ merge, or "Nothing; safe to merge after your review." Never leave this empty.
 - Verdict matches audit outcome exactly. Never upgraded to MERGE-READY to unblock.
 - Gate table traces to pr-merge-readiness-audit and pr-plan-doc-retire output.
 - reviewed-sha and final-sha stated on MERGE-READY.
+- Gate 2 labelled against reviewed-sha, never claimed as "on HEAD" once a plan
+  retirement commit has moved HEAD.
+- Draft status surfaced — MERGE-READY never implies a draft is mergeable as-is.
 - "Needs your eyes" populated.
 - Signature block present.
 - Comment author is Angelo, not cursor[bot].

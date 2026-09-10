@@ -58,11 +58,23 @@ explicitly handed back to Gene/Angelo.
    changed materially).
 
 6. **Merge readiness.** When sweep shows zero unfixed valid in-scope items, run
-   pr-merge-readiness-audit. If gates 1–4 fail → post BLOCKED or WAITING verdict,
-   return to SWEEPING or WAITING-CI as appropriate. If gates 1–4 pass →
-   pr-plan-doc-retire → pr-merge-verdict-comment MERGE-READY → notify Gene and Angelo.
+   pr-merge-readiness-audit (gates 1–4). Route on the outcome:
+   - Gate 1 or 2 fail → back to SWEEPING or REMEDIATING.
+   - Gate 3 pending, or gate 4 `mergeable == "UNKNOWN"` → WAITING-CI.
+   - Gate 3 red or gate 4 conflicts → post BLOCKED.
+   - Gates 1–4 pass → pr-plan-doc-retire → pr-merge-verdict-comment MERGE-READY →
+     notify Gene and Angelo.
 
-7. **Handback.** On BLOCKED, post verdict, tell Gene the blocker, release the test
+7. **WAITING-CI.** Poll `gh pr checks <PR>` until every required check resolves on
+   HEAD, or GitHub finishes computing mergeability. Then re-run
+   pr-merge-readiness-audit — do not skip straight to a verdict off a stale gate
+   table. On red CI, post BLOCKED. If checks stay pending beyond one hour, report
+   WAITING to Gene rather than polling silently.
+
+   The plan retirement commit in step 6 starts a fresh CI run on the new HEAD.
+   Re-enter WAITING-CI for that run before posting MERGE-READY.
+
+8. **Handback.** On BLOCKED, post verdict, tell Gene the blocker, release the test
    slot if held, and stop. Angelo or Gene must re-assign to resume.
 
 ## HOW TO VALIDATE

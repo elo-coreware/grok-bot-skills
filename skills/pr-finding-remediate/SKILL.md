@@ -75,8 +75,11 @@ Authority:
    cursor review
    ```
    Use GitHub MCP `add_issue_comment` with owner=CorewareHub,
-   repo=coreware-app-backend. Verify comment author is `elo-coreware`. If it lands
-   as `cursor[bot]`, STOP and tell Gene.
+   repo=coreware-app-backend. Verify comment author is `elo-coreware` (or Angelo's
+   current login). If `gh`/MCP returns 403, is unauthenticated, or it lands as
+   `cursor[bot]`, STOP and tell Gene. Never fall back to the Cursor PR-management
+   API or any integration token that posts as `cursor[bot]` — a bot-authored invoke
+   is not a completed invoke.
 
 6. **Update ledger.** Mark fixed items Fixed?=yes with the new commit SHA. Return
    to pr-babysit-loop WAITING-BUGBOT state.

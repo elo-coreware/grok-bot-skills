@@ -25,11 +25,22 @@ Any time work must read, write, or run commands inside CorewareHub/coreware-app-
 
    GOAL — one sentence, the outcome.
 
-   BRANCH — base branch and the branch name to create.
+   BRANCH — base branch and the branch name to create. **Existing-branch mode:**
+   when the work is remediation on a branch that already exists (Grace on an
+   assigned feature PR), state the existing branch to check out and say
+   explicitly "do not create a new branch". Everything else in this skill applies
+   unchanged.
 
    SCOPE — the explicit file list or phase table from the plan doc.
 
    CONSTRAINTS — paste verbatim: never commit on develop/main/master; never merge a PR; never run composer format; one test command at a time; follow .cursor/rules/codebase.mdc, .cursor/rules/test-isolation.mdc, and .cursor/rules/test-failure-triage.mdc; scaffolding failures: fix the test; contract failures: do not invert assertions to match a bug, escalate, write an ESCALATED plan row, leave the test red; do not patch `app/` unless Angelo assigned that specific bug. "No app changes" means escalate, not invert. Framework-semantics corrections (PR 5778) are allowed; product-behavior rewrites (PR 5785 class) are not.
+
+   **Grace's feature-PR exception:** on a feature PR she was assigned, the `app/`
+   restriction above is replaced by: edit only files already in
+   `git diff develop...HEAD --name-only` on that PR; new files or product-behavior
+   changes beyond the committed implementation plan require Angelo's go-ahead.
+   Every other constraint stands verbatim. Do not apply this exception to CI phase
+   work — Margaret's `app/` restriction is unchanged.
 
    VERIFY — the exact verification commands to run, or `none` for read-only/planning work.
 
@@ -44,7 +55,9 @@ Any time work must read, write, or run commands inside CorewareHub/coreware-app-
 ## HOW TO VALIDATE
 
 - The run reports Composer 2.5 Fast as the serving model.
-- The branch exists, is not develop/main/master, and came from the stated base.
+- The branch exists and is not develop/main/master. In create mode it came from
+  the stated base; in existing-branch mode it is the branch named in BRANCH and no
+  new branch was created.
 - Every touched file is inside SCOPE. Out-of-scope edits are a finding, not a bonus.
 - No polarity inversion. No new application-behavior change unless Angelo already approved that specific patch.
 - VERIFY output is quoted real output, not a claim that it passed.

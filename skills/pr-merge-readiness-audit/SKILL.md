@@ -27,7 +27,7 @@ pr-plan-doc-retire — not in this audit pass.
 | 1 | Local sweep | Zero unfixed valid in-scope findings on HEAD |
 | 2 | cursor[bot] | Review exists with commit_id == HEAD; all valid in-scope threads addressed in code |
 | 3 | CI | All required checks green on HEAD (`gh pr checks`) |
-| 4 | Mergeability | mergeable == true, no conflicts with develop |
+| 4 | Mergeability | mergeable == "MERGEABLE", mergeStateStatus != "DIRTY", not a draft |
 | 5 | Plan retired | pr-plan-doc-retire completed (run after 1–4) |
 
 This skill evaluates gates **1–4 only**. Gate 5 is confirmed after pr-plan-doc-retire.
@@ -58,12 +58,35 @@ This skill evaluates gates **1–4 only**. Gate 5 is confirmed after pr-plan-doc
 
 4. **Gate 4 — Mergeability.**
    ```bash
-   gh pr view <PR> --json mergeable,mergeStateStatus,headRefOid \
-     --jq '{mergeable, mergeStateStatus, headRefOid}'
+   gh pr view <PR> --json mergeable,mergeStateStatus,isDraft,headRefOid \
+     --jq '{mergeable, mergeStateStatus, isDraft, headRefOid}'
    ```
-   - PASS when mergeable is true and mergeStateStatus is CLEAN or BEHIND (not
-     CONFLICTING, not BLOCKED).
-   - FAIL when conflicts exist — post BLOCKED, ask Angelo to resolve.
+
+   These are two different GraphQL enums. Do not conflate them, and never treat
+   `mergeable` as a boolean — it is a string.
+
+   | Field | Enum | Values |
+   |-------|------|--------|
+   | `mergeable` | MergeableState | `MERGEABLE`, `CONFLICTING`, `UNKNOWN` |
+   | `mergeStateStatus` | MergeStateStatus | `CLEAN`, `BEHIND`, `HAS_HOOKS`, `UNSTABLE`, `BLOCKED`, `DIRTY`, `UNKNOWN` |
+
+   - **PASS** when `mergeable == "MERGEABLE"` and `mergeStateStatus` is not `DIRTY`.
+     `CLEAN`, `BEHIND`, and `HAS_HOOKS` are all genuinely mergeable.
+   - **FAIL (BLOCKED verdict)** when `mergeable == "CONFLICTING"` or
+     `mergeStateStatus == "DIRTY"` — real conflicts with develop. Ask Angelo to
+     resolve; never resolve conflicts yourself.
+   - **WAITING** when `mergeable == "UNKNOWN"` — GitHub is still computing
+     mergeability. Re-poll; do not report a verdict off an UNKNOWN.
+   - **PASS WITH NOTE, do not fail**, on these — they are not Grace defects:
+     - `mergeStateStatus == "UNSTABLE"` — mergeable but commit status not passing.
+       Gate 3 already owns CI; do not double-fail here.
+     - `mergeStateStatus == "BLOCKED"` — branch protection (e.g. a required
+       approving review). Surface it in the verdict so Angelo knows he must
+       approve before merging.
+   - **`isDraft == true`** — a draft cannot be merged. `mergeStateStatus` still
+     reports `CLEAN` for drafts, so this must be checked separately. Never post
+     MERGE-READY on a draft: surface it and tell Angelo to mark the PR ready
+     (Grace does not run `gh pr ready` unless Angelo asked her to).
 
 5. **Record reviewed SHA.** Save HEAD SHA as `reviewed-sha` for pr-plan-doc-retire
    and the MERGE-READY verdict (reviewed-sha vs post-retire HEAD).
@@ -75,19 +98,23 @@ This skill evaluates gates **1–4 only**. Gate 5 is confirmed after pr-plan-doc
 | All pass | Proceed to pr-plan-doc-retire, then MERGE-READY |
 | Gate 2 pending review | WAITING |
 | Gate 3 pending | WAITING |
+| Gate 4 mergeable == UNKNOWN | WAITING |
 | Gate 1, 2, or 4 fail | BLOCKED |
 | Gate 3 fail (CI red) | BLOCKED |
+| Gate 4 pass but isDraft, BLOCKED, or UNSTABLE | Proceed, but state it in the verdict |
 
 ## HOW TO VALIDATE
 
 - Each gate has explicit pass/fail/waiting with quoted gh output.
 - HEAD SHA recorded at audit time.
 - Gate 5 not claimed pass until pr-plan-doc-retire runs.
+- `mergeable` compared against the string `"MERGEABLE"`, never treated as boolean.
+- `isDraft` checked separately — never inferred from `mergeStateStatus`.
 
 ## WHAT TO RETURN
 
 Gate table (1–4 pass/fail/waiting), HEAD SHA (reviewed-sha), cursor[bot] review
-SHA, CI summary, mergeStateStatus, blocker text if any.
+SHA, CI summary, mergeable, mergeStateStatus, isDraft, blocker text if any.
 
 ## WHAT REQUIRES APPROVAL
 
