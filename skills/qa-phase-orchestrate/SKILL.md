@@ -21,8 +21,9 @@ A develop CI run failed, a phase finished, an audit returned, Margaret handed a 
 
 ## MODULE BACKLOG RANKING (coverage / hygiene)
 
-Coverage work has no CI trigger. When no fix plan is active and Margaret is idle,
-rank modules for Tindall:
+Coverage work has no CI trigger. Aaron/Bill **may** draft plans (VERIFY none)
+while Margaret implements — Angelo 2026-09-09. When ranking modules for Tindall
+(idle or alongside a Fix implement), rank modules:
 
 1. Bug-fix commit density over trailing 6 months on `app/` under module globs
    (`:bug:`, `fix(` in subject)
@@ -31,6 +32,20 @@ rank modules for Tindall:
 4. Float **payments** and **auth** modules to the top when scores tie
 
 Assign Tindall one module at a time: inventory → coverage and/or hygiene plan PRs.
+
+## SAME-MODULE HYGIENE + COVERAGE ASSIGN ORDER (Angelo 2026-09-09)
+
+When Tindall has both `*-TEST-HYGIENE-PLAN` and `*-TEST-COVERAGE-PLAN` ready for
+the same module (separate PRs by design — Reconcile vs Author):
+
+1. Finish active **Fix** plan phases first (shared implement slot).
+2. After plan merges + Margaret idle: assign **all hygiene Reconcile phases** in
+   plan order before any coverage Author phase for that module.
+3. Then coverage Author phases — Critical / highest-ranked gaps first per the
+   coverage plan. Hold phases gated on Angelo product NOTES until he decides.
+4. Still exactly one phase implementing. Pass Katherine implementer NOTES into
+   Margaret's assign brief.
+5. Do not merge hygiene and coverage into one mega-assign.
 
 ## SEQUENCE OF WORK
 

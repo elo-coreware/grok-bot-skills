@@ -3,7 +3,8 @@ name: qa-module-test-inventory
 description: >-
   Use when Gene assigns a module for coverage or hygiene planning. Produces the
   surface inventory, test inventory, coverage matrix, duplication clusters, and
-  placement violations that feed qa-coverage-plan-build and qa-suite-hygiene-plan-build.
+  placement violations that feed qa-coverage-plan-build and
+  qa-suite-hygiene-plan-build.
 ---
 # QA module test inventory
 
@@ -52,6 +53,7 @@ Emit the concrete path globs that define the module boundary, for example:
    - Landlord equivalents when the module has landlord logic under `app/Landlord/`
 3. **Test inventory** — every `tests/**/*Test.php` file under the boundary globs:
    - File path
+   - **Functional category** (required — see Functional categories below)
    - `describe()` / `it()` block names
    - Approximate assertion count (grep `expect(`, `assert`, `assertDatabase` per file)
    - Test type: Feature tenant, Feature landlord, Unit (grandfathered only)
@@ -80,6 +82,29 @@ Emit the concrete path globs that define the module boundary, for example:
      module globs with `:bug:` or `fix(` in subject
    - Surface symbol count vs test file count ratio
 
+## Functional categories (Angelo 2026-09-09)
+
+Every test file and surface symbol must get a **functional category** inside the
+module — not only a flat file list. Categories are capability buckets derived from
+the module's product surface (routes, controllers, UI areas), for example:
+
+- Blog: `CRUD`, `AI`, `Categories`, `Publishing`, …
+- Forms: `Builder`, `PublicSubmit`, `Submissions`, `Notifications`, `Waivers`, `Categories`, …
+- Scheduling: `Resources`, `Categories`, `Availability`, `Bookings`, … (do **not** leave
+  scheduling tests uncategorized — invent buckets from controllers/routes, not from
+  filename alone)
+
+Rules:
+
+1. Prefer existing subdirectory / `describe()` names when they already encode a
+   category (`…/Blog/Ai/…`, `describe('categories')`).
+2. When tests sit in a flat module folder with no category (common under Scheduling),
+   assign one from the controller/route cluster and record it on every inventory row.
+3. Flag **Uncategorized** explicitly if a file cannot be mapped — do not silently omit.
+4. Coverage and hygiene plans inherit these categories: phase titles and summary
+   tables must show `Category | …`. Phases may still be one file each, but group
+   and order phases by category when presenting the plan.
+
 ## How to validate
 
 - Module key cites the registry source (ENTITY_MODULES or FEATURE_MIGRATIONS).
@@ -97,7 +122,7 @@ Structured inventory for Tindall and Gene:
 |---------|---------|
 | Module key | Registry source, boundary globs |
 | Surface inventory | Symbol table (route, controller action, job, command) |
-| Test inventory | File paths with describe/it summary and assertion counts |
+| Test inventory | File, **functional category**, describe/it, assertion count, type |
 | Coverage matrix | Symbol → test mapping or None |
 | Duplication clusters | Files, shared routes, overlap summary, survivor recommendation |
 | Placement violations | File path, expected path, reason |
