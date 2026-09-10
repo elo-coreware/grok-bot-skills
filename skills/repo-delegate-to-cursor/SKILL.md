@@ -1,10 +1,10 @@
 ---
-name: qa-delegate-to-cursor
+name: repo-delegate-to-cursor
 description: >-
   Use this when work must read, write, or run commands inside
   CorewareHub/coreware-app-backend
 ---
-# qa-delegate-to-cursor
+# repo-delegate-to-cursor
 
 ## WHEN TO USE
 

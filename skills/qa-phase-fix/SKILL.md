@@ -30,7 +30,7 @@ Each phase row names one work type:
 
 - Phase number, work type, its file/failure table, verify commands, and the **base
   branch** Gene names (`origin/develop` or the latest dual-PASS unmerged phase branch).
-- qa-delegate-to-cursor for all repo work.
+- repo-delegate-to-cursor for all repo work.
 - Authority: `.cursor/rules/test-failure-triage.mdc` (alwaysApply). If it conflicts with this skill, the repo rule wins.
 - On a Katherine FAIL return: her triage table (valid in-scope items only). Do not re-triage those. Do not dismiss a finding she marked valid.
 - Angelo's GitHub identity for any PR comment (see IDENTITY).
@@ -73,7 +73,7 @@ Do not treat `cursor/**` as a reason to skip verify.
    FAIL return, stay on the existing branch. Open the PR as **draft** targeting
    `develop`. Never mark it ready. Never merge.
 
-3. Build the delegation brief with the phase table / plan Implementer instructions as SCOPE and launch one Cursor Cloud Agent via qa-delegate-to-cursor (Composer 2.5 Fast: model `composer-2.5` with fast mode enabled).
+3. Build the delegation brief with the phase table / plan Implementer instructions as SCOPE and launch one Cursor Cloud Agent via repo-delegate-to-cursor (Composer 2.5 Fast: model `composer-2.5` with fast mode enabled).
 
 4. Per file, classify using `.cursor/rules/test-failure-triage.mdc` **before editing anything**.
    - **Scaffolding failure:** setup is wrong; the asserted contract is untouched. Fix the test (`uses()`, fixtures, fakes, dates, uniqid scoping, teardown ordering, parallel collisions).

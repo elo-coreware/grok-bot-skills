@@ -16,7 +16,7 @@ After qa-ci-log-pull and qa-validity-scan, when no current plan covers the lates
 - Findings from qa-validity-scan.
 - The previous plan in `docs/` for the Supersedes line and delta comparison.
 - Template of record: `docs/20260831-FAILING-TESTS-FIX-PLAN.markdown`.
-- Repo read access via `qa-delegate-to-cursor` (Composer 2.5 Fast) for **feature-history / git archaeology** (required — not optional).
+- Repo read access via `repo-delegate-to-cursor` (Composer 2.5 Fast) for **feature-history / git archaeology** (required — not optional).
 - Authority: `.cursor/rules/test-failure-triage.mdc`. Deeper ESCALATED follow-up still uses `qa-root-cause-investigate` when Gene assigns it.
 
 ## Sequence of work
@@ -49,7 +49,7 @@ After qa-ci-log-pull and qa-validity-scan, when no current plan covers the lates
 
 ## What to return
 
-The plan file, shipped as its own PR via qa-delegate-to-cursor: branch `docs/YYYYMMDD-failing-tests-fix-plan`, commit `:memo: add <month day> failing tests fix plan vN`. Summarize the phase table **and** the per-phase INTENTIONAL/REGRESSION/SCAFFOLDING/UNKNOWN counts in chat for Gene.
+The plan file, shipped as its own PR via repo-delegate-to-cursor: branch `docs/YYYYMMDD-failing-tests-fix-plan`, commit `:memo: add <month day> failing tests fix plan vN`. Summarize the phase table **and** the per-phase INTENTIONAL/REGRESSION/SCAFFOLDING/UNKNOWN counts in chat for Gene.
 
 ## What requires approval
 

@@ -28,7 +28,7 @@ database/data-dumps/ — never commit a dump. Ship the plan as its own PR on bra
 docs/YYYYMMDD-failing-tests-fix-plan with commit ":memo: add <month day> failing
 tests fix plan vN".
 
-Skills: qa-ci-log-pull, qa-validity-scan, qa-fix-plan-build, qa-delegate-to-cursor
+Skills: qa-ci-log-pull, qa-validity-scan, qa-fix-plan-build, repo-delegate-to-cursor
 
 HOUSE RULES — identical for every bot on this team
 
@@ -43,7 +43,7 @@ Repo: CorewareHub/coreware-app-backend. Base branch: develop.
   test_landlord_1), so a second concurrent test run silently corrupts both.
 - Never run git reset --hard, git clean -fd, git checkout -- ., or git stash on a
   dirty tree. Treat existing uncommitted changes as intentional work.
-- All repo reads and writes go through the qa-delegate-to-cursor skill, pinned to
+- All repo reads and writes go through the repo-delegate-to-cursor skill, pinned to
   Composer 2.5 Fast (launcher: model composer-2.5 with fast mode enabled). If a
   run is served by any other model, stop and tell Angelo.
 - Follow .cursor/rules/codebase.mdc and .cursor/rules/test-isolation.mdc in the

@@ -17,7 +17,7 @@ cursor[bot] has reviewed the new SHA.
 - Committed implementation plan path on the branch (if any), per git-commit.md
   step 5 identification rules. Supply it to the delegated agent as the
   Implementation Plan input for /bugbot.
-- qa-delegate-to-cursor for read-only BugBot runs (plan mode only — no fixes).
+- repo-delegate-to-cursor for read-only BugBot runs (plan mode only — no fixes).
 - gh / GitHub MCP for cursor[bot] review threads on this PR.
 
 Authority files:
@@ -34,14 +34,14 @@ Authority files:
    git diff develop...HEAD --name-status
    ```
 
-2. **Local BugBot (delegated).** Launch qa-delegate-to-cursor with:
+2. **Local BugBot (delegated).** Launch repo-delegate-to-cursor with:
    - GOAL: Run .cursor/commands/bugbot.md in plan mode on develop...HEAD. Attach
      the committed implementation plan at `<path>` as the Implementation Plan.
      Do not implement fixes.
    - VERIFY: none (read-only plan output)
    - REPORT BACK: full Bug Report plan output
 
-3. **Local triage (delegated).** Launch qa-delegate-to-cursor with:
+3. **Local triage (delegated).** Launch repo-delegate-to-cursor with:
    - GOAL: Run .cursor/commands/bugbot-triage.md on the Bug Report from step 2.
      Plan mode only. Do not implement fixes.
    - VERIFY: none

@@ -20,7 +20,7 @@ as N/A — proceed directly to pr-merge-verdict-comment MERGE-READY.
 - PR number, branch name, reviewed-sha from pr-merge-readiness-audit (HEAD when
   gates 1–4 passed).
 - gh / GitHub MCP for PR comments and body edit.
-- qa-delegate-to-cursor for git rm, commit, push.
+- repo-delegate-to-cursor for git rm, commit, push.
 
 Plan identification — same rules as `.cursor/commands/git-commit.md` step 5:
 1. Plan assigned or attached for this PR in Grace's context.
@@ -46,7 +46,7 @@ Plan identification — same rules as `.cursor/commands/git-commit.md` step 5:
    ```
    Use GitHub MCP `add_issue_comment`. Verify author is `elo-coreware`.
 
-3. **Remove from branch.** Delegate qa-delegate-to-cursor:
+3. **Remove from branch.** Delegate repo-delegate-to-cursor:
    ```bash
    git rm .cursor/plans/<plan-file>.plan.md
    git commit -m ":memo: remove implementation plan before merge" \

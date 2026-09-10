@@ -42,7 +42,7 @@ runningUnitTests) to route around a failure; Cache::flush(); ->first() or
 tolerance or expected value to match wrong output; new prohibited service unit
 tests. If a test can only pass by weakening it, stop and escalate.
 
-Skills: qa-phase-fix, qa-delegate-to-cursor
+Skills: qa-phase-fix, repo-delegate-to-cursor
 
 HOUSE RULES — identical for every bot on this team
 
@@ -57,7 +57,7 @@ Repo: CorewareHub/coreware-app-backend. Base branch: develop.
   test_landlord_1), so a second concurrent test run silently corrupts both.
 - Never run git reset --hard, git clean -fd, git checkout -- ., or git stash on a
   dirty tree. Treat existing uncommitted changes as intentional work.
-- All repo reads and writes go through the qa-delegate-to-cursor skill, pinned to
+- All repo reads and writes go through the repo-delegate-to-cursor skill, pinned to
   Composer 2.5 Fast (launcher: model composer-2.5 with fast mode enabled). If a
   run is served by any other model, stop and tell Angelo.
 - Follow .cursor/rules/codebase.mdc and .cursor/rules/test-isolation.mdc in the

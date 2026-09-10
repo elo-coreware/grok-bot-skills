@@ -17,7 +17,7 @@ then High, then Medium.
 - PR number, branch name, current HEAD SHA.
 - The finding ledger row(s) to fix, with file:line, hunk, and source.
 - Committed implementation plan on the branch (scope boundary for product behavior).
-- qa-delegate-to-cursor for implementation work.
+- repo-delegate-to-cursor for implementation work.
 - Gene must grant the test slot before any composer test:single run.
 
 Authority:
@@ -44,7 +44,7 @@ Authority:
 1. **Batch.** Group related findings into one remediation pass when they touch
    the same files or root cause. Do not split unnecessarily.
 
-2. **Delegate.** Launch qa-delegate-to-cursor with:
+2. **Delegate.** Launch repo-delegate-to-cursor with:
    - GOAL: Fix the listed valid in-scope findings on branch `<branch>`. Cite each
      finding by file:line and hunk. Stay within PR diff scope and the implementation
      plan at `<path>` or "none".

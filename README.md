@@ -48,7 +48,7 @@ Each agent has `agents/<slug>.md` (human-readable) and `agents/<slug>.json` (mac
 | pr-merge-readiness-audit | Grace |
 | pr-plan-doc-retire | Grace |
 | pr-merge-verdict-comment | Grace |
-| qa-delegate-to-cursor | shared |
+| repo-delegate-to-cursor | shared |
 
 Each skill lives at `skills/<skill-id>/SKILL.md`.
 

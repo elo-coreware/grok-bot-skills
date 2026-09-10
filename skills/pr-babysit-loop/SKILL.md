@@ -14,7 +14,7 @@ is MERGE-READY or she hands it back with BLOCKED and a written reason.
 ## REQUIRED INPUTS AND ACCESS
 
 - PR number and URL, branch name, head SHA at assignment.
-- Read/write on the PR branch via qa-delegate-to-cursor.
+- Read/write on the PR branch via repo-delegate-to-cursor.
 - gh authenticated for CorewareHub/coreware-app-backend.
 - Committed implementation plan on the branch when one exists (identification rules
   from .cursor/commands/git-commit.md step 5; BugBot-generated plans excluded).

@@ -16,7 +16,7 @@ Do not use for CI failure triage — that is qa-fix-plan-build (Aaron).
 
 - Full output from qa-module-test-inventory for the module.
 - Previous coverage plan for the same module in `docs/` (for Supersedes line), if any.
-- Repo read access via `qa-delegate-to-cursor` (Composer 2.5 Fast).
+- Repo read access via `repo-delegate-to-cursor` (Composer 2.5 Fast).
 - Authority: `.cursor/commands/automated-tests.md` (gap analysis, test types, paths).
 - Authority: `.cursor/rules/codebase.mdc` (testing policy — no new service unit tests).
 - Canonical new-test precedent: PR #2191 (`b35add9667`, `:robot: add notebook api http tests`).
@@ -67,7 +67,7 @@ Do not use for CI failure triage — that is qa-fix-plan-build (Aaron).
 8. **Sizing** — cap at ~10 new/extended files per plan. If inventory exceeds that,
    split by submodule (`shop.checkout` vs `shop.catalog`) and state which sub-plan
    this file covers. Remaining symbols go in a "Deferred" section with rationale.
-9. Ship via qa-delegate-to-cursor: branch `docs/YYYYMMDD-<module>-test-coverage-plan`,
+9. Ship via repo-delegate-to-cursor: branch `docs/YYYYMMDD-<module>-test-coverage-plan`,
    commit `:memo: add <month day> <module> test coverage plan vN`, draft PR targeting
    develop.
 
