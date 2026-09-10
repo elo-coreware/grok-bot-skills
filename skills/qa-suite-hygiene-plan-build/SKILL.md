@@ -2,7 +2,7 @@
 name: qa-suite-hygiene-plan-build
 description: >-
   Use after qa-module-test-inventory when duplication clusters or placement
-  violations exist. Writes docs/YYYYMMDD-<module>-TEST-HYGIENE-PLAN.markdown.
+  violations exist. Writes docs/automated-tests/YYYYMMDD-<module>-TEST-HYGIENE-PLAN.markdown.
 ---
 # QA suite hygiene plan build
 
@@ -17,7 +17,7 @@ documents the expected delta.
 ## Required inputs and access
 
 - Full output from qa-module-test-inventory (duplication clusters, placement violations).
-- Previous hygiene plan for the same module in `docs/` (Supersedes line), if any.
+- Previous hygiene plan for the same module in `docs/automated-tests/` or legacy `docs/` (Supersedes line), if any.
 - Repo read access via `repo-delegate-to-cursor` (Composer 2.5 Fast).
 - Authority: `.cursor/commands/automated-tests-validity-detection.md`.
 - Authority: `.cursor/commands/automated-tests.md` (directory conventions).
@@ -33,7 +33,7 @@ should land them under the correct category path or `describe()` when practical.
 
 ## Sequence of work
 
-1. Name the file `docs/YYYYMMDD-<module>-TEST-HYGIENE-PLAN.markdown`. Open with
+1. Name the file `docs/automated-tests/YYYYMMDD-<module>-TEST-HYGIENE-PLAN.markdown`. Open with
    Supersedes link, module key, and inventory date.
 2. **Summary table** — duplication clusters found, placement violations, weak assertion
    files, proposed merges, proposed relocations, proposed renames, expected net

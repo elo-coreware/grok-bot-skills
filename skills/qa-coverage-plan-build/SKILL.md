@@ -2,7 +2,7 @@
 name: qa-coverage-plan-build
 description: >-
   Use after qa-module-test-inventory when a module has uncovered or under-tested
-  surface. Writes docs/YYYYMMDD-<module>-TEST-COVERAGE-PLAN.markdown.
+  surface. Writes docs/automated-tests/YYYYMMDD-<module>-TEST-COVERAGE-PLAN.markdown.
 ---
 # QA coverage plan build
 
@@ -15,7 +15,7 @@ Do not use for CI failure triage — that is qa-fix-plan-build (Aaron).
 ## Required inputs and access
 
 - Full output from qa-module-test-inventory for the module.
-- Previous coverage plan for the same module in `docs/` (for Supersedes line), if any.
+- Previous coverage plan for the same module in `docs/automated-tests/` or legacy `docs/` (for Supersedes line), if any.
 - Repo read access via `repo-delegate-to-cursor` (Composer 2.5 Fast).
 - Authority: `.cursor/commands/automated-tests.md` (gap analysis, test types, paths).
 - Authority: `.cursor/rules/codebase.mdc` (testing policy — no new service unit tests).
@@ -32,7 +32,7 @@ test Uncategorized.
 
 ## Sequence of work
 
-1. Name the file `docs/YYYYMMDD-<module>-TEST-COVERAGE-PLAN.markdown`. Open with
+1. Name the file `docs/automated-tests/YYYYMMDD-<module>-TEST-COVERAGE-PLAN.markdown`. Open with
    Supersedes link to prior version (if any), module key, inventory date, and link
    to the inventory summary.
 2. **Summary table** — module key, boundary globs, surface symbol count, existing

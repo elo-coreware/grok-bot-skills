@@ -14,14 +14,14 @@ After qa-ci-log-pull and qa-validity-scan, when no current plan covers the lates
 
 - Metrics table, failure inventory, and seed from qa-ci-log-pull.
 - Findings from qa-validity-scan.
-- The previous plan in `docs/` for the Supersedes line and delta comparison.
-- Template of record: `docs/20260831-FAILING-TESTS-FIX-PLAN.markdown`.
+- The previous plan in `docs/automated-tests/` (or legacy `docs/`) for the Supersedes line and delta comparison.
+- Template of record: `docs/20260831-FAILING-TESTS-FIX-PLAN.markdown` (legacy path OK as template). New plans go under `docs/automated-tests/`.
 - Repo read access via `repo-delegate-to-cursor` (Composer 2.5 Fast) for **feature-history / git archaeology** (required — not optional).
 - Authority: `.cursor/rules/test-failure-triage.mdc`. Deeper ESCALATED follow-up still uses `qa-root-cause-investigate` when Gene assigns it.
 
 ## Sequence of work
 
-1. Name it `docs/YYYYMMDD-FAILING-TESTS-FIX-PLAN.markdown`. Open with a Supersedes link to the prior version and a link to the source log.
+1. Name it `docs/automated-tests/YYYYMMDD-FAILING-TESTS-FIX-PLAN.markdown`. Open with a Supersedes link to the prior version and a link to the source log.
 2. Baseline table — total, passed, failed, skipped, failure rate, duration, branch, seed, failing-file count — each with a delta column vs the prior version.
 3. Progress audit — net failure change; prior clusters cleared; clusters still open with updated counts; what is new since the last plan.
 4. Cleared / Escalated / New sections as tables. New failures get module, root cause, and proposed fix per file.
