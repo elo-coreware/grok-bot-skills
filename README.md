@@ -20,14 +20,18 @@ skills/   # reusable skill definitions (SKILL.md per skill)
 | bill-tindall | Bill Tindall | QA Coverage Architect - NASA Mission Techniques |
 | katherine-johnson | Katherine Johnson | QA Validator - NASA Mathematician |
 | margaret-hamilton | Margaret Hamilton | QA Engineer - NASA Software Engineer |
+| grace-hopper | Grace Hopper | PR Readiness Engineer - US Navy Computing Pioneer |
 
 Each agent has `agents/<slug>.md` (human-readable) and `agents/<slug>.json` (machine-readable).
+
+**Tracks:** The NASA five (Gene through Katherine) own CI test health. Grace Hopper is the non-NASA, non-CI track — she babysits feature PRs until MERGE-READY.
 
 ## Skills
 
 | Skill | Owner role |
 |-------|------------|
 | qa-phase-orchestrate | Gene |
+| pr-babysit-orchestrate | Gene |
 | qa-ci-log-pull | Aaron |
 | qa-validity-scan | Aaron / Katherine |
 | qa-fix-plan-build | Aaron |
@@ -38,7 +42,13 @@ Each agent has `agents/<slug>.md` (human-readable) and `agents/<slug>.json` (mac
 | qa-phase-fix | Margaret |
 | qa-fix-audit | Katherine |
 | qa-pr-verdict-comment | Katherine |
-| qa-delegate-to-cursor | shared |
+| pr-babysit-loop | Grace |
+| pr-bugbot-sweep | Grace |
+| pr-finding-remediate | Grace |
+| pr-merge-readiness-audit | Grace |
+| pr-plan-doc-retire | Grace |
+| pr-merge-verdict-comment | Grace |
+| repo-delegate-to-cursor | shared |
 
 Each skill lives at `skills/<skill-id>/SKILL.md`.
 

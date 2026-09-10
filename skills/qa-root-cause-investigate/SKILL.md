@@ -19,7 +19,7 @@ description: >-
 
 - Phase number / failure rows from the current `docs/*-FAILING-TESTS-FIX-PLAN.markdown`.
 - Failing test path(s), assertion/exception text, suspected app area from the plan.
-- Repo via `qa-delegate-to-cursor` (Composer 2.5 Fast).
+- Repo via `repo-delegate-to-cursor` (Composer 2.5 Fast).
 - Authority: `.cursor/rules/test-failure-triage.mdc` (wins on scaffolding vs contract).
 
 Read-only during diagnosis. Avoid long test runs that collide with an active implementer; prefer static/history analysis unless asked to reproduce with one `composer test:single`.
@@ -47,7 +47,7 @@ Read-only during diagnosis. Avoid long test runs that collide with an active imp
    - Edit the current `docs/*-FAILING-TESTS-FIX-PLAN.markdown` on a docs branch
    - For each investigated phase: set classification, evidence (SHAs/PRs), and an explicit **Implementer instructions** block (do / do not; files; verify command)
    - Reclassify rows (ESCALATED → OPEN scaffolding, stay ESCALATED, or WONTFIX pending sign-off) so the phase table matches the decision
-   - Open a **draft** plan-update PR via `qa-delegate-to-cursor` (docs-only). Do not merge. Summarize for the orchestrator
+   - Open a **draft** plan-update PR via `repo-delegate-to-cursor` (docs-only). Do not merge. Summarize for the orchestrator
    - Never start `qa-phase-fix` yourself; the orchestrator assigns the implementer only after this plan update is approved/merged (or the orchestrator explicitly waives merge and pastes the instructions)
 
 ## How to validate

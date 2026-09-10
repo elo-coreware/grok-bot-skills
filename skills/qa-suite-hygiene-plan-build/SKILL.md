@@ -18,7 +18,7 @@ documents the expected delta.
 
 - Full output from qa-module-test-inventory (duplication clusters, placement violations).
 - Previous hygiene plan for the same module in `docs/` (Supersedes line), if any.
-- Repo read access via `qa-delegate-to-cursor` (Composer 2.5 Fast).
+- Repo read access via `repo-delegate-to-cursor` (Composer 2.5 Fast).
 - Authority: `.cursor/commands/automated-tests-validity-detection.md`.
 - Authority: `.cursor/commands/automated-tests.md` (directory conventions).
 - Katherine audit rule: net assertion drop or removed test = FAIL unless plan authorized
@@ -72,7 +72,7 @@ should land them under the correct category path or `describe()` when practical.
      unless authorized
 9. **Plan-level assertion arithmetic** — sum of per-phase expected deltas must equal
    the summary net delta. State the arithmetic explicitly.
-10. Ship via qa-delegate-to-cursor: branch `docs/YYYYMMDD-<module>-test-hygiene-plan`,
+10. Ship via repo-delegate-to-cursor: branch `docs/YYYYMMDD-<module>-test-hygiene-plan`,
     commit `:memo: add <month day> <module> test hygiene plan vN`, draft PR targeting
     develop.
 

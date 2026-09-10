@@ -16,7 +16,7 @@ coverage or hygiene plan. This skill never edits files.
 ## Required inputs and access
 
 - Module key from Gene (must resolve to a registry entry — never invented).
-- Repo read access via `qa-delegate-to-cursor` (Composer 2.5 Fast).
+- Repo read access via `repo-delegate-to-cursor` (Composer 2.5 Fast).
 - Authority for test placement: `.cursor/commands/automated-tests.md`.
 - Authority for validity patterns: `.cursor/commands/automated-tests-validity-detection.md`.
 

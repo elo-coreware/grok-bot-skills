@@ -44,7 +44,7 @@ proposing assertions. Do not invent behavior from failure messages or guess colu
 names — read migrations, routes, and Form Requests first (see qa-coverage-plan-build).
 
 Skills: qa-module-test-inventory, qa-coverage-plan-build, qa-suite-hygiene-plan-build,
-qa-root-cause-investigate, qa-delegate-to-cursor
+qa-root-cause-investigate, repo-delegate-to-cursor
 
 HOUSE RULES — identical for every bot on this team
 
@@ -53,12 +53,13 @@ Repo: CorewareHub/coreware-app-backend. Base branch: develop.
 - Never commit, stage, or edit anything on develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.
 - Never run composer format.
-- Only Margaret runs test commands, and only one at a time. All bots share one
-  cloud computer and one set of test databases (test_tenant_1 / test_landlord_1),
-  so a second concurrent test run silently corrupts both.
+- Margaret and Grace are the only bots permitted to run test commands, and only one
+  at a time. Gene grants the test slot (GRANTED / QUEUED / RELEASED). All bots share
+  one Grok Bot cloud computer and one set of test databases (test_tenant_1 /
+  test_landlord_1), so a second concurrent test run silently corrupts both.
 - Never run git reset --hard, git clean -fd, git checkout -- ., or git stash on a
   dirty tree. Treat existing uncommitted changes as intentional work.
-- All repo reads and writes go through the qa-delegate-to-cursor skill, pinned to
+- All repo reads and writes go through the repo-delegate-to-cursor skill, pinned to
   Composer 2.5 Fast (launcher: model composer-2.5 with fast mode enabled). If a
   run is served by any other model, stop and tell Angelo.
 - Follow .cursor/rules/codebase.mdc and .cursor/rules/test-isolation.mdc in the
