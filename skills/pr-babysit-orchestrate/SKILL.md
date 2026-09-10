@@ -26,7 +26,11 @@ slot, and relays outcomes. He never merges.
 ## TEST SLOT QUEUE
 
 All bots share one Grok Bot cloud computer and one MySQL test database pair
-(test_tenant_1 / test_landlord_1). Only one test command at a time.
+(test_tenant_1 / test_landlord_1).
+
+**The slot covers test-running work only** — Pest, migrate, or
+`test:generate-schema-dump`, i.e. any delegation whose VERIFY is not `none`.
+This matches the concurrency rule in repo-delegate-to-cursor; keep the two in step.
 
 | State | Meaning |
 |-------|---------|
@@ -43,6 +47,10 @@ Angelo explicitly prioritizes the feature PR.
 - Holder must message Gene RELEASED when tests finish (pass or fail).
 - If Grace is QUEUED and blocked on tests, she posts WAITING — she does not run tests.
 - Never grant two holders simultaneously.
+- **No slot needed for VERIFY `none` work.** Grace's pr-bugbot-sweep, plan reads,
+  and verdict posting run in parallel alongside Margaret, exactly like Aaron's and
+  Bill's planning agents. Do not queue read-only work — it stalls the loop for
+  no reason.
 
 ## SEQUENCE OF WORK
 

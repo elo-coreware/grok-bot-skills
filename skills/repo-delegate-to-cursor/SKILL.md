@@ -48,7 +48,7 @@ Any time work must read, write, or run commands inside CorewareHub/coreware-app-
 
 3. Launch one agent from the stated base branch with model `composer-2.5` and fast mode enabled.
 
-4. Supervise until it finishes. **Concurrency (Angelo 2026-09-09):** Exactly one agent may run **tests / migrate / schema dump** on this repo at a time (shared `test_tenant_1` / `test_landlord_1` — a second Pest run silently corrupts both). Margaret owns that slot when she is implementing. Aaron and Bill **may** launch additional agents **in parallel** only when VERIFY is `none` (read-only / planning / docs plan PRs — no Pest, no migrate, no `test:generate-schema-dump`). Never launch a second **test-running** agent while another test-running agent is live.
+4. Supervise until it finishes. **Concurrency (Angelo 2026-09-09):** Exactly one agent may run **tests / migrate / schema dump** on this repo at a time (shared `test_tenant_1` / `test_landlord_1` — a second Pest run silently corrupts both). Margaret owns that slot when she is implementing. Grace contends for the same slot when remediating a feature PR with a non-`none` VERIFY; Gene arbitrates between them (GRANTED / QUEUED / RELEASED) and Margaret takes precedence unless Angelo prioritizes the feature PR. Aaron, Bill, and Grace **may** launch additional agents **in parallel** only when VERIFY is `none` (read-only / planning / docs plan PRs / Grace's bugbot sweeps — no Pest, no migrate, no `test:generate-schema-dump`). Never launch a second **test-running** agent while another test-running agent is live.
 
 5. Capture the summary, branch name, and diff.
 
