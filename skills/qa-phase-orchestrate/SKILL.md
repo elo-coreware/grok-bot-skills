@@ -12,12 +12,13 @@ A develop CI run failed, a phase finished, an audit returned, Margaret handed a 
 
 ## REQUIRED INPUTS AND ACCESS
 
-- docs/ for the current plan. Direct messages to Aaron, Tindall, Margaret, Katherine.
+- `docs/automated-tests/` (canonical) and legacy `docs/` for the current plan. Direct messages to Aaron, Tindall, Margaret, Katherine.
 - Read-only git and gh. You never edit the repo and never run test commands.
 - Authority: `.cursor/rules/test-failure-triage.mdc` on develop. Repo rules win if they conflict with this skill.
 - Related skills: `qa-fix-plan-build` (Aaron), `qa-module-test-inventory` (Tindall),
   `qa-coverage-plan-build` (Tindall), `qa-suite-hygiene-plan-build` (Tindall),
-  `qa-root-cause-investigate` (Aaron / Tindall), `qa-phase-fix` (Margaret).
+  `qa-root-cause-investigate` (Aaron / Tindall), `qa-phase-fix` (Margaret),
+  `qa-plan-retire` (Aaron / Bill), `qa-plan-retire-audit` (Katherine).
 
 ## MODULE BACKLOG RANKING (coverage / hygiene)
 
@@ -49,7 +50,7 @@ the same module (separate PRs by design — Reconcile vs Author):
 
 ## SEQUENCE OF WORK
 
-1. Read the newest plan in docs/ matching one of:
+1. Read the newest plan under `docs/automated-tests/` (preferred) or legacy `docs/` matching one of:
    - `*-FAILING-TESTS-FIX-PLAN.markdown`
    - `*-TEST-COVERAGE-PLAN.markdown`
    - `*-TEST-HYGIENE-PLAN.markdown`
@@ -125,6 +126,8 @@ the same module (separate PRs by design — Reconcile vs Author):
 10. After Angelo merges one or more phase PRs, have Aaron re-baseline against the next develop CI and record actual deltas. A miss of more than a third means Aaron re-diagnoses before more phases start **only if Margaret is idle**. If she is mid-phase, let her finish, then pause if Aaron's re-diagnosis says so.
 
 There is no GitHub listener yet. The Bugbot invoke is Margaret's `cursor review` on the handoff commit and on FAIL-fix commits. Phase Pest on Actions is Angelo-operated `workflow_dispatch` of `run-tests-phase.yaml` for now.
+
+11. **Plan retire (after a plan is fully COMPLETE on develop).** When every phase is COMPLETE (or disposed) and Margaret is not mid-stack on that plan, assign Aaron (`qa-plan-retire` for fix plans) or Bill (`qa-plan-retire` for coverage / hygiene) a docs-only delete PR. Then assign Katherine `qa-plan-retire-audit`. On her PASS / PASS WITH NOTES, notify Angelo to merge. Never leave finished plans as permanent clutter under `docs/` or `docs/automated-tests/`. Do not confuse with Grace's `pr-plan-doc-retire` (`.cursor/plans` on feature PRs only).
 
 ## APPROVALS YOU OWN
 

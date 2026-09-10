@@ -1,21 +1,21 @@
 ---
 name: qa-pr-verdict-comment
 description: >-
-  Use immediately after qa-fix-audit or a plan-validity qa-validity-scan returns
-  a verdict. Post a signed GitHub PR comment under Angelo's account. On phase
-  PRs, mark ready only when PASS and cursor[bot] reviewed this SHA with no
-  unfixed valid items.
+  Use immediately after qa-fix-audit, a plan-validity qa-validity-scan, or
+  qa-plan-retire-audit returns a verdict. Post a signed GitHub PR comment under
+  Angelo's account. On phase PRs, mark ready only when PASS and cursor[bot]
+  reviewed this SHA with no unfixed valid items.
 ---
 # qa-pr-verdict-comment
 
 ## WHEN TO USE
 
-Immediately after qa-fix-audit returns a verdict, or after Katherine's qa-validity-scan on a new fix-plan PR. Post for every verdict, not only PASS — a silent FAIL is worse than a noisy one. Do not post a PASS that pretends Bugbot ran if it did not.
+Immediately after qa-fix-audit returns a verdict, after Katherine's qa-validity-scan on a new fix-plan PR, or after qa-plan-retire-audit. Post for every verdict, not only PASS — a silent FAIL is worse than a noisy one. Do not post a PASS that pretends Bugbot ran if it did not.
 
 ## REQUIRED INPUTS AND ACCESS
 
-- PR number, branch name, and either phase number (phase PR) or "plan" (plan PR).
-- The completed qa-fix-audit or plan-validity scan output, including WAITING if Bugbot has not reviewed this SHA.
+- PR number, branch name, and either phase number (phase PR), "plan" (new plan PR), or "plan-retire" (retire PR).
+- The completed qa-fix-audit, plan-validity scan, or plan-retire audit output, including WAITING if Bugbot has not reviewed this SHA.
 - Angelo's GitHub identity for posting (see IDENTITY).
 
 ## IDENTITY — READ THIS EVERY TIME
@@ -39,6 +39,7 @@ Because the comment posts under his name: the signature block is mandatory, and 
 5. Ready for review:
    - **Phase PR:** `gh pr ready` only when verdict is PASS or PASS WITH NOTES **and** `cursor[bot]` reviewed this head SHA **and** no valid in-scope Bugbot item remains unfixed. WAITING, FAIL, or a stale Bugbot review (wrong `commit_id`) → leave draft.
    - **Plan PR:** `gh pr ready` on PASS or PASS WITH NOTES. If `cursor[bot]` already commented, the scan must have triaged those threads. Leave draft on FAIL.
+   - **Plan-retire PR:** `gh pr ready` on PASS or PASS WITH NOTES. Docs-only; Bugbot only if `cursor[bot]` already commented. Leave draft on FAIL.
    - If it is already ready and the new verdict is FAIL or WAITING, do not convert it back unless `gh` supports converting to draft; report that to Gene. Never merge.
 6. Report the comment URL, comment author login, and whether the PR is now ready to Gene.
 
@@ -86,6 +87,25 @@ A table with: test files listed in the plan, files scanned, BLOCKER/HIGH/MEDIUM 
 *Audited by **Katherine** (QA validator bot) · model Composer 2.5 Fast · branch `docs/YYYYMMDD-failing-tests-fix-plan` · posted via Angelo's account. Verdict is advisory; merge decision is Angelo's.*
 ```
 
+
+## TEMPLATE — plan-retire PR
+
+```
+## QA plan-retire — <plan filename(s)>
+
+**Verdict: PASS** (or PASS WITH NOTES / FAIL)
+
+Diff is docs-only (plan delete ± `docs/automated-tests/README.md`).
+
+A table with: plan path deleted, every phase COMPLETE or disposed (WONTFIX/ESCALATED + Angelo disposition), merged phase PR citations, open Margaret work orphan risk (none).
+
+**Needs your eyes:** the one or two judgment calls a human should confirm, or "Nothing; the plan is fully shipped and safe to delete." Never leave this empty.
+
+---
+
+*Audited by **Katherine** (QA validator bot) · model Composer 2.5 Fast · branch `docs/retire-…` · posted via Angelo's account. Verdict is advisory; merge decision is Angelo's.*
+```
+
 ## HOW TO VALIDATE
 
 - The verdict matches the audit or scan exactly. Never upgraded.
@@ -93,7 +113,7 @@ A table with: test files listed in the plan, files scanned, BLOCKER/HIGH/MEDIUM 
 - "Needs your eyes" is populated.
 - Signature block present, naming the bot and the model.
 - Comment author is Angelo, not `cursor[bot]`.
-- On a phase PR, ready only if both Katherine PASS and Bugbot-on-this-SHA are clean. On a plan PR, ready on PASS or PASS WITH NOTES.
+- On a phase PR, ready only if both Katherine PASS and Bugbot-on-this-SHA are clean. On a plan or plan-retire PR, ready on PASS or PASS WITH NOTES.
 
 ## WHAT REQUIRES APPROVAL
 
