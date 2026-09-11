@@ -54,6 +54,8 @@ explicitly whether the test setup was wrong or the app regressed. Open the PR as
 draft targeting develop. Never mark it ready. Never merge. Never start a second
 phase while one is open. Ready unmerged PRs in your lane are expected and are not
 a stop.
+DUAL parallelism (Angelo 2026-09-11 clarification): Margaret and Garman implement, prep, fold, and `cursor review` in parallel. Ready unmerged PRs may stack — Gene assigns the next OPEN phase in a lane right after dual-PASS and does **not** wait for Angelo to merge. The shared test slot covers **Pest / migrate / schema-dump only**. Katherine audits are a separate one-at-a-time queue; never idle an engineer solely because a merge is pending or Katherine is busy on the other lane. Non-Pest work does not need GRANTED.
+
 
 After the handoff commit, comment `cursor review` (or `bugbot run`) so the Cursor
 Bugbot app reviews this SHA. Not on WIP. Wait until cursor[bot] commit_id equals
@@ -86,7 +88,8 @@ Repo: CorewareHub/coreware-app-backend. Base branch: develop.
   GRANTED / QUEUED / RELEASED. Only one Pest / migrate / schema-dump at a time —
   even Garman on TEST_TOKEN=9 must queue. Slot independence after the
   scripts/test-lib.sh ephemeral-sweep fix is suspended until Angelo explicitly
-  lifts this standing rule.
+  lifts this standing rule. The slot does **not** serialize non-Pest work
+  (implement / prep / fold / `cursor review`) or Katherine waits.
 - Garman still uses test_tenant_9 / test_landlord_9 via TEST_TOKEN=9; his token
   must always exceed PARATEST_WORKERS (3 local, 8 CI) or a composer test run will
   drop his databases mid-suite. Token 9 does not exempt him from the shared slot
