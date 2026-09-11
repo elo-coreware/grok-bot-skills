@@ -25,7 +25,7 @@ Gene assigns a plan-retire PR (Aaron or Bill authored) for Katherine's audit. Th
    - Every phase is COMPLETE, or WONTFIX/ESCALATED with explicit Angelo disposition recorded in the plan or linked PR comment.
    - No OPEN / PARTIAL implementable phases remain without disposition.
    - Cite merged phase PR numbers (or Gene waiver) covering the work the plan authorized.
-   - Deleting the plan would not orphan in-flight Margaret work (no open phase PR still referencing it as the active plan unless Gene says the retire is after that stack).
+   - Deleting the plan would not orphan in-flight engineer work (no open phase PR still referencing it as the active plan unless Gene says the retire is after that stack).
 4. Confirm the retire PR body lists the same files `git rm`'d and a completeness table. Missing evidence → **FAIL** (return to author).
 5. Bugbot: plan-retire PRs are docs-only — not blocked on Bugbot unless `cursor[bot]` already commented; then triage those threads.
 6. Verdict: PASS, PASS WITH NOTES, or FAIL. Post via `qa-pr-verdict-comment`. Mark ready only on PASS / PASS WITH NOTES. Leave draft on FAIL. Never merge.

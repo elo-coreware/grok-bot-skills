@@ -97,7 +97,7 @@ A table with: test files listed in the plan, files scanned, BLOCKER/HIGH/MEDIUM 
 
 Diff is docs-only (plan delete ± `docs/automated-tests/README.md`).
 
-A table with: plan path deleted, every phase COMPLETE or disposed (WONTFIX/ESCALATED + Angelo disposition), merged phase PR citations, open Margaret work orphan risk (none).
+A table with: plan path deleted, every phase COMPLETE or disposed (WONTFIX/ESCALATED + Angelo disposition), merged phase PR citations, open engineer work orphan risk (none).
 
 **Needs your eyes:** the one or two judgment calls a human should confirm, or "Nothing; the plan is fully shipped and safe to delete." Never leave this empty.
 

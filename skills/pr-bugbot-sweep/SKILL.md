@@ -42,7 +42,7 @@ Authority files:
    - REPORT BACK: full Bug Report plan output
 
    VERIFY is `none`, so this delegation does **not** need Gene's test slot and may
-   run in parallel with Margaret's phase work.
+   run in parallel with engineer phase work.
 
 3. **Local triage (delegated).** Launch repo-delegate-to-cursor with:
    - GOAL: Run .cursor/commands/bugbot-triage.md on the Bug Report from step 2.

@@ -26,6 +26,14 @@ Each phase row names one work type:
   relocations from a hygiene plan. Report actual assertion delta against the plan's
   stated number.
 
+## ENGINEER LANES AND WORK LOCKS
+
+You hold a whole plan document — never a phase of someone else's plan. You never edit
+across the lock: no plan markdown, module globs, or branches belonging to the other
+engineer. Base branches only within your own lane (origin/develop or your lane's
+latest dual-PASS unmerged branch). Escalate to Gene to re-partition rather than
+reaching into the other lock.
+
 ## SAME-MODULE HYGIENE + COVERAGE (Angelo 2026-09-09)
 
 When Tindall shipped both a hygiene plan and a coverage plan for the same module:
@@ -50,7 +58,8 @@ plan while one phase is open.
 ## REQUIRED INPUTS AND ACCESS
 
 - Phase number, work type, its file/failure table, verify commands, and the **base
-  branch** Gene names (`origin/develop` or the latest dual-PASS unmerged phase branch).
+  branch** Gene names (`origin/develop` or the latest dual-PASS unmerged phase branch
+  **in your lane**).
 - repo-delegate-to-cursor for all repo work.
 - Authority: `.cursor/rules/test-failure-triage.mdc` (alwaysApply). If it conflicts with this skill, the repo rule wins.
 - On a Katherine FAIL return: her triage table (valid in-scope items only). Do not re-triage those. Do not dismiss a finding she marked valid.
@@ -76,6 +85,9 @@ Prefer by plan type (lowercase, hyphens):
 - Coverage plan: `test/coverage-<module>-phase-N-<slug>`
 - Hygiene plan: `test/hygiene-<module>-phase-N-<slug>`
 
+Garman appends `-ii` to each convention (e.g. `fix/ci-tests-phase-N-<slug>-ii`).
+Both engineers run `git ls-remote --heads origin '<name>'` before creating a branch.
+
 Cursor Cloud Agent may rename or push under `cursor/**` — that is acceptable when the
 launcher forces it; do not fight a rename mid-flight. Tell Gene the actual branch name.
 Do not treat `cursor/**` as a reason to skip verify.
@@ -84,11 +96,18 @@ Do not treat `cursor/**` as a reason to skip verify.
 
 `.github/workflows/run-tests-phase.yaml` is `workflow_dispatch` only (no push branch filter). Cloud-agent `gh` cannot dispatch it (integration 403). **Angelo runs and observes that workflow himself when he wants Actions evidence.** Do not block handoff, audit, or the next phase on a missing Actions Pest run.
 
-**Required verify path:** always run cloud-agent `composer test:single -- <changed paths>` and quote real output. That is the gate Margaret owns — not Actions.
+**Required verify path:** always run cloud-agent verify and quote real output. That is
+the gate the owning engineer owns — not Actions.
+
+- Margaret: `composer test:single -- <changed paths>`
+- Garman: `TEST_TOKEN=9 composer test:single -- <changed paths>`
+
+While the ephemeral-sweep scoping fix in `scripts/test-lib.sh` is unmerged, Garman
+requests the test slot from Gene and does not run concurrently with Margaret.
 
 ## SEQUENCE OF WORK
 
-1. git fetch origin. Merge `origin/develop`. If Gene named a previous phase branch as base, merge that branch too (develop first, then the phase branch). On conflicts: list `git diff --name-only --diff-filter=U`, run `git merge --abort`, notify Gene, STOP. Never resolve conflicts yourself.
+1. git fetch origin. Merge `origin/develop`. If Gene named a previous phase branch as base, merge that branch too (develop first, then the phase branch **in your lane**). On conflicts: list `git diff --name-only --diff-filter=U`, run `git merge --abort`, notify Gene, STOP. Never resolve conflicts yourself.
 
 2. Branch from that merged base using the naming convention for the work type. On a
    FAIL return, stay on the existing branch. Open the PR as **draft** targeting
@@ -104,17 +123,20 @@ Do not treat `cursor/**` as a reason to skip verify.
    - Allowed: framework-semantics corrections (PR 5778 — Inertia 409 vs 302). Not allowed: PR 5785-class product-behavior rewrites (AnonymousGuestBooking, WebsiteIntegration, ProductSearchPage).
    - Do not patch `app/` unless Angelo assigned that specific bug or the merged plan's Implementer instructions authorize named app files. An unstated test-vs-app choice is an audit failure.
 
-5. Verify with `composer test:single -- <changed paths>`. Exactly one test command at a time, ever. Quote the real output. Do not start another phase's tests while this command runs.
+5. Verify with the per-engineer command from ACTIONS above. Exactly one test command
+   at a time for your own runs. Quote the real output. Do not start another phase's
+   tests while this command runs.
 
 6. Only if a migration changed, regenerate the schema dump as a separate ":robot: regenerate test schema dump" commit:
    `php -d memory_limit=2G artisan test:generate-schema-dump --env=testing`
-   Commit all three schema files together. Keep the dump delta surgical — do not mass-rewrite unrelated dump noise (Bugbot TOO_LARGE risk).
+   Commit all three schema files together. Keep the dump delta surgical — do not mass-rewrite unrelated dump noise (Bugbot TOO_LARGE risk). In DUAL mode only one engineer regenerates the dump at a time — Gene serializes migration phases; the other merges `origin/develop` afterward.
 
-7. Update the plan doc: mark **this** phase COMPLETE with the actual delta (failure
+7. Update **your locked** plan doc: mark **this** phase COMPLETE with the actual delta (failure
    count for Fix; tests added for Author; assertion delta for Reconcile) and the
    branch name, or PARTIAL with ESCALATED rows for leftover contract failures. Do not
-   touch other phases' rows except as already stacked on the base branch. Hygiene
-   Reconcile: assertion drop is FAIL unless it matches the plan's authorized delta.
+   touch other phases' rows except as already stacked on the base branch. Do not edit
+   the other engineer's locked plan document. Hygiene Reconcile: assertion drop is FAIL
+   unless it matches the plan's authorized delta.
 
 8. Commit with the work-type prefix and push. This is the **handoff commit**. Do not
    comment `cursor review` on WIP commits before this.
@@ -128,20 +150,20 @@ Do not treat `cursor/**` as a reason to skip verify.
 
 9. On the handoff commit only, post `cursor review` under Angelo's identity per IDENTITY above. Wait until `cursor[bot]` has a review whose `commit_id` equals HEAD.
 
-10. Implement in-scope GitHub Bugbot findings on this branch. In-scope means the finding is about a file or hunk in this phase's diff. Do not classify a finding as a false positive to skip it. Unclear items: leave for Katherine. Re-verify with one `composer test:single` if tests changed. Do not implement a Bugbot item that would change app behavior or invert a contract assertion.
+10. Implement in-scope GitHub Bugbot findings on this branch. In-scope means the finding is about a file or hunk in this phase's diff. Do not classify a finding as a false positive to skip it. Unclear items: leave for Katherine. Re-verify with one test command if tests changed. Do not implement a Bugbot item that would change app behavior or invert a contract assertion.
 
 11. If step 10 produced a new commit, post `cursor review` again under Angelo's identity and wait for `cursor[bot]` on the new SHA. Repeat until HEAD has a Bugbot review and you are not adding commits.
 
 12. **Verify evidence comment (required before Gene/Katherine handoff):** as elo-coreware, post a PR issue comment that Angelo can skim while reviewing. Include:
     - That verify ran on the **cloud agent** (Composer / Cursor cloud computer), not Actions `run-tests-phase.yaml`
-    - Exact `composer test:single -- …` command(s)
+    - Exact verify command(s) (`composer test:single` or `TEST_TOKEN=9 composer test:single`)
     - Verbatim `Tests: … passed (… assertions)` line(s)
     - HEAD SHA this verify covers
     Do this after the final successful verify on the handoff SHA (and again after any Bugbot-fix re-verify). This is separate from `cursor review`.
 
-13. Hand the still-draft PR to Gene for Katherine's audit. Report the head SHA, the Bugbot review SHA, the author login of your `cursor review` and verify comments, cloud-agent verify output, and the base branch you used. Do not start the next phase until Gene assigns it (after this one is dual-PASS).
+13. Hand the still-draft PR to Gene for Katherine's audit. Report the head SHA, the Bugbot review SHA, the author login of your `cursor review` and verify comments, cloud-agent verify output, lane, and the base branch you used. Do not start the next phase until Gene assigns it (after this one is dual-PASS).
 
-14. When Katherine FAILs: implement every valid in-scope item from her triage table on the same branch, re-verify with one `composer test:single`, push, post `cursor review` under Angelo's identity on that new commit, wait for Bugbot, post an updated verify evidence comment, then hand back to Gene. Never mark a Katherine-valid item false-positive to skip it. Still do not invert contract assertions or patch `app/` unless Angelo assigned it / the plan authorizes it.
+14. When Katherine FAILs: implement every valid in-scope item from her triage table on the same branch, re-verify with one test command, push, post `cursor review` under Angelo's identity on that new commit, wait for Bugbot, post an updated verify evidence comment, then hand back to Gene. Never mark a Katherine-valid item false-positive to skip it. Still do not invert contract assertions or patch `app/` unless Angelo assigned it / the plan authorizes it.
 
 ## HOW TO VALIDATE
 
@@ -159,7 +181,7 @@ Do not treat `cursor/**` as a reason to skip verify.
 
 ## WHAT TO RETURN
 
-Branch, PR number, base used, head SHA, Bugbot review SHA, author login of each `cursor review` and verify comment, per-file table of classification (scaffolding vs contract) and fix chosen, verify output, failures resolved vs listed, ESCALATED rows, plan-doc delta, Bugbot items implemented vs left for Katherine.
+Branch, PR number, lane, base used, head SHA, Bugbot review SHA, author login of each `cursor review` and verify comment, per-file table of classification (scaffolding vs contract) and fix chosen, verify output, failures resolved vs listed, ESCALATED rows, plan-doc delta, Bugbot items implemented vs left for Katherine.
 
 ## WHAT REQUIRES APPROVAL
 

@@ -43,10 +43,15 @@ Repo: CorewareHub/coreware-app-backend. Base branch: develop.
 - Never commit, stage, or edit anything on develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.
 - Never run composer format.
-- Margaret and Grace are the only bots permitted to run test commands, and only one
-  at a time. Gene grants the test slot (GRANTED / QUEUED / RELEASED). All bots share
-  one Grok Bot cloud computer and one set of test databases (test_tenant_1 /
-  test_landlord_1), so a second concurrent test run silently corrupts both.
+- Margaret, Garman, and Grace are the only bots permitted to run test commands.
+  Margaret and Grace share test_tenant_1 / test_landlord_1, so only one of them may
+  run tests at a time; Gene grants that slot (GRANTED / QUEUED / RELEASED).
+- Garman runs on test_tenant_9 / test_landlord_9 via TEST_TOKEN=9 and does not need
+  the slot — but only once Angelo confirms the ephemeral-sweep scoping fix in
+  scripts/test-lib.sh is on develop. Until then Garman queues for the same slot as
+  Margaret. His token must always exceed PARATEST_WORKERS (3 local, 8 CI) or a
+  composer test run will drop his databases mid-suite. All bots share one Grok Bot
+  cloud computer, so concurrent runs still contend for CPU and MySQL connections.
 - Never run git reset --hard, git clean -fd, git checkout -- ., or git stash on a
   dirty tree. Treat existing uncommitted changes as intentional work.
 - All repo reads and writes go through the repo-delegate-to-cursor skill, pinned to
@@ -57,6 +62,6 @@ Repo: CorewareHub/coreware-app-backend. Base branch: develop.
 - Never claim a command's output you did not actually see. Quote real output.
 - Escalate to Angelo rather than guessing when: a fix needs app/ business-logic
   changes; assertion count drops on a branch; a root cause is unknown; the same
-  file fails audit twice; or Margaret and Katherine disagree.
+  file fails audit twice; or an engineer and Katherine disagree.
 - Never paste credentials, tokens, or customer data into chat. For passwords and
   2FA, hand the computer to Angelo via takeover.
