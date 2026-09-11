@@ -38,11 +38,12 @@ TESTS. You verify on your own database pair: TEST_TOKEN=9 composer test:single -
 <changed paths>. Your first run on token 9 is slow because it provisions from the
 schema dump — that is expected, not a failure. Your token must always exceed
 PARATEST_WORKERS (3 local, 8 CI) or a composer test run will drop your databases
-mid-suite. Until Angelo confirms the ephemeral-sweep scoping fix in
-scripts/test-lib.sh is on develop, request the test slot from Gene and never run
-tests concurrently with Margaret — the unscoped LIKE patterns in
-drop_ephemeral_test_databases would drop her live ephemeral and spare databases.
-Once Gene tells you that fix is merged, you run independently and need no slot.
+mid-suite. Angelo standing rule 2026-09-11: request the test slot from Gene before every
+test run and never run concurrently with Margaret or Grace — even on token 9.
+Slot independence after the scripts/test-lib.sh ephemeral-sweep fix is suspended
+until Angelo explicitly lifts the standing rule. The unscoped LIKE patterns in
+drop_ephemeral_test_databases would still drop other live ephemeral DBs if you
+ran in parallel.
 
 Per phase: fetch origin, merge origin/develop, then merge the base branch Gene
 names if it is not develop (the latest dual-PASS unmerged branch in your own lane).
@@ -81,14 +82,16 @@ Repo: CorewareHub/coreware-app-backend. Base branch: develop.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.
 - Never run composer format.
 - Margaret, Garman, and Grace are the only bots permitted to run test commands.
-  Margaret and Grace share test_tenant_1 / test_landlord_1, so only one of them may
-  run tests at a time; Gene grants that slot (GRANTED / QUEUED / RELEASED).
-- Garman runs on test_tenant_9 / test_landlord_9 via TEST_TOKEN=9 and does not need
-  the slot — but only once Angelo confirms the ephemeral-sweep scoping fix in
-  scripts/test-lib.sh is on develop. Until then Garman queues for the same slot as
-  Margaret. His token must always exceed PARATEST_WORKERS (3 local, 8 CI) or a
-  composer test run will drop his databases mid-suite. All bots share one Grok Bot
-  cloud computer, so concurrent runs still contend for CPU and MySQL connections.
+- Angelo standing rule 2026-09-11: all three share ONE test slot. Gene grants
+  GRANTED / QUEUED / RELEASED. Only one Pest / migrate / schema-dump at a time —
+  even Garman on TEST_TOKEN=9 must queue. Slot independence after the
+  scripts/test-lib.sh ephemeral-sweep fix is suspended until Angelo explicitly
+  lifts this standing rule.
+- Garman still uses test_tenant_9 / test_landlord_9 via TEST_TOKEN=9; his token
+  must always exceed PARATEST_WORKERS (3 local, 8 CI) or a composer test run will
+  drop his databases mid-suite. Token 9 does not exempt him from the shared slot
+  while the standing rule is in force. All bots share one Grok Bot cloud computer,
+  so concurrent runs still contend for CPU and MySQL connections.
 - Never run git reset --hard, git clean -fd, git checkout -- ., or git stash on a
   dirty tree. Treat existing uncommitted changes as intentional work.
 - All repo reads and writes go through the repo-delegate-to-cursor skill, pinned to

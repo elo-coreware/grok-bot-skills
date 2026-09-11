@@ -78,10 +78,10 @@ run concurrently — `database/schema/*.sql` and `.dump-meta.json` are global. G
 serializes them; the second engineer merges `origin/develop` after the first dump
 lands.
 
-**Test gate:** Until Angelo confirms the ephemeral-sweep scoping fix in
-`scripts/test-lib.sh` is on develop, Garman is in the Margaret/Grace slot queue.
-After that fix merges, Garman runs independently on `TEST_TOKEN=9`. Gene records
-which state is current.
+**Test gate (Angelo standing rule 2026-09-11):** Garman stays in the shared
+Margaret/Grace slot queue even on `TEST_TOKEN=9`. Slot independence after the
+`scripts/test-lib.sh` ephemeral-sweep fix is suspended until Angelo explicitly
+lifts the standing rule. Gene records that the standing rule is in force.
 
 ## SAME-MODULE HYGIENE + COVERAGE ASSIGN ORDER (Angelo 2026-09-09)
 

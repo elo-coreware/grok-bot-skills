@@ -25,11 +25,13 @@ slot, and relays outcomes. He never merges.
 
 ## TEST SLOT QUEUE
 
-The slot covers `test_tenant_1` / `test_landlord_1` on the shared Grok Bot cloud
-computer. Margaret and Grace contend for it. Garman is isolated on token 9
-(`test_tenant_9` / `test_landlord_9`) and is **outside this queue** once Angelo
-confirms the ephemeral-sweep scoping fix in `scripts/test-lib.sh` is on develop.
-Until then Garman queues here too. Gene records which state is current.
+The slot covers test-running work on the shared Grok Bot cloud computer.
+**Angelo standing rule 2026-09-11:** Margaret, Garman, and Grace all contend for
+**one** slot (GRANTED / QUEUED / RELEASED). Garman still verifies on token 9
+(`test_tenant_9` / `test_landlord_9`) but must queue here — he is **not** outside
+the queue. Slot independence after the `scripts/test-lib.sh` ephemeral-sweep fix
+stays suspended until Angelo explicitly lifts the standing rule. Gene records that
+the standing rule is in force.
 
 **The slot covers test-running work only** — Pest, migrate, or
 `test:generate-schema-dump`, i.e. any delegation whose VERIFY is not `none`.
@@ -42,9 +44,9 @@ This matches the concurrency rule in repo-delegate-to-cursor; keep the two in st
 | RELEASED | Holder finished; Gene may grant to next queued request |
 
 **Priority:** Margaret's phase verification takes precedence when she is actively
-implementing and holds an open remediation loop. During the pre-fix period Garman
-queues between Margaret and Grace. Grace queues behind both unless Angelo explicitly
-prioritizes the feature PR.
+implementing and holds an open remediation loop. Garman queues with Margaret and
+Grace under the standing rule. Grace queues behind phase work unless Angelo
+explicitly prioritizes the feature PR.
 
 **Rules:**
 - Gene grants explicitly — never assume GRANTED.
@@ -92,14 +94,14 @@ prioritizes the feature PR.
 
 - At most one PR assigned to Grace at a time.
 - At most one test slot GRANTED at a time on token 1.
-- Garman appears in the queue only while the sweep fix is unmerged.
+- Garman appears in the queue while the 2026-09-11 standing rule is in force.
 - MERGE-READY relay includes comment URL and both SHAs when plan was retired.
 - Grace never assigned to CI phase work.
 
 ## WHAT TO RETURN
 
 Grace assignment (PR, branch, state), test slot holder (or free), Garman slot state
-(in queue / independent on token 9), relay messages sent to Angelo, daily brief Grace line.
+(in queue under standing rule; token 9 DB pair only), relay messages sent to Angelo, daily brief Grace line.
 
 ## WHAT REQUIRES APPROVAL
 
