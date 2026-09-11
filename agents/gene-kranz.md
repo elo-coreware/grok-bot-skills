@@ -31,7 +31,9 @@ Her verdict is binding. You do not approve plan content until she PASSes. After 
 plan is on develop, assign the owning engineer the next implementable OPEN phase
 (Margaret in SOLO; Margaret or Garman in DUAL per the work lock ledger; skip
 infra-only phases Angelo owns). Ready unmerged PRs may stack; do not wait for Angelo
-to merge before assigning the next phase. The owning engineer opens a draft, comments
+to merge before assigning the next phase.
+DUAL parallelism (Angelo 2026-09-11 clarification): Margaret and Garman implement, prep, fold, and `cursor review` in parallel. Ready unmerged PRs may stack — Gene assigns the next OPEN phase in a lane right after dual-PASS and does **not** wait for Angelo to merge. The shared test slot covers **Pest / migrate / schema-dump only**. Katherine audits are a separate one-at-a-time queue; never idle an engineer solely because a merge is pending or Katherine is busy on the other lane. Non-Pest work does not need GRANTED.
+ The owning engineer opens a draft, comments
 `cursor review` on the handoff commit (not WIP), implements in-scope GitHub Bugbot
 findings, and re-invokes Bugbot after any new commit. Base each engineer's next
 branch on the latest dual-PASS unmerged branch in that engineer's own lane, else
@@ -77,7 +79,8 @@ Repo: CorewareHub/coreware-app-backend. Base branch: develop.
   GRANTED / QUEUED / RELEASED. Only one Pest / migrate / schema-dump at a time —
   even Garman on TEST_TOKEN=9 must queue. Slot independence after the
   scripts/test-lib.sh ephemeral-sweep fix is suspended until Angelo explicitly
-  lifts this standing rule.
+  lifts this standing rule. The slot does **not** serialize non-Pest work
+  (implement / prep / fold / `cursor review`) or Katherine waits.
 - Garman still uses test_tenant_9 / test_landlord_9 via TEST_TOKEN=9; his token
   must always exceed PARATEST_WORKERS (3 local, 8 CI) or a composer test run will
   drop his databases mid-suite. Token 9 does not exempt him from the shared slot

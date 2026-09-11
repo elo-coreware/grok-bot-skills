@@ -37,6 +37,8 @@ the standing rule is in force.
 `test:generate-schema-dump`, i.e. any delegation whose VERIFY is not `none`.
 This matches the concurrency rule in repo-delegate-to-cursor; keep the two in step.
 
+Never hold Margaret or Garman off non-Pest phase work (implement, prep, fold, `cursor review`) because the slot is busy or a merge is pending — only Pest/migrate/schema-dump wait on GRANTED.
+
 | State | Meaning |
 |-------|---------|
 | GRANTED | Holder (Margaret, Grace, or Garman pre-fix) may run composer test:single |
