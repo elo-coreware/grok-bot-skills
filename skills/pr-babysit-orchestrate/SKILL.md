@@ -2,7 +2,7 @@
 name: pr-babysit-orchestrate
 description: >-
   Use when Angelo assigns a feature PR to Grace, Grace reports status, or the
-  shared test slot must be granted between Margaret and Grace
+  shared test slot must be granted between Margaret, Garman, and Grace
 ---
 # pr-babysit-orchestrate
 
