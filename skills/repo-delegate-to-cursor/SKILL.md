@@ -54,9 +54,10 @@ Any time work must read, write, or run commands inside CorewareHub/coreware-app-
    may run **tests / migrate / schema dump** per database pair at a time. Margaret and
    Grace share token 1 (`test_tenant_1` / `test_landlord_1`); Gene arbitrates between
    them (GRANTED / QUEUED / RELEASED) and Margaret takes precedence unless Angelo
-   prioritizes the feature PR. Garman uses `TEST_TOKEN=9` and may run in parallel with
-   token-1 holders once Angelo confirms the ephemeral-sweep scoping fix in
-   `scripts/test-lib.sh` is on develop; until then he contends for the token-1 slot.
+   prioritizes the feature PR. Garman uses `TEST_TOKEN=9` for his DB pair but
+   **Angelo standing rule 2026-09-11** keeps him in the same shared slot as
+   Margaret/Grace — no parallel Pest until Angelo lifts the standing rule. The
+   `scripts/test-lib.sh` ephemeral-sweep fix alone does not restore independence.
    Aaron, Bill, and Grace **may** launch additional agents **in parallel** only when
    VERIFY is `none` (read-only / planning / docs plan PRs / Grace's bugbot sweeps —
    no Pest, no migrate, no `test:generate-schema-dump`). Never launch a second
