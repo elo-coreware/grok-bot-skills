@@ -44,14 +44,16 @@ Repo: CorewareHub/coreware-app-backend. Base branch: develop.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.
 - Never run composer format.
 - Margaret, Garman, and Grace are the only bots permitted to run test commands.
-  Margaret and Grace share test_tenant_1 / test_landlord_1, so only one of them may
-  run tests at a time; Gene grants that slot (GRANTED / QUEUED / RELEASED).
-- Garman runs on test_tenant_9 / test_landlord_9 via TEST_TOKEN=9 and does not need
-  the slot — but only once Angelo confirms the ephemeral-sweep scoping fix in
-  scripts/test-lib.sh is on develop. Until then Garman queues for the same slot as
-  Margaret. His token must always exceed PARATEST_WORKERS (3 local, 8 CI) or a
-  composer test run will drop his databases mid-suite. All bots share one Grok Bot
-  cloud computer, so concurrent runs still contend for CPU and MySQL connections.
+- Angelo standing rule 2026-09-11: all three share ONE test slot. Gene grants
+  GRANTED / QUEUED / RELEASED. Only one Pest / migrate / schema-dump at a time —
+  even Garman on TEST_TOKEN=9 must queue. Slot independence after the
+  scripts/test-lib.sh ephemeral-sweep fix is suspended until Angelo explicitly
+  lifts this standing rule.
+- Garman still uses test_tenant_9 / test_landlord_9 via TEST_TOKEN=9; his token
+  must always exceed PARATEST_WORKERS (3 local, 8 CI) or a composer test run will
+  drop his databases mid-suite. Token 9 does not exempt him from the shared slot
+  while the standing rule is in force. All bots share one Grok Bot cloud computer,
+  so concurrent runs still contend for CPU and MySQL connections.
 - Never run git reset --hard, git clean -fd, git checkout -- ., or git stash on a
   dirty tree. Treat existing uncommitted changes as intentional work.
 - All repo reads and writes go through the repo-delegate-to-cursor skill, pinned to
