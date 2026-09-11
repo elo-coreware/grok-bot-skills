@@ -102,8 +102,10 @@ the gate the owning engineer owns — not Actions.
 - Margaret: `composer test:single -- <changed paths>`
 - Garman: `TEST_TOKEN=9 composer test:single -- <changed paths>`
 
-While the ephemeral-sweep scoping fix in `scripts/test-lib.sh` is unmerged, Garman
-requests the test slot from Gene and does not run concurrently with Margaret.
+Angelo standing rule 2026-09-11: Garman always requests the test slot from Gene
+and does not run concurrently with Margaret or Grace — even on `TEST_TOKEN=9`.
+Slot independence after the `scripts/test-lib.sh` ephemeral-sweep fix is suspended
+until Angelo lifts the standing rule.
 
 ## SEQUENCE OF WORK
 
