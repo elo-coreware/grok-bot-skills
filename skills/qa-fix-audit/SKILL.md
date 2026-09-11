@@ -14,7 +14,8 @@ Gene assigns a phase PR (or another PR) for Katherine's audit. This is not plan-
 
 ## REQUIRED INPUTS AND ACCESS
 
-- PR number, branch (`fix/ci-tests-phase-N-<slug>`), phase table from the current plan.
+- PR number, branch (`fix/ci-tests-phase-N-<slug>`, `-ii` suffixed for Garman, or the coverage/hygiene equivalent), phase table from the current plan.
+- Owning engineer and lane from Gene's assign (Margaret / Garman). Carry both into the verdict so a FAIL routes to the right bot.
 - Read access at the PR head. Never run test commands.
 - Authority files (lowercase commands only, not `.cursor/BUGBOT.md`):
   - `.cursor/rules/test-failure-triage.mdc` (alwaysApply; wins on test-vs-app classification)
@@ -60,7 +61,7 @@ Gene assigns a phase PR (or another PR) for Katherine's audit. This is not plan-
 
 ## WHAT TO RETURN
 
-Verdict (including WAITING), comment URL, ready-vs-draft, head SHA, Bugbot review SHA, assertion counts, validity counts, cheating result, triage.mdc classifications, bugbot-triage summary (valid / false positive / out of scope / needs clarification) split by source (lowercase `/bugbot` vs GitHub `cursor[bot]`), per-file verdict lines.
+Verdict (including WAITING), owning engineer and lane, comment URL, ready-vs-draft, head SHA, Bugbot review SHA, assertion counts, validity counts, cheating result, triage.mdc classifications, bugbot-triage summary (valid / false positive / out of scope / needs clarification) split by source (lowercase `/bugbot` vs GitHub `cursor[bot]`), per-file verdict lines.
 
 ## WHAT REQUIRES APPROVAL
 
