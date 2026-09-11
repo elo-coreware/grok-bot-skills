@@ -2,7 +2,7 @@
 name: pr-babysit-orchestrate
 description: >-
   Use when Angelo assigns a feature PR to Grace, Grace reports status, or the
-  shared test slot must be granted between Margaret and Grace
+  shared test slot must be granted between Margaret, Garman, and Grace
 ---
 # pr-babysit-orchestrate
 
@@ -10,7 +10,7 @@ description: >-
 
 - Angelo asks Gene to babysit a feature PR (provides PR number or URL).
 - Grace reports MERGE-READY, BLOCKED, or WAITING and needs Gene to relay to Angelo.
-- Grace or Margaret requests the shared test slot.
+- Grace, Margaret, or Garman (pre-fix only) requests the shared test slot.
 - Daily brief includes Grace's PR readiness row.
 
 Gene never runs pr-babysit-loop himself. He assigns Grace, arbitrates the test
@@ -20,13 +20,16 @@ slot, and relays outcomes. He never merges.
 
 - PR number or URL, branch name (from Angelo or `gh pr view`).
 - Grace's current state from her last report (or assign fresh).
-- Margaret's current phase state from qa-phase-orchestrate (for slot conflicts).
+- Engineer phase state from qa-phase-orchestrate (for slot conflicts).
 - Direct message to Grace. Read-only gh for PR status.
 
 ## TEST SLOT QUEUE
 
-All bots share one Grok Bot cloud computer and one MySQL test database pair
-(test_tenant_1 / test_landlord_1).
+The slot covers `test_tenant_1` / `test_landlord_1` on the shared Grok Bot cloud
+computer. Margaret and Grace contend for it. Garman is isolated on token 9
+(`test_tenant_9` / `test_landlord_9`) and is **outside this queue** once Angelo
+confirms the ephemeral-sweep scoping fix in `scripts/test-lib.sh` is on develop.
+Until then Garman queues here too. Gene records which state is current.
 
 **The slot covers test-running work only** — Pest, migrate, or
 `test:generate-schema-dump`, i.e. any delegation whose VERIFY is not `none`.
@@ -34,23 +37,24 @@ This matches the concurrency rule in repo-delegate-to-cursor; keep the two in st
 
 | State | Meaning |
 |-------|---------|
-| GRANTED | Holder (Margaret or Grace) may run composer test:single |
+| GRANTED | Holder (Margaret, Grace, or Garman pre-fix) may run composer test:single |
 | QUEUED | Request recorded; wait until current holder releases |
 | RELEASED | Holder finished; Gene may grant to next queued request |
 
 **Priority:** Margaret's phase verification takes precedence when she is actively
-implementing and holds an open remediation loop. Grace queues behind Margaret unless
-Angelo explicitly prioritizes the feature PR.
+implementing and holds an open remediation loop. During the pre-fix period Garman
+queues between Margaret and Grace. Grace queues behind both unless Angelo explicitly
+prioritizes the feature PR.
 
 **Rules:**
 - Gene grants explicitly — never assume GRANTED.
 - Holder must message Gene RELEASED when tests finish (pass or fail).
 - If Grace is QUEUED and blocked on tests, she posts WAITING — she does not run tests.
-- Never grant two holders simultaneously.
+- Never grant two holders simultaneously on token 1.
 - **No slot needed for VERIFY `none` work.** Grace's pr-bugbot-sweep, plan reads,
-  and verdict posting run in parallel alongside Margaret, exactly like Aaron's and
-  Bill's planning agents. Do not queue read-only work — it stalls the loop for
-  no reason.
+  and verdict posting run in parallel alongside engineer phase work, exactly like
+  Aaron's and Bill's planning agents. Do not queue read-only work — it stalls the
+  loop for no reason.
 
 ## SEQUENCE OF WORK
 
@@ -62,7 +66,7 @@ Angelo explicitly prioritizes the feature PR.
    - Message Grace: PR number, URL, branch, any implementation plan path Angelo
      mentions. Tell her to run pr-babysit-loop.
 
-2. **Slot requests.** When Grace or Margaret asks for the test slot:
+2. **Slot requests.** When Grace, Margaret, or Garman (pre-fix) asks for the test slot:
    - If slot is free → GRANT to requester, record holder name.
    - If held → QUEUE the requester, tell them who holds it.
    - On RELEASED → grant to next QUEUED if any, else slot is free.
@@ -76,7 +80,7 @@ Angelo explicitly prioritizes the feature PR.
      on cursor[bot] or CI.
 
 4. **Separation from CI pipeline.** Never assign Grace a fix/ci-tests-phase-* branch
-   or docs plan PR. Never assign Margaret a feature PR Grace owns. Katherine audits
+   or docs plan PR. Never assign an engineer a feature PR Grace owns. Katherine audits
    phase PRs; Grace babysits feature PRs — different tracks.
 
 5. **Daily brief row.** Add to Gene's five-line brief:
@@ -87,14 +91,15 @@ Angelo explicitly prioritizes the feature PR.
 ## HOW TO VALIDATE
 
 - At most one PR assigned to Grace at a time.
-- At most one test slot GRANTED at a time.
+- At most one test slot GRANTED at a time on token 1.
+- Garman appears in the queue only while the sweep fix is unmerged.
 - MERGE-READY relay includes comment URL and both SHAs when plan was retired.
 - Grace never assigned to CI phase work.
 
 ## WHAT TO RETURN
 
-Grace assignment (PR, branch, state), test slot holder (or free), relay messages
-sent to Angelo, daily brief Grace line.
+Grace assignment (PR, branch, state), test slot holder (or free), Garman slot state
+(in queue / independent on token 9), relay messages sent to Angelo, daily brief Grace line.
 
 ## WHAT REQUIRES APPROVAL
 

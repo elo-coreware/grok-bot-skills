@@ -14,7 +14,8 @@ Gene assigns a phase PR (or another PR) for Katherine's audit. This is not plan-
 
 ## REQUIRED INPUTS AND ACCESS
 
-- PR number, branch (`fix/ci-tests-phase-N-<slug>`), phase table from the current plan.
+- PR number, branch (`fix/ci-tests-phase-N-<slug>`, `-ii` suffixed for Garman, or the coverage/hygiene equivalent), phase table from the current plan.
+- Owning engineer and lane from Gene's assign (Margaret / Garman). Carry both into the verdict so a FAIL routes to the right bot.
 - Read access at the PR head. Never run test commands.
 - Authority files (lowercase commands only, not `.cursor/BUGBOT.md`):
   - `.cursor/rules/test-failure-triage.mdc` (alwaysApply; wins on test-vs-app classification)
@@ -25,7 +26,7 @@ Gene assigns a phase PR (or another PR) for Katherine's audit. This is not plan-
 
 ## SEQUENCE OF WORK
 
-1. Confirm head SHA. If `cursor[bot]` has no review whose `commit_id` equals that SHA, STOP. Do not PASS. Do not `gh pr ready`. Return WAITING to Gene: "Bugbot app has not reviewed this SHA; Margaret must comment `cursor review` on the handoff commit." Do not invent a PASS with a note that Bugbot was missing.
+1. Confirm head SHA. If `cursor[bot]` has no review whose `commit_id` equals that SHA, STOP. Do not PASS. Do not `gh pr ready`. Return WAITING to Gene: "Bugbot app has not reviewed this SHA; the owning engineer must comment `cursor review` on the handoff commit." Do not invent a PASS with a note that Bugbot was missing.
 
 2. Read `git diff origin/develop...HEAD` in full, every line. Three-dot vs develop. Out-of-scope: files not in that diff, lines not in a hunk, code identical on develop.
 
@@ -37,7 +38,7 @@ Gene assigns a phase PR (or another PR) for Katherine's audit. This is not plan-
 
 6. Per file, apply `.cursor/rules/test-failure-triage.mdc`. Scaffolding-only test edits (setup, fakes, fixtures) can PASS. **FAIL** polarity inversions, product-behavior assertion rewrites, or `it(...)` renames that match a bug (PR 5785 class), even if labeled tests-only. Contract failures must stay red with an **ESCALATED** plan-doc row — a red test with no ESCALATED row is FAIL. New `app/` in this phase's own commits without Angelo's written go-ahead is FAIL. Framework-semantics corrections (PR 5778 Inertia 409→302) are allowed. Would a genuine product regression still fail this test afterward? If not, FAIL. Yesterday's "tests follow current app behavior" instruction is revoked.
 
-7. Run `.cursor/commands/bugbot.md` (lowercase) on `develop...HEAD`. Plan-mode detection only. Never implement fixes. Never use `.cursor/BUGBOT.md`. Never comment `cursor review` or `bugbot run` yourself — Margaret invokes the app.
+7. Run `.cursor/commands/bugbot.md` (lowercase) on `develop...HEAD`. Plan-mode detection only. Never implement fixes. Never use `.cursor/BUGBOT.md`. Never comment `cursor review` or `bugbot run` yourself — the owning engineer invokes the app.
 
 8. Fetch GitHub review threads on this PR whose author is `cursor[bot]`. Include unresolved, outdated, and newly landed threads. Stale threads (reviewed a previous SHA) still go through triage if the finding may still apply to HEAD.
 
@@ -60,8 +61,8 @@ Gene assigns a phase PR (or another PR) for Katherine's audit. This is not plan-
 
 ## WHAT TO RETURN
 
-Verdict (including WAITING), comment URL, ready-vs-draft, head SHA, Bugbot review SHA, assertion counts, validity counts, cheating result, triage.mdc classifications, bugbot-triage summary (valid / false positive / out of scope / needs clarification) split by source (lowercase `/bugbot` vs GitHub `cursor[bot]`), per-file verdict lines.
+Verdict (including WAITING), owning engineer and lane, comment URL, ready-vs-draft, head SHA, Bugbot review SHA, assertion counts, validity counts, cheating result, triage.mdc classifications, bugbot-triage summary (valid / false positive / out of scope / needs clarification) split by source (lowercase `/bugbot` vs GitHub `cursor[bot]`), per-file verdict lines.
 
 ## WHAT REQUIRES APPROVAL
 
-Posting and marking ready need no approval. Never merge. Never implement bugbot or triage fixes. Escalate to Angelo when the same file fails this audit twice, assertion count dropped without plan authorization, Margaret disagrees with the verdict, or the phase inverted contract assertions or introduced application-behavior changes without a written go-ahead.
+Posting and marking ready need no approval. Never merge. Never implement bugbot or triage fixes. Escalate to Angelo when the same file fails this audit twice, assertion count dropped without plan authorization, an engineer disagrees with the verdict, or the phase inverted contract assertions or introduced application-behavior changes without a written go-ahead.

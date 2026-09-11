@@ -40,15 +40,27 @@ Any time work must read, write, or run commands inside CorewareHub/coreware-app-
    `git diff develop...HEAD --name-only` on that PR; new files or product-behavior
    changes beyond the committed implementation plan require Angelo's go-ahead.
    Every other constraint stands verbatim. Do not apply this exception to CI phase
-   work — Margaret's `app/` restriction is unchanged.
+   work — the engineers' `app/` restriction is unchanged.
 
    VERIFY — the exact verification commands to run, or `none` for read-only/planning work.
+   When the delegation is Garman's, prefix verify with `TEST_TOKEN=9` (e.g.
+   `TEST_TOKEN=9 composer test:single -- <paths>`).
 
    REPORT BACK — files changed, tests now passing, commands run with real output, anything unfixed and why, ESCALATED rows.
 
 3. Launch one agent from the stated base branch with model `composer-2.5` and fast mode enabled.
 
-4. Supervise until it finishes. **Concurrency (Angelo 2026-09-09):** Exactly one agent may run **tests / migrate / schema dump** on this repo at a time (shared `test_tenant_1` / `test_landlord_1` — a second Pest run silently corrupts both). Margaret owns that slot when she is implementing. Grace contends for the same slot when remediating a feature PR with a non-`none` VERIFY; Gene arbitrates between them (GRANTED / QUEUED / RELEASED) and Margaret takes precedence unless Angelo prioritizes the feature PR. Aaron, Bill, and Grace **may** launch additional agents **in parallel** only when VERIFY is `none` (read-only / planning / docs plan PRs / Grace's bugbot sweeps — no Pest, no migrate, no `test:generate-schema-dump`). Never launch a second **test-running** agent while another test-running agent is live.
+4. Supervise until it finishes. **Concurrency (Angelo 2026-09-09):** Exactly one agent
+   may run **tests / migrate / schema dump** per database pair at a time. Margaret and
+   Grace share token 1 (`test_tenant_1` / `test_landlord_1`); Gene arbitrates between
+   them (GRANTED / QUEUED / RELEASED) and Margaret takes precedence unless Angelo
+   prioritizes the feature PR. Garman uses `TEST_TOKEN=9` and may run in parallel with
+   token-1 holders once Angelo confirms the ephemeral-sweep scoping fix in
+   `scripts/test-lib.sh` is on develop; until then he contends for the token-1 slot.
+   Aaron, Bill, and Grace **may** launch additional agents **in parallel** only when
+   VERIFY is `none` (read-only / planning / docs plan PRs / Grace's bugbot sweeps —
+   no Pest, no migrate, no `test:generate-schema-dump`). Never launch a second
+   test-running agent on the **same database pair** while another is live.
 
 5. Capture the summary, branch name, and diff.
 
@@ -61,7 +73,7 @@ Any time work must read, write, or run commands inside CorewareHub/coreware-app-
 - Every touched file is inside SCOPE. Out-of-scope edits are a finding, not a bonus.
 - No polarity inversion. No new application-behavior change unless Angelo already approved that specific patch.
 - VERIFY output is quoted real output, not a claim that it passed.
-- If VERIFY is not `none`, confirm no other test-running agent was live for this repo.
+- If VERIFY is not `none`, confirm no other test-running agent was live on the same database pair.
 
 ## WHAT TO RETURN
 

@@ -15,6 +15,7 @@ Immediately after qa-fix-audit returns a verdict, after Katherine's qa-validity-
 ## REQUIRED INPUTS AND ACCESS
 
 - PR number, branch name, and either phase number (phase PR), "plan" (new plan PR), or "plan-retire" (retire PR).
+- On a phase PR: the owning engineer and lane (Margaret / Garman) from the qa-fix-audit output, so a FAIL routes to the right bot.
 - The completed qa-fix-audit, plan-validity scan, or plan-retire audit output, including WAITING if Bugbot has not reviewed this SHA.
 - Angelo's GitHub identity for posting (see IDENTITY).
 
@@ -49,6 +50,8 @@ Because the comment posts under his name: the signature block is mandatory, and 
 ## QA audit — Phase N: <slug>
 
 **Verdict: PASS** (or PASS WITH NOTES / FAIL / WAITING)
+
+**Engineer / lane:** <Margaret | Garman> — lane <A | B>
 
 A table with: failures resolved (X of Y listed), assertion count (before → after), test blocks (before → after, none removed), validity scan (BLOCKER/HIGH/MEDIUM counts), scope (only phase files touched), verify output (present and reproduced), Bugbot app review SHA vs HEAD.
 
@@ -97,7 +100,7 @@ A table with: test files listed in the plan, files scanned, BLOCKER/HIGH/MEDIUM 
 
 Diff is docs-only (plan delete ± `docs/automated-tests/README.md`).
 
-A table with: plan path deleted, every phase COMPLETE or disposed (WONTFIX/ESCALATED + Angelo disposition), merged phase PR citations, open Margaret work orphan risk (none).
+A table with: plan path deleted, every phase COMPLETE or disposed (WONTFIX/ESCALATED + Angelo disposition), merged phase PR citations, open engineer work orphan risk (none).
 
 **Needs your eyes:** the one or two judgment calls a human should confirm, or "Nothing; the plan is fully shipped and safe to delete." Never leave this empty.
 
@@ -111,6 +114,7 @@ A table with: plan path deleted, every phase COMPLETE or disposed (WONTFIX/ESCAL
 - The verdict matches the audit or scan exactly. Never upgraded.
 - Every number traces to the audit or scan output.
 - "Needs your eyes" is populated.
+- On a phase PR, the owning engineer and lane are named, so a FAIL routes to the right bot.
 - Signature block present, naming the bot and the model.
 - Comment author is Angelo, not `cursor[bot]`.
 - On a phase PR, ready only if both Katherine PASS and Bugbot-on-this-SHA are clean. On a plan or plan-retire PR, ready on PASS or PASS WITH NOTES.

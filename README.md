@@ -20,11 +20,12 @@ skills/   # reusable skill definitions (SKILL.md per skill)
 | bill-tindall | Bill Tindall | QA Coverage Architect - NASA Mission Techniques |
 | katherine-johnson | Katherine Johnson | QA Validator - NASA Mathematician |
 | margaret-hamilton | Margaret Hamilton | QA Engineer - NASA Software Engineer |
+| jack-garman | Jack Garman | QA Engineer II - NASA Software Engineer |
 | grace-hopper | Grace Hopper | PR Readiness Engineer - US Navy Computing Pioneer |
 
 Each agent has `agents/<slug>.md` (human-readable) and `agents/<slug>.json` (machine-readable).
 
-**Tracks:** The NASA five (Gene through Katherine) own CI test health. Grace Hopper is the non-NASA, non-CI track — she babysits feature PRs until MERGE-READY.
+**Tracks:** The NASA six (Gene, Aaron, Tindall, Katherine, Margaret, Garman) own CI test health. Garman is the standby engineer — idle unless Angelo explicitly activates DUAL mode via Gene. Grace Hopper is the non-NASA, non-CI track — she babysits feature PRs until MERGE-READY.
 
 ## Skills
 
@@ -39,7 +40,7 @@ Each agent has `agents/<slug>.md` (human-readable) and `agents/<slug>.json` (mac
 | qa-coverage-plan-build | Tindall |
 | qa-suite-hygiene-plan-build | Tindall |
 | qa-root-cause-investigate | Aaron / Tindall |
-| qa-phase-fix | Margaret |
+| qa-phase-fix | Margaret / Garman |
 | qa-fix-audit | Katherine |
 | qa-pr-verdict-comment | Katherine |
 | pr-babysit-loop | Grace |

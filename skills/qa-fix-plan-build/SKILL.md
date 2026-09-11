@@ -53,4 +53,4 @@ The plan file, shipped as its own PR via repo-delegate-to-cursor: branch `docs/Y
 
 ## What requires approval
 
-Push and PR creation need no approval. Angelo merges the plan PR on GitHub. Gene may release Margaret to start Phase 1 once it is merged. Escalate UNKNOWN or app-fix recommendations to Gene/Angelo rather than guessing.
+Push and PR creation need no approval. Angelo merges the plan PR on GitHub. Gene may release an engineer to start Phase 1 once it is merged. Escalate UNKNOWN or app-fix recommendations to Gene/Angelo rather than guessing.
