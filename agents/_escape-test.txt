@@ -1,1 +1,0 @@
-line1\u2014line2\nliteral-backslash-n\u2192arrow
