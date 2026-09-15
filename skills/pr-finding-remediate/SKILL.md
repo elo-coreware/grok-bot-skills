@@ -89,7 +89,7 @@ Authority:
 - Skipping a valid finding by reclassifying it without a fresh bugbot-triage pass.
 - Resolving cursor[bot] review threads on GitHub.
 - Running composer test:single without Gene granting the test slot.
-- Running composer format.
+- Running `composer format` (banned — use local Pint instead).
 - Committing BugBot-generated plan files.
 
 ## HOW TO VALIDATE
@@ -104,6 +104,10 @@ Authority:
 
 New HEAD SHA, commit message, files changed, findings fixed (with SHA), findings
 still open, verify output or "tests deferred — no slot".
+
+## LOCAL PINT
+
+If the remediation touched PHP, run `./vendor/bin/pint --dirty` and `./vendor/bin/pint --test` before handing back for `cursor review`. Never `composer format`.
 
 ## WHAT REQUIRES APPROVAL
 
