@@ -2,7 +2,7 @@
 name: qa-phase-orchestrate
 description: >-
   Use this when a develop CI run failed, a phase finished, an audit returned, a
-  GitHub cursor[bot] review landed, or the daily brief is due
+  GitHub cursor[bot] review landed, or the daily brief is due.
 ---
 # qa-phase-orchestrate
 
@@ -148,7 +148,7 @@ the same module (separate PRs by design — Reconcile vs Author):
 4. **ESCALATED / UNKNOWN / unclear phases — deepen before implement.** Plan-build's light history pass is necessary but not always sufficient. Before assigning an engineer an ESCALATED or UNKNOWN phase (or any phase where product intent is still unclear after plan-build), assign Aaron `qa-root-cause-investigate`. He must:
    - Classify INTENTIONAL / REGRESSION / UNKNOWN with cited SHAs/PRs
    - **Edit the fix plan** with an explicit Implementer instructions block for that phase
-   - Open a draft docs plan-update PR
+   - Open a draft docs plan-update PR (**one PR** — see DOCS PR DISCIPLINE)
    Do **not** assign an engineer until that plan update is merged (or Angelo/Gene explicitly waives merge and pastes the instructions into the assign brief). Scaffolding-only OPEN phases with clear plan fixes and SCAFFOLDING history notes may skip the deeper investigate.
 
 5. Assign the owning engineer the next **implementable** OPEN phase whose plan row
@@ -161,8 +161,10 @@ the same module (separate PRs by design — Reconcile vs Author):
    Ready-but-unmerged PRs do not count as in flight.
 
    Base branch for the assignee: the latest unmerged phase PR that Katherine
-   dual-PASSed **in that engineer's lane**, else `origin/develop`. Tell them that
-   base explicitly, the work type, lane, and branch naming convention. Point them at
+   dual-PASSed **in that engineer's lane** (Phase N tip — stack inherit), else
+   `origin/develop`. Tell them that base explicitly, the work type, lane, and
+   branch naming convention. Never base Phase N+1 on develop alone when a
+   dual-PASS parent exists in-lane (see STACKING + POST-MERGE FOLD). Point them at
    the **plan section** for this phase (not only chat). Remind them: draft, handoff
    commit with work-type prefix, `cursor review` as Angelo via GitHub MCP (not WIP),
    implement in-scope Bugbot items, re-invoke after any new commit, cloud-agent verify
@@ -195,13 +197,17 @@ the same module (separate PRs by design — Reconcile vs Author):
 
 9. On that dual PASS, notify Angelo that the PR is ready to merge (comment URL, merge
    order: lowest phase number first within the lane). **Do not wait for him.**
-   Immediately return to step 4/5 for the next implementable OPEN phase. Stack ready
-   PRs overnight.
+   Immediately return to step 4/5 for the next implementable OPEN phase, basing it on
+   this dual-PASS tip (stack inherit). Stack ready PRs overnight. If Bugbot is slow,
+   hold the engineer on this phase and chase the stall — do not skip ahead.
 
-10. After Angelo merges one or more phase PRs, have Aaron re-baseline against the next
-    develop CI and record actual deltas. A miss of more than a third means Aaron
-    re-diagnoses before more phases start **only if all engineers are idle**. If one is
-    mid-phase, let them finish, then pause if Aaron's re-diagnosis says so.
+10. After Angelo merges one or more phase PRs: (a) auto-assign **exactly one** fold
+    of the next dirty PR in that lane's merge order (STACKING + POST-MERGE FOLD);
+    (b) have Aaron re-baseline against the next develop CI and record actual deltas.
+    A miss of more than a third means Aaron re-diagnoses before more phases start
+    **only if all engineers are idle**. If one is mid-phase, let them finish, then
+    pause if Aaron's re-diagnosis says so. Re-baseline docs edits go into **one**
+    plan-update PR (DOCS PR DISCIPLINE), not a scrub stack.
 
 There is no GitHub listener yet. The Bugbot invoke is the owning engineer's
 `cursor review` on the handoff commit and on FAIL-fix commits. Phase Pest on Actions
@@ -214,6 +220,49 @@ is Angelo-operated `workflow_dispatch` of `run-tests-phase.yaml` for now.
     PASS WITH NOTES, notify Angelo to merge. Never leave finished plans as permanent
     clutter under `docs/` or `docs/automated-tests/`. Do not confuse with Grace's
     `pr-plan-doc-retire` (`.cursor/plans` on feature PRs only).
+
+## DOCS PR DISCIPLINE (Angelo 2026-09-14) — mandatory
+
+Fix-plan **docs** work (new plan, re-baseline, NOTES scrub, residual dig, arithmetic
+fix) must be **one PR in one go**. Do **not** assign Aaron a chain of tiny docs-only
+PRs that all edit the same plan file — that cascades conflicts and noisies GitHub.
+
+- Prefer: one docs PR that already includes dig + NOTES + version bump.
+- If Katherine NOTES arrive while a dig PR is still open: assign Aaron to **amend that
+  tip**, not open a sibling scrub PR.
+- After Angelo merges one docs/implement PR and others go dirty: assign a fold of
+  **exactly one** next merge-queue PR, wait for Angelo to merge, then fold the next.
+  Never batch-fold the remaining stack.
+- Multiple open PRs are normal for **code/test implement** phases (Margaret/Garman).
+  Docs sprawl is not.
+
+
+## STACKING + POST-MERGE FOLD (Angelo 2026-09-15) — mandatory
+
+**Stack inherit:** When assigning the next OPEN phase in a lane, the base is the
+latest dual-PASS unmerged phase PR **in that same lane** (Phase N tip), else
+`origin/develop`. Name that base explicitly in the assign brief. Do **not** tell
+the engineer to base on develop alone when a dual-PASS parent exists — Phase N+1
+must inherit Phase N's tip so the merge queue stays a clean stack.
+
+**After Angelo merges:** As soon as a phase (or docs) PR lands on develop and
+other open PRs in that lane (or the docs merge queue) go dirty, auto-assign
+**exactly one** fold — the next dirty PR in **lowest phase number / merge-queue
+order** within that lane (or the single next docs PR). Wait for that fold to
+reach MERGEABLE / dual-PASS re-gate, and for Angelo to merge it, before assigning
+the next fold. Never batch-fold the remaining stack. Same rule for Aaron docs
+folds and for Margaret/Garman/Grace implement folds.
+
+**Bugbot stalls (Angelo 2026-09-15):** Waiting on `cursor[bot]` is a valid hold —
+do **not** jump the engineer ahead to the next OPEN phase until dual-PASS on the
+current head. Gene must **proactively chase** Bugbot stalls (nudge the owning
+engineer to re-comment `cursor review`, confirm HEAD has a review, escalate to
+Angelo if stuck), not sit silent until pinged.
+
+**Aaron digs (Angelo 2026-09-15):** Aaron may continue residual digs / plan
+updates without gating each one on Angelo. Gene still approves plan content per
+APPROVALS YOU OWN; do not block digs waiting for Angelo to rubber-stamp every
+pass.
 
 ## APPROVALS YOU OWN
 
@@ -231,7 +280,7 @@ unless Angelo approved them or the merged plan's implementer instructions author
 named app files. New plans without per-phase feature-history are incomplete.
 ESCALATED/UNKNOWN phases do not reach an engineer without deepened
 `qa-root-cause-investigate` + plan update when still unclear after plan-build (unless
-waived).
+waived). Docs work follows DOCS PR DISCIPLINE (one plan-update PR; one fold at a time). Phase N+1 bases on Phase N dual-PASS tip; post-merge folds are one-at-a-time.
 
 ## WHAT TO RETURN
 
