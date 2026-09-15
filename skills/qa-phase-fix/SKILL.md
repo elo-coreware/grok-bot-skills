@@ -107,6 +107,26 @@ and does not run concurrently with Margaret or Grace — even on `TEST_TOKEN=9`.
 Slot independence after the `scripts/test-lib.sh` ephemeral-sweep fix is suspended
 until Angelo lifts the standing rule.
 
+
+## LOCAL PINT (Angelo 2026-09-15 / develop #6326) — mandatory
+
+CI no longer auto-commits Pint. `.github/workflows/lint.yml` runs **`pint --test`**
+on every pull_request and fails if style is dirty. You must format on the branch
+before handoff.
+
+- After PHP edits (implement, Bugbot fix, Katherine FAIL fix, or fold that touches
+  PHP): on the cloud agent / box with the repo, run one of:
+  - `./vendor/bin/pint --dirty` (preferred when vendor present)
+  - or `pint --dirty` if Pint is on PATH
+  - path-scoped: `./vendor/bin/pint -- <changed.php paths>`
+- If Pint rewrites files: commit on **this** branch (e.g. `:art: pint` or fold into
+  the handoff commit), push, then continue.
+- Before Gene/Katherine handoff, confirm `./vendor/bin/pint --test` exits 0 (or
+  `pint --test`). Quote that in the verify evidence comment when PHP changed.
+- **Still never run `composer format`.** Pint replaces the old auto-commit path;
+  `composer format` stays banned.
+- Docs-only commits with no PHP diff: Pint optional (skip).
+
 ## SEQUENCE OF WORK
 
 1. git fetch origin. **Stack inherit:** Gene names the base — latest dual-PASS
@@ -151,7 +171,11 @@ until Angelo lifts the standing rule.
    the other engineer's locked plan document. Hygiene Reconcile: assertion drop is FAIL
    unless it matches the plan's authorized delta.
 
-8. Commit with the work-type prefix and push. This is the **handoff commit**. Do not
+8. **Pint gate:** if any PHP files changed on this branch since the last Pint-clean
+   tip, run LOCAL PINT (`./vendor/bin/pint --dirty` then `./vendor/bin/pint --test`).
+   Commit style fixes on this branch before the handoff commit (or include them in it).
+
+9. Commit with the work-type prefix and push. This is the **handoff commit**. Do not
    comment `cursor review` on WIP commits before this.
 
    - Fix: `:bug: fix phase N <slug>`
@@ -161,22 +185,23 @@ until Angelo lifts the standing rule.
    For Reconcile phases, include in the handoff message the actual assertion-count
    delta vs the plan's authorized number.
 
-9. On the handoff commit only, post `cursor review` under Angelo's identity per IDENTITY above. Wait until `cursor[bot]` has a review whose `commit_id` equals HEAD.
+10. On the handoff commit only, post `cursor review` under Angelo's identity per IDENTITY above. Wait until `cursor[bot]` has a review whose `commit_id` equals HEAD.
 
-10. Implement in-scope GitHub Bugbot findings on this branch. In-scope means the finding is about a file or hunk in this phase's diff. Do not classify a finding as a false positive to skip it. Unclear items: leave for Katherine. Re-verify with one test command if tests changed. Do not implement a Bugbot item that would change app behavior or invert a contract assertion.
+11. Implement in-scope GitHub Bugbot findings on this branch. In-scope means the finding is about a file or hunk in this phase's diff. Do not classify a finding as a false positive to skip it. Unclear items: leave for Katherine. Re-verify with one test command if tests changed. Do not implement a Bugbot item that would change app behavior or invert a contract assertion. If PHP changed again, re-run LOCAL PINT before the next `cursor review`.
 
-11. If step 10 produced a new commit, post `cursor review` again under Angelo's identity and wait for `cursor[bot]` on the new SHA. Repeat until HEAD has a Bugbot review and you are not adding commits.
+12. If step 11 produced a new commit, post `cursor review` again under Angelo's identity and wait for `cursor[bot]` on the new SHA. Repeat until HEAD has a Bugbot review and you are not adding commits.
 
-12. **Verify evidence comment (required before Gene/Katherine handoff):** as elo-coreware, post a PR issue comment that Angelo can skim while reviewing. Include:
+13. **Verify evidence comment (required before Gene/Katherine handoff):** as elo-coreware, post a PR issue comment that Angelo can skim while reviewing. Include:
     - That verify ran on the **cloud agent** (Composer / Cursor cloud computer), not Actions `run-tests-phase.yaml`
     - Exact verify command(s) (`composer test:single` or `TEST_TOKEN=9 composer test:single`)
     - Verbatim `Tests: … passed (… assertions)` line(s)
     - HEAD SHA this verify covers
+    - If PHP changed: note that `./vendor/bin/pint --test` (or `pint --test`) was clean on that SHA
     Do this after the final successful verify on the handoff SHA (and again after any Bugbot-fix re-verify). This is separate from `cursor review`.
 
-13. Hand the still-draft PR to Gene for Katherine's audit. Report the head SHA, the Bugbot review SHA, the author login of your `cursor review` and verify comments, cloud-agent verify output, lane, and the base branch you used. Do not start the next phase until Gene assigns it (after this one is dual-PASS). Gene may assign your next phase **before Angelo merges** this PR — stack on your dual-PASS tip when he says so (Phase N+1 inherits this tip). Waiting on Bugbot is a valid hold; stay on this phase until Gene says dual-PASS. Non-Pest work (implement/prep/`cursor review`/fold) does **not** need the test slot.
+14. Hand the still-draft PR to Gene for Katherine's audit. Report the head SHA, the Bugbot review SHA, the author login of your `cursor review` and verify comments, cloud-agent verify output, lane, and the base branch you used. Do not start the next phase until Gene assigns it (after this one is dual-PASS). Gene may assign your next phase **before Angelo merges** this PR — stack on your dual-PASS tip when he says so (Phase N+1 inherits this tip). Waiting on Bugbot is a valid hold; stay on this phase until Gene says dual-PASS. Non-Pest work (implement/prep/`cursor review`/fold) does **not** need the test slot.
 
-14. When Katherine FAILs: implement every valid in-scope item from her triage table on the same branch, re-verify with one test command, push, post `cursor review` under Angelo's identity on that new commit, wait for Bugbot, post an updated verify evidence comment, then hand back to Gene. Never mark a Katherine-valid item false-positive to skip it. Still do not invert contract assertions or patch `app/` unless Angelo assigned it / the plan authorizes it.
+15. When Katherine FAILs: implement every valid in-scope item from her triage table on the same branch, re-verify with one test command, run LOCAL PINT if PHP changed, push, post `cursor review` under Angelo's identity on that new commit, wait for Bugbot, post an updated verify evidence comment, then hand back to Gene. Never mark a Katherine-valid item false-positive to skip it. Still do not invert contract assertions or patch `app/` unless Angelo assigned it / the plan authorizes it.
 
 ## HOW TO VALIDATE
 
@@ -191,6 +216,7 @@ until Angelo lifts the standing rule.
 - A verify evidence comment exists on the PR for the handoff HEAD.
 - HEAD has a `cursor[bot]` review before handoff to Gene.
 - The PR is still draft.
+- If PHP changed: `./vendor/bin/pint --test` (or `pint --test`) is clean on HEAD.
 
 ## WHAT TO RETURN
 
@@ -198,4 +224,4 @@ Branch, PR number, lane, base used, head SHA, Bugbot review SHA, author login of
 
 ## WHAT REQUIRES APPROVAL
 
-Nothing in the default scaffolding path. App/` patches need Angelo (or merged plan Implementer authorization). Never run composer format. Never merge. Never mark the PR ready (Katherine does that on dual PASS).
+Nothing in the default scaffolding path. App/` patches need Angelo (or merged plan Implementer authorization). Never run `composer format` (banned). **Do** run local Pint per LOCAL PINT. Never merge. Never mark the PR ready (Katherine does that on dual PASS).
