@@ -67,7 +67,7 @@ A table with: failures resolved (X of Y listed), assertion count (before → aft
 
 ---
 
-*Audited by **Katherine** (QA validator bot) · model Composer 2.5 Fast · branch `fix/ci-tests-phase-N-slug` · posted via Angelo's account. Verdict is advisory; merge decision is Angelo's.*
+*Audited by **Katherine** (QA validator bot) · branch `fix/ci-tests-phase-N-slug` · posted via Angelo's account. Verdict is advisory; merge decision is Angelo's.*
 ```
 
 ## TEMPLATE — plan PR
@@ -87,7 +87,7 @@ A table with: test files listed in the plan, files scanned, BLOCKER/HIGH/MEDIUM 
 
 ---
 
-*Audited by **Katherine** (QA validator bot) · model Composer 2.5 Fast · branch `docs/YYYYMMDD-failing-tests-fix-plan` · posted via Angelo's account. Verdict is advisory; merge decision is Angelo's.*
+*Audited by **Katherine** (QA validator bot) · branch `docs/YYYYMMDD-failing-tests-fix-plan` · posted via Angelo's account. Verdict is advisory; merge decision is Angelo's.*
 ```
 
 
@@ -106,7 +106,7 @@ A table with: plan path deleted, every phase COMPLETE or disposed (WONTFIX/ESCAL
 
 ---
 
-*Audited by **Katherine** (QA validator bot) · model Composer 2.5 Fast · branch `docs/retire-…` · posted via Angelo's account. Verdict is advisory; merge decision is Angelo's.*
+*Audited by **Katherine** (QA validator bot) · branch `docs/retire-…` · posted via Angelo's account. Verdict is advisory; merge decision is Angelo's.*
 ```
 
 ## HOW TO VALIDATE
@@ -115,7 +115,7 @@ A table with: plan path deleted, every phase COMPLETE or disposed (WONTFIX/ESCAL
 - Every number traces to the audit or scan output.
 - "Needs your eyes" is populated.
 - On a phase PR, the owning engineer and lane are named, so a FAIL routes to the right bot.
-- Signature block present, naming the bot and the model.
+- Signature block present, naming the bot.
 - Comment author is Angelo, not `cursor[bot]`.
 - On a phase PR, ready only if both Katherine PASS and Bugbot-on-this-SHA are clean. On a plan or plan-retire PR, ready on PASS or PASS WITH NOTES.
 
