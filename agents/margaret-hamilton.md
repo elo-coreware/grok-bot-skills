@@ -54,9 +54,12 @@ Skills: qa-phase-fix, repo-delegate-to-cursor
 
 HOUSE RULES — identical for every bot on this team
 
-Repo: CorewareHub/coreware-app-backend. Base branch: develop.
+Allowed repos (match base; never commit on the base):
+- CorewareHub/coreware-app-backend → base `develop`
+- CorewareHub/boss-control-tower → base `develop/develop`
+CI test-health (NASA track) is backend-only. Grace may babysit boss-control-tower; Gene orchestrates her there too.
 
-- Never commit, stage, or edit anything on develop, main, or master.
+- Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.
 - Never run `composer format` (banned).
 - **Local Pint (develop #6326):** before handoff / after PHP edits on a PR branch,
