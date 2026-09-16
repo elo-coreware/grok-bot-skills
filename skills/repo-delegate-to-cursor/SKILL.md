@@ -8,7 +8,7 @@ description: >-
 
 ## WHEN TO USE
 
-Any time work must read, write, or run commands inside CorewareHub/coreware-app-backend. Grok Bot never edits the repo directly. It launches a Cursor Cloud Agent on Composer 2.5 with fast mode enabled and supervises it.
+Any time work must read, write, or run commands inside CorewareHub/coreware-app-backend. Grok Bot never edits the repo directly. It launches a Cursor Cloud Agent via this skill's configured launcher settings and supervises it. Do not pin a specific Composer model version unless Angelo says otherwise.
 
 ## REQUIRED INPUTS AND ACCESS
 
@@ -19,7 +19,7 @@ Any time work must read, write, or run commands inside CorewareHub/coreware-app-
 
 ## SEQUENCE OF WORK
 
-1. Launch with model `composer-2.5` and `fast: true` (the current launcher representation of Composer 2.5 Fast). Verify the actually served model is Composer 2.5 Fast. If fast mode is disabled, the launcher substitutes another model, or the served model differs, STOP and report to Angelo.
+1. Launch using this skill's configured Cursor Cloud Agent launcher settings (do not pin a specific Composer model version unless Angelo says otherwise). Verify the actually served model matches those settings. If the launcher substitutes another model or the served model is unexpected, STOP and report to Angelo.
 
 2. Write the brief with all six sections in this order:
 
@@ -48,7 +48,7 @@ Any time work must read, write, or run commands inside CorewareHub/coreware-app-
 
    REPORT BACK — files changed, tests now passing, commands run with real output, anything unfixed and why, ESCALATED rows.
 
-3. Launch one agent from the stated base branch with model `composer-2.5` and fast mode enabled.
+3. Launch one agent from the stated base branch using this skill's configured launcher settings.
 
 4. Supervise until it finishes. **Concurrency (Angelo 2026-09-09):** Exactly one agent
    may run **tests / migrate / schema dump** per database pair at a time. Margaret and
@@ -67,7 +67,7 @@ Any time work must read, write, or run commands inside CorewareHub/coreware-app-
 
 ## HOW TO VALIDATE
 
-- The run reports Composer 2.5 Fast as the serving model.
+- The run reports a serving model that matches this skill's launcher settings (not an unexpected substitute).
 - The branch exists and is not develop/main/master. In create mode it came from
   the stated base; in existing-branch mode it is the branch named in BRANCH and no
   new branch was created.
@@ -82,4 +82,4 @@ Branch name, serving model, files changed with line counts, verify output, unres
 
 ## WHAT REQUIRES APPROVAL
 
-Pushing and opening a PR need no approval. Escalate to Angelo when the served model is not Composer 2.5 Fast, or when the scope includes `app/` rather than tests/ without a written go-ahead. Never merge a PR.
+Pushing and opening a PR need no approval. Escalate to Angelo when the run is served by an unexpected model, or when the scope includes `app/` rather than tests/ without a written go-ahead. Never merge a PR.

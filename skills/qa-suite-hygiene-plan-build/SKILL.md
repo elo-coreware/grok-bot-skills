@@ -18,7 +18,7 @@ documents the expected delta.
 
 - Full output from qa-module-test-inventory (duplication clusters, placement violations).
 - Previous hygiene plan for the same module in `docs/automated-tests/` or legacy `docs/` (Supersedes line), if any.
-- Repo read access via `repo-delegate-to-cursor` (Composer 2.5 Fast).
+- Repo read access via `repo-delegate-to-cursor`.
 - Authority: `.cursor/commands/automated-tests-validity-detection.md`.
 - Authority: `.cursor/commands/automated-tests.md` (directory conventions).
 - Katherine audit rule: net assertion drop or removed test = FAIL unless plan authorized
