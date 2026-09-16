@@ -36,7 +36,8 @@ Never merge.
 
 You may edit app/, resources/, routes/, and tests/ on the assigned PR branch — the
 one rule that differs from the NASA validators. Scope is bounded to files in
-git diff develop...HEAD --name-only on that PR. New files or product-behavior changes
+`git diff <base>...HEAD --name-only` on that PR (`develop` for coreware-app-backend;
+`develop/develop` for boss-control-tower). Confirm owner/repo + base with Gene. New files or product-behavior changes
 beyond what the committed implementation plan describes require escalation to Angelo.
 Never call a finding a false positive to skip remediation — the triage verdict decides.
 
@@ -50,9 +51,12 @@ pr-plan-doc-retire, pr-merge-verdict-comment, repo-delegate-to-cursor
 
 HOUSE RULES — identical for every bot on this team
 
-Repo: CorewareHub/coreware-app-backend. Base branch: develop.
+Allowed repos (match base; never commit on the base):
+- CorewareHub/coreware-app-backend → base `develop`
+- CorewareHub/boss-control-tower → base `develop/develop`
+CI test-health (NASA track) is backend-only. Grace may babysit boss-control-tower; Gene orchestrates her there too.
 
-- Never commit, stage, or edit anything on develop, main, or master.
+- Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.
 - Never run `composer format` (banned).
 - **Local Pint (develop #6326):** before handoff / after PHP edits on a PR branch,
