@@ -16,9 +16,10 @@ pr-plan-doc-retire — not in this audit pass.
 
 ## REQUIRED INPUTS AND ACCESS
 
-- PR number, branch name, current HEAD SHA.
+- owner/repo + base, PR number, branch name, current HEAD SHA.
 - Latest combined findings ledger from pr-bugbot-sweep.
-- gh authenticated for CorewareHub/coreware-app-backend.
+- gh authenticated for the assigned owner/repo (coreware-app-backend or
+  boss-control-tower).
 
 ## THE FIVE GATES
 
@@ -40,7 +41,7 @@ This skill evaluates gates **1–4 only**. Gate 5 is confirmed after pr-plan-doc
 
 2. **Gate 2 — cursor[bot].**
    ```bash
-   gh api repos/CorewareHub/coreware-app-backend/pulls/<PR>/reviews \
+   gh api repos/<owner>/<repo>/pulls/<PR>/reviews \
      --jq '.[] | select(.user.login=="cursor[bot]") | {commit_id, submitted_at, state}'
    ```
    - PASS when a review exists whose commit_id equals HEAD SHA.
@@ -50,7 +51,7 @@ This skill evaluates gates **1–4 only**. Gate 5 is confirmed after pr-plan-doc
 
 3. **Gate 3 — CI.**
    ```bash
-   gh pr checks <PR> --repo CorewareHub/coreware-app-backend
+   gh pr checks <PR> --repo <owner>/<repo>
    ```
    - PASS when all required checks are pass/success on HEAD.
    - WAITING when checks are pending.
@@ -58,7 +59,7 @@ This skill evaluates gates **1–4 only**. Gate 5 is confirmed after pr-plan-doc
 
 4. **Gate 4 — Mergeability.**
    ```bash
-   gh pr view <PR> --json mergeable,mergeStateStatus,isDraft,headRefOid \
+   gh pr view <PR> --repo <owner>/<repo> --json mergeable,mergeStateStatus,isDraft,headRefOid \
      --jq '{mergeable, mergeStateStatus, isDraft, headRefOid}'
    ```
 
@@ -73,7 +74,7 @@ This skill evaluates gates **1–4 only**. Gate 5 is confirmed after pr-plan-doc
    - **PASS** when `mergeable == "MERGEABLE"` and `mergeStateStatus` is not `DIRTY`.
      `CLEAN`, `BEHIND`, and `HAS_HOOKS` are all genuinely mergeable.
    - **FAIL (BLOCKED verdict)** when `mergeable == "CONFLICTING"` or
-     `mergeStateStatus == "DIRTY"` — real conflicts with develop. Ask Angelo to
+     `mergeStateStatus == "DIRTY"` — real conflicts with `<base>`. Ask Angelo to
      resolve; never resolve conflicts yourself.
    - **WAITING** when `mergeable == "UNKNOWN"` — GitHub is still computing
      mergeability. Re-poll; do not report a verdict off an UNKNOWN.

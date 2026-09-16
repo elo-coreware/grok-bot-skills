@@ -18,8 +18,8 @@ noisy one.
 
 ## REQUIRED INPUTS AND ACCESS
 
-- PR number, branch name, reviewed-sha, final-sha (same as reviewed-sha if no plan
-  retirement commit).
+- owner/repo, PR number, branch name, reviewed-sha, final-sha (same as reviewed-sha
+  if no plan retirement commit).
 - Gate table from pr-merge-readiness-audit.
 - Combined findings ledger from pr-bugbot-sweep.
 - Verdict: MERGE-READY, BLOCKED, or WAITING.
@@ -30,9 +30,10 @@ Every verdict comment must appear under Angelo's GitHub account (`elo-coreware`)
 never under `cursor[bot]` or any integration bot.
 
 Preferred posting path (in order):
-1. **GitHub MCP** `add_issue_comment` with `owner=CorewareHub`,
-   `repo=coreware-app-backend`, `issue_number=<PR>`, `body=<verdict markdown>`.
-2. Else `gh pr comment <number> --repo CorewareHub/coreware-app-backend --body-file
+1. **GitHub MCP** `add_issue_comment` with the assigned `owner`/`repo`
+   (coreware-app-backend or boss-control-tower), `issue_number=<PR>`,
+   `body=<verdict markdown>`.
+2. Else `gh pr comment <number> --repo <owner>/<repo> --body-file
    <path>` only when `gh auth status` shows Angelo / `elo-coreware`.
 
 After posting, verify authorship of the newest issue comment. Accept only when
@@ -70,7 +71,7 @@ never write a claim you cannot evidence.
 | 1 Local sweep (zero unfixed valid in-scope) | pass |
 | 2 cursor[bot] on reviewed-sha | pass |
 | 3 CI checks (green on final-sha) | pass |
-| 4 Mergeable with develop | pass |
+| 4 Mergeable with <base> | pass |
 | 5 Implementation plan retired | pass / N/A |
 
 **SHAs:** reviewed `<reviewed-sha>` → final `<final-sha>`
