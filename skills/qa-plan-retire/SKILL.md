@@ -17,7 +17,7 @@ Do **not** use for Grace's feature PR `.cursor/plans/*.plan.md` — that is `pr-
 
 - Plan path (e.g. `docs/20260909-forms-TEST-HYGIENE-PLAN.markdown` or under `docs/automated-tests/`).
 - Evidence that every phase is COMPLETE on `develop` (merged phase PRs, plan phase table).
-- `repo-delegate-to-cursor` (Composer 2.5 Fast). VERIFY `none`.
+- `repo-delegate-to-cursor`. VERIFY `none`.
 - Authority: Gene assignment. Never self-start.
 
 ## PLAN LOCATION

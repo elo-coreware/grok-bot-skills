@@ -18,7 +18,7 @@ description: >-
 
 - Phase number / failure rows from the current `docs/*-FAILING-TESTS-FIX-PLAN.markdown`.
 - Failing test path(s), assertion/exception text, suspected app area from the plan.
-- Repo via `repo-delegate-to-cursor` (Composer 2.5 Fast).
+- Repo via `repo-delegate-to-cursor`.
 - Authority: `.cursor/rules/test-failure-triage.mdc` (wins on scaffolding vs contract).
 
 Read-only during diagnosis. Avoid long test runs that collide with an active implementer; prefer static/history analysis unless asked to reproduce with one `composer test:single`.

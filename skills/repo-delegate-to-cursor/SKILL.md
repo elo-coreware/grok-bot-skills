@@ -1,31 +1,48 @@
 ---
 name: repo-delegate-to-cursor
 description: >-
-  Use this when work must read, write, or run commands inside
-  CorewareHub/coreware-app-backend
+  Use this when work must read, write, or run commands inside an allowed
+  CorewareHub repo (coreware-app-backend or boss-control-tower)
 ---
 # repo-delegate-to-cursor
 
 ## WHEN TO USE
 
-Any time work must read, write, or run commands inside CorewareHub/coreware-app-backend. Grok Bot never edits the repo directly. It launches a Cursor Cloud Agent on Composer 2.5 with fast mode enabled and supervises it.
+Any time work must read, write, or run commands inside an **allowed** CorewareHub
+repo. Grok Bot never edits the repo directly. It launches a Cursor Cloud Agent via
+this skill's configured launcher settings and supervises it. Do not pin a specific
+Composer model version unless Angelo says otherwise.
+
+## ALLOWED REPOS
+
+| owner/repo | Base branch |
+|------------|-------------|
+| `CorewareHub/coreware-app-backend` | `develop` |
+| `CorewareHub/boss-control-tower` | `develop/develop` |
+
+Refuse any other owner/repo unless Angelo explicitly expands the allow-list. NASA CI
+test-health work stays on `coreware-app-backend`. Grace (and Gene orchestrating her)
+may use either repo.
 
 ## REQUIRED INPUTS AND ACCESS
 
 - A task brief, self-contained: the agent cannot see the Grok Bot conversation.
-- Base branch (default: develop) and the exact target branch name.
+- **owner/repo** (required) — one of the allowed repos above.
+- **Base branch** matching that repo (`develop` or `develop/develop`) and the exact
+  target branch name. Do not default blindly to `develop` when the repo is
+  boss-control-tower.
 - Cursor Cloud Agents access.
-- gh authenticated for CorewareHub/coreware-app-backend.
+- gh authenticated for the chosen owner/repo.
 
 ## SEQUENCE OF WORK
 
-1. Launch with model `composer-2.5` and `fast: true` (the current launcher representation of Composer 2.5 Fast). Verify the actually served model is Composer 2.5 Fast. If fast mode is disabled, the launcher substitutes another model, or the served model differs, STOP and report to Angelo.
+1. Launch using this skill's configured Cursor Cloud Agent launcher settings (do not pin a specific Composer model version unless Angelo says otherwise). Verify the actually served model matches those settings. If the launcher substitutes another model or the served model is unexpected, STOP and report to Angelo.
 
 2. Write the brief with all six sections in this order:
 
    GOAL — one sentence, the outcome.
 
-   BRANCH — base branch and the branch name to create. **Existing-branch mode:**
+   BRANCH — owner/repo, base branch, and the branch name to create. **Existing-branch mode:**
    when the work is remediation on a branch that already exists (Grace on an
    assigned feature PR), state the existing branch to check out and say
    explicitly "do not create a new branch". Everything else in this skill applies
@@ -33,14 +50,22 @@ Any time work must read, write, or run commands inside CorewareHub/coreware-app-
 
    SCOPE — the explicit file list or phase table from the plan doc.
 
-   CONSTRAINTS — paste verbatim: never commit on develop/main/master; never merge a PR; never run composer format; one test command at a time; follow .cursor/rules/codebase.mdc, .cursor/rules/test-isolation.mdc, and .cursor/rules/test-failure-triage.mdc; scaffolding failures: fix the test; contract failures: do not invert assertions to match a bug, escalate, write an ESCALATED plan row, leave the test red; do not patch `app/` unless Angelo assigned that specific bug. "No app changes" means escalate, not invert. Framework-semantics corrections (PR 5778) are allowed; product-behavior rewrites (PR 5785 class) are not.
+   CONSTRAINTS — paste verbatim: never commit on develop / develop/develop / main /
+   master; never merge a PR; never run composer format; one test command at a time;
+   follow .cursor/rules/codebase.mdc, .cursor/rules/test-isolation.mdc, and
+   .cursor/rules/test-failure-triage.mdc when those files exist in the target repo;
+   scaffolding failures: fix the test; contract failures: do not invert assertions to
+   match a bug, escalate, write an ESCALATED plan row, leave the test red; do not
+   patch `app/` unless Angelo assigned that specific bug. "No app changes" means
+   escalate, not invert. Framework-semantics corrections (PR 5778) are allowed;
+   product-behavior rewrites (PR 5785 class) are not.
 
    **Grace's feature-PR exception:** on a feature PR she was assigned, the `app/`
    restriction above is replaced by: edit only files already in
-   `git diff develop...HEAD --name-only` on that PR; new files or product-behavior
-   changes beyond the committed implementation plan require Angelo's go-ahead.
-   Every other constraint stands verbatim. Do not apply this exception to CI phase
-   work — the engineers' `app/` restriction is unchanged.
+   `git diff <base>...HEAD --name-only` on that PR (`<base>` = the PR's base branch);
+   new files or product-behavior changes beyond the committed implementation plan
+   require Angelo's go-ahead. Every other constraint stands verbatim. Do not apply
+   this exception to CI phase work — the engineers' `app/` restriction is unchanged.
 
    VERIFY — the exact verification commands to run, or `none` for read-only/planning work.
    When the delegation is Garman's, prefix verify with `TEST_TOKEN=9` (e.g.
@@ -48,7 +73,7 @@ Any time work must read, write, or run commands inside CorewareHub/coreware-app-
 
    REPORT BACK — files changed, tests now passing, commands run with real output, anything unfixed and why, ESCALATED rows.
 
-3. Launch one agent from the stated base branch with model `composer-2.5` and fast mode enabled.
+3. Launch one agent from the stated base branch using this skill's configured launcher settings.
 
 4. Supervise until it finishes. **Concurrency (Angelo 2026-09-09):** Exactly one agent
    may run **tests / migrate / schema dump** per database pair at a time. Margaret and
@@ -67,10 +92,11 @@ Any time work must read, write, or run commands inside CorewareHub/coreware-app-
 
 ## HOW TO VALIDATE
 
-- The run reports Composer 2.5 Fast as the serving model.
-- The branch exists and is not develop/main/master. In create mode it came from
-  the stated base; in existing-branch mode it is the branch named in BRANCH and no
-  new branch was created.
+- The run reports a serving model that matches this skill's launcher settings (not an unexpected substitute).
+- owner/repo is on the allow-list and base matches that repo.
+- The branch exists and is not develop / develop/develop / main / master. In create
+  mode it came from the stated base; in existing-branch mode it is the branch named
+  in BRANCH and no new branch was created.
 - Every touched file is inside SCOPE. Out-of-scope edits are a finding, not a bonus.
 - No polarity inversion. No new application-behavior change unless Angelo already approved that specific patch.
 - VERIFY output is quoted real output, not a claim that it passed.
@@ -78,8 +104,9 @@ Any time work must read, write, or run commands inside CorewareHub/coreware-app-
 
 ## WHAT TO RETURN
 
-Branch name, serving model, files changed with line counts, verify output, unresolved items, ESCALATED rows, and any constraint the agent violated.
+owner/repo, base branch, branch name, serving model, files changed with line counts,
+verify output, unresolved items, ESCALATED rows, and any constraint the agent violated.
 
 ## WHAT REQUIRES APPROVAL
 
-Pushing and opening a PR need no approval. Escalate to Angelo when the served model is not Composer 2.5 Fast, or when the scope includes `app/` rather than tests/ without a written go-ahead. Never merge a PR.
+Pushing and opening a PR need no approval. Escalate to Angelo when the run is served by an unexpected model, or when the scope includes `app/` rather than tests/ without a written go-ahead. Never merge a PR.

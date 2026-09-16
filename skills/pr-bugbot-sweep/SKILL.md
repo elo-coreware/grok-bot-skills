@@ -13,7 +13,8 @@ cursor[bot] has reviewed the new SHA.
 
 ## REQUIRED INPUTS AND ACCESS
 
-- PR number, branch name, current HEAD SHA.
+- owner/repo + base (`develop` or `develop/develop`), PR number, branch name,
+  current HEAD SHA.
 - Committed implementation plan path on the branch (if any), per git-commit.md
   step 5 identification rules. Supply it to the delegated agent as the
   Implementation Plan input for /bugbot.
@@ -26,16 +27,16 @@ Authority files:
 
 ## SEQUENCE OF WORK
 
-1. **Branch scope.** At the PR head:
+1. **Branch scope.** At the PR head (`<base>` = PR base branch):
    ```bash
-   git fetch origin develop 2>/dev/null || true
+   git fetch origin <base> 2>/dev/null || true
    git checkout <branch>
-   git merge-base develop HEAD
-   git diff develop...HEAD --name-status
+   git merge-base <base> HEAD
+   git diff <base>...HEAD --name-status
    ```
 
 2. **Local BugBot (delegated).** Launch repo-delegate-to-cursor with:
-   - GOAL: Run .cursor/commands/bugbot.md in plan mode on develop...HEAD. Attach
+   - GOAL: Run .cursor/commands/bugbot.md in plan mode on <base>...HEAD. Attach
      the committed implementation plan at `<path>` as the Implementation Plan.
      Do not implement fixes.
    - VERIFY: none (read-only plan output)
@@ -81,8 +82,8 @@ Authority files:
 
 ## HOW TO VALIDATE
 
-- develop...HEAD three-dot diff used throughout.
-- Both local bugbot and bugbot-triage ran via delegation on Composer 2.5 Fast.
+- `<base>...HEAD` three-dot diff used throughout.
+- Both local bugbot and bugbot-triage ran via repo-delegate-to-cursor.
 - Every ledger row has file:line, scope evidence, and verdict.
 - GitHub threads filtered to HEAD commit_id for open items.
 
@@ -93,5 +94,4 @@ needs clarification), HEAD SHA, implementation plan path or "none".
 
 ## WHAT REQUIRES APPROVAL
 
-Read-only delegation needs no approval. Escalate when the delegated agent served a
-model other than Composer 2.5 Fast.
+Read-only delegation needs no approval. Escalate when the delegated agent served an unexpected model.

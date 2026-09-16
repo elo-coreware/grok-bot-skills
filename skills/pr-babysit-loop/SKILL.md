@@ -15,7 +15,10 @@ is MERGE-READY or she hands it back with BLOCKED and a written reason.
 
 - PR number and URL, branch name, head SHA at assignment.
 - Read/write on the PR branch via repo-delegate-to-cursor.
-- gh authenticated for CorewareHub/coreware-app-backend.
+- owner/repo + base for the assigned PR (allowed:
+  `CorewareHub/coreware-app-backend` → `develop`, or
+  `CorewareHub/boss-control-tower` → `develop/develop`).
+- gh authenticated for that owner/repo.
 - Committed implementation plan on the branch when one exists (identification rules
   from .cursor/commands/git-commit.md step 5; BugBot-generated plans excluded).
 
@@ -43,9 +46,10 @@ Never run `composer format`. Docs-only / non-PHP: skip.
 
 ## SEQUENCE OF WORK
 
-1. **Intake.** Record PR number, branch, initial HEAD SHA. Fetch origin. Confirm PR
-   is open and targets develop. If merge conflicts with develop exist before work
-   starts, post BLOCKED verdict and ask Angelo to resolve — do not merge develop
+1. **Intake.** Record owner/repo, base branch, PR number, branch, initial HEAD SHA.
+   Fetch origin. Confirm PR is open and targets the correct base (`develop` or
+   `develop/develop` per allow-list). If merge conflicts with `<base>` exist before
+   work starts, post BLOCKED verdict and ask Angelo to resolve — do not merge `<base>`
    yourself unless Gene or Angelo explicitly assigns conflict resolution.
 
 2. **SWEEPING.** Run pr-bugbot-sweep. Produce the combined findings ledger (local

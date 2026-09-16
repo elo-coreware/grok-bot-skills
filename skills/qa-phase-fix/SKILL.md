@@ -146,7 +146,7 @@ before handoff.
    needed, report MERGEABLE or hand for re-gate, and **stop**. Do not fold sibling
    PRs in the same assign.
 
-3. Build the delegation brief with the phase table / plan Implementer instructions as SCOPE and launch one Cursor Cloud Agent via repo-delegate-to-cursor (Composer 2.5 Fast: model `composer-2.5` with fast mode enabled).
+3. Build the delegation brief with the phase table / plan Implementer instructions as SCOPE and launch one Cursor Cloud Agent via repo-delegate-to-cursor as configured in that skill's launcher settings (do not pin a specific Composer model version unless Angelo says otherwise).
 
 4. Per file, classify using `.cursor/rules/test-failure-triage.mdc` **before editing anything**.
    - **Scaffolding failure:** setup is wrong; the asserted contract is untouched. Fix the test (`uses()`, fixtures, fakes, dates, uniqid scoping, teardown ordering, parallel collisions).

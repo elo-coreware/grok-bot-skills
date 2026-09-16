@@ -17,7 +17,7 @@ After qa-ci-log-pull and qa-validity-scan, when no current plan covers the lates
 - Findings from qa-validity-scan.
 - The previous plan in `docs/automated-tests/` (or legacy `docs/`) for the Supersedes line and delta comparison.
 - Template of record: `docs/20260831-FAILING-TESTS-FIX-PLAN.markdown` (legacy path OK as template). New plans go under `docs/automated-tests/`.
-- Repo read access via `repo-delegate-to-cursor` (Composer 2.5 Fast) for **feature-history / git archaeology** (required — not optional).
+- Repo read access via `repo-delegate-to-cursor` for **feature-history / git archaeology** (required — not optional).
 - Authority: `.cursor/rules/test-failure-triage.mdc`. Deeper ESCALATED follow-up still uses `qa-root-cause-investigate` when Gene assigns it.
 
 ## ONE docs PR rule (Angelo 2026-09-14) — mandatory

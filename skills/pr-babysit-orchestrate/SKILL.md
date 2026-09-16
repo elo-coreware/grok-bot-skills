@@ -18,10 +18,12 @@ slot, and relays outcomes. He never merges.
 
 ## REQUIRED INPUTS AND ACCESS
 
-- PR number or URL, branch name (from Angelo or `gh pr view`).
+- owner/repo + PR number or URL, branch name (from Angelo or `gh pr view`).
+  Allowed: `CorewareHub/coreware-app-backend` (base `develop`) or
+  `CorewareHub/boss-control-tower` (base `develop/develop`).
 - Grace's current state from her last report (or assign fresh).
-- Engineer phase state from qa-phase-orchestrate (for slot conflicts).
-- Direct message to Grace. Read-only gh for PR status.
+- Engineer phase state from qa-phase-orchestrate (for slot conflicts; backend CI only).
+- Direct message to Grace. Read-only gh for PR status on the chosen repo.
 
 ## TEST SLOT QUEUE
 
@@ -63,12 +65,13 @@ explicitly prioritizes the feature PR.
 ## SEQUENCE OF WORK
 
 1. **Assign.** When Angelo provides a PR:
-   - Confirm PR is open, targets develop, is a feature PR (not a CI phase PR, not
+   - Confirm owner/repo is allowed and PR is open, targets the matching base
+     (`develop` or `develop/develop`), and is a feature PR (not a CI phase PR, not
      a docs/*-FAILING-TESTS-FIX-PLAN.markdown plan PR).
    - If Grace already babysits another PR, STOP — one PR at a time. Finish or hand
      back the current one first.
-   - Message Grace: PR number, URL, branch, any implementation plan path Angelo
-     mentions. Tell her to run pr-babysit-loop.
+   - Message Grace: owner/repo, base, PR number, URL, branch, any implementation
+     plan path Angelo mentions. Tell her to run pr-babysit-loop.
 
 2. **Slot requests.** When Grace, Margaret, or Garman (pre-fix) asks for the test slot:
    - If slot is free → GRANT to requester, record holder name.
@@ -89,7 +92,7 @@ explicitly prioritizes the feature PR.
 
 5. **Daily brief row.** Add to Gene's five-line brief:
    ```
-   Grace: PR #N (<branch>) — <state> — <verdict or blocker> — <next action>
+   Grace: <owner/repo> PR #N (<branch> → <base>) — <state> — <verdict or blocker> — <next action>
    ```
 
 ## HOW TO VALIDATE
