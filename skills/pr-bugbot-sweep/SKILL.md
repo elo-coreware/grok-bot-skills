@@ -82,7 +82,7 @@ Authority files:
 ## HOW TO VALIDATE
 
 - develop...HEAD three-dot diff used throughout.
-- Both local bugbot and bugbot-triage ran via delegation on Composer 2.5 Fast.
+- Both local bugbot and bugbot-triage ran via repo-delegate-to-cursor.
 - Every ledger row has file:line, scope evidence, and verdict.
 - GitHub threads filtered to HEAD commit_id for open items.
 
@@ -94,4 +94,4 @@ needs clarification), HEAD SHA, implementation plan path or "none".
 ## WHAT REQUIRES APPROVAL
 
 Read-only delegation needs no approval. Escalate when the delegated agent served a
-model other than Composer 2.5 Fast.
+an unexpected model.
