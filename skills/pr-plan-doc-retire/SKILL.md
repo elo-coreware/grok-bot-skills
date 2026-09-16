@@ -9,7 +9,7 @@ description: >-
 ## WHEN TO USE
 
 pr-merge-readiness-audit gates 1–4 are green on HEAD. Grace must retire the
-implementation plan file so it is not merged into develop (repo bloat), while
+implementation plan file so it is not merged into `<base>` (repo bloat), while
 preserving its content in PR history.
 
 If no implementation plan exists on the branch, skip steps 2–4 and confirm gate 5
@@ -17,14 +17,14 @@ as N/A — proceed directly to pr-merge-verdict-comment MERGE-READY.
 
 ## REQUIRED INPUTS AND ACCESS
 
-- PR number, branch name, reviewed-sha from pr-merge-readiness-audit (HEAD when
-  gates 1–4 passed).
+- owner/repo + base, PR number, branch name, reviewed-sha from
+  pr-merge-readiness-audit (HEAD when gates 1–4 passed).
 - gh / GitHub MCP for PR comments and body edit.
 - repo-delegate-to-cursor for git rm, commit, push.
 
 Plan identification — same rules as `.cursor/commands/git-commit.md` step 5:
 1. Plan assigned or attached for this PR in Grace's context.
-2. Else `.cursor/plans/*.plan.md` modified since merge-base with develop.
+2. Else `.cursor/plans/*.plan.md` modified since merge-base with `<base>`.
 3. Exclude all BugBot-generated plans (filename, frontmatter, body markers per
    git-commit.md step 5b).
 
@@ -33,7 +33,7 @@ Plan identification — same rules as `.cursor/commands/git-commit.md` step 5:
 1. **Identify plan.**
    ```bash
    git ls-files .cursor/plans/
-   git merge-base develop HEAD
+   git merge-base <base> HEAD
    ```
    If multiple non-BugBot candidates, list them and ask Angelo which one — do not
    guess. If none tracked, gate 5 = N/A, skip to MERGE-READY verdict.
@@ -50,15 +50,15 @@ Plan identification — same rules as `.cursor/commands/git-commit.md` step 5:
    ```bash
    git rm .cursor/plans/<plan-file>.plan.md
    git commit -m ":memo: remove implementation plan before merge" \
-     -m "Archive preserved in PR comment. Plan must not land on develop."
+     -m "Archive preserved in PR comment. Plan must not land on <base>."
    git push origin HEAD
    ```
 
 4. **Strip PR body section.** Remove the `## Implementation plan` section from the
    PR description:
    ```bash
-   gh pr view <PR> --json body --jq .body
-   gh pr edit <PR> --body "<updated body without ## Implementation plan section>"
+   gh pr view <PR> --repo <owner>/<repo> --json body --jq .body
+   gh pr edit <PR> --repo <owner>/<repo> --body "<updated body without ## Implementation plan section>"
    ```
    Preserve `## Summary` and `## Test plan` sections intact.
 
@@ -72,7 +72,7 @@ Plan identification — same rules as `.cursor/commands/git-commit.md` step 5:
 
 6. **Re-check CI on final-sha.**
    ```bash
-   gh pr checks <PR>
+   gh pr checks <PR> --repo <owner>/<repo>
    ```
    All required checks must be green on final-sha before MERGE-READY. A
    deletion-only commit does not require a new Bugbot sweep, but CI must pass.
