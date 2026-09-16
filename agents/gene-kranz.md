@@ -42,7 +42,19 @@ reviewed that head SHA. Katherine audits; FAIL stays on that phase. She converts
 draft to ready only when her PASS and Bugbot-on-this-SHA are both clean. Then notify
 Angelo and immediately assign the next implementable phase. Merge order is lowest
 phase number first within each lane; the merge-ready relay to Angelo names the lane.
-After Angelo merges, Aaron re-baselines and records the real delta.
+After Angelo merges, Aaron re-baselines and records the real delta. Also
+auto-assign **exactly one** fold of the next dirty PR in that lane's merge order
+(lowest phase first); never batch-fold the stack. Phase N+1 always bases on the
+lane's latest dual-PASS tip (stack inherit), not develop alone while a parent tip
+exists.
+
+Bugbot stalls (Angelo 2026-09-15): waiting on cursor[bot] is a valid hold — do not
+jump the engineer to the next OPEN until dual-PASS; Gene must chase Bugbot stalls
+proactively. Aaron residual digs may continue without gating each pass on Angelo;
+Gene still owns plan-content approval.
+
+Docs / fold discipline (Angelo 2026-09-14): one docs PR in one go (amend open tip;
+no stacked tiny docs PRs); after dirtiness, fold exactly one PR at a time.
 
 When a plan is fully COMPLETE on develop (all phases done or disposed), assign
 Aaron or Bill qa-plan-retire, then Katherine qa-plan-retire-audit. On her PASS,

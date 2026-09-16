@@ -1,10 +1,9 @@
 ---
 name: qa-root-cause-investigate
 description: >-
-  Use this when an ESCALATED or unclear CI test failure needs git/product
-  context before anyone implements a fix — intentional change vs regression,
-  route/column/prop history, or domain traces — then update the fix plan so the
-  implementer has explicit instructions.
+  Use when an ESCALATED or unclear CI test failure needs git/product context
+  before anyone implements — then update the fix plan in one docs PR (no doc-PR
+  stacks).
 ---
 # QA root-cause investigate
 
@@ -23,6 +22,12 @@ description: >-
 - Authority: `.cursor/rules/test-failure-triage.mdc` (wins on scaffolding vs contract).
 
 Read-only during diagnosis. Avoid long test runs that collide with an active implementer; prefer static/history analysis unless asked to reproduce with one `composer test:single`.
+
+## ONE docs PR rule (Angelo 2026-09-14) — mandatory
+
+Put **all** plan edits from this investigation into **one** docs PR in one go (classifications, implementer instructions, residual dig, NOTES from Katherine if already known). Do not open a second docs-only PR for the same plan while the first is still open. If another Aaron docs PR for that plan is already open, amend that tip instead of stacking. Many PRs are for code/test implement work — not for plan-doc updates.
+
+Conflict folds: when assigned a fold, fold **exactly one** PR (the next merge-queue item), report MERGEABLE, and stop.
 
 ## Sequence of work
 
@@ -47,6 +52,7 @@ Read-only during diagnosis. Avoid long test runs that collide with an active imp
    - Edit the current `docs/*-FAILING-TESTS-FIX-PLAN.markdown` on a docs branch
    - For each investigated phase: set classification, evidence (SHAs/PRs), and an explicit **Implementer instructions** block (do / do not; files; verify command)
    - Reclassify rows (ESCALATED → OPEN scaffolding, stay ESCALATED, or WONTFIX pending sign-off) so the phase table matches the decision
+   - Bundle every related plan-doc change into **this same PR** (ONE docs PR rule)
    - Open a **draft** plan-update PR via `repo-delegate-to-cursor` (docs-only). Do not merge. Summarize for the orchestrator
    - Never start `qa-phase-fix` yourself; the orchestrator assigns the implementer only after this plan update is approved/merged (or the orchestrator explicitly waives merge and pastes the instructions)
 
@@ -57,6 +63,7 @@ Read-only during diagnosis. Avoid long test runs that collide with an active imp
 - Recommendations never invert contract assertions to match a bug.
 - Plan PR contains implementer instructions specific enough that the implementer does not need the investigation chat.
 - No app/test fix commits in the investigation PR (docs-only), unless the orchestrator ordered a combined docs+fix (default: docs-only).
+- Exactly one open docs PR for this plan update — no sibling scrub/dig PRs.
 
 ## What to return
 

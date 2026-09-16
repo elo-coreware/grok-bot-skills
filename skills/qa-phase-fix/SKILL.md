@@ -109,11 +109,22 @@ until Angelo lifts the standing rule.
 
 ## SEQUENCE OF WORK
 
-1. git fetch origin. Merge `origin/develop`. If Gene named a previous phase branch as base, merge that branch too (develop first, then the phase branch **in your lane**). On conflicts: list `git diff --name-only --diff-filter=U`, run `git merge --abort`, notify Gene, STOP. Never resolve conflicts yourself.
+1. git fetch origin. **Stack inherit:** Gene names the base — latest dual-PASS
+   unmerged phase branch **in your lane** (Phase N tip), else `origin/develop`.
+   For a **new** Phase N+1 branch: create from that named tip (never from develop
+   alone while a dual-PASS parent exists). Merge `origin/develop` into the tip
+   first only if Gene asks or develop has moved past it. On conflicts: list
+   `git diff --name-only --diff-filter=U`, run `git merge --abort`, notify Gene,
+   STOP. Never resolve conflicts yourself.
 
-2. Branch from that merged base using the naming convention for the work type. On a
+2. Branch from that base using the naming convention for the work type. On a
    FAIL return, stay on the existing branch. Open the PR as **draft** targeting
    `develop`. Never mark it ready. Never merge.
+
+   **Post-merge fold:** When Gene assigns a fold after Angelo merges, merge
+   `origin/develop` into **this** PR only, push, re-verify / re-`cursor review` as
+   needed, report MERGEABLE or hand for re-gate, and **stop**. Do not fold sibling
+   PRs in the same assign.
 
 3. Build the delegation brief with the phase table / plan Implementer instructions as SCOPE and launch one Cursor Cloud Agent via repo-delegate-to-cursor (Composer 2.5 Fast: model `composer-2.5` with fast mode enabled).
 
@@ -163,7 +174,7 @@ until Angelo lifts the standing rule.
     - HEAD SHA this verify covers
     Do this after the final successful verify on the handoff SHA (and again after any Bugbot-fix re-verify). This is separate from `cursor review`.
 
-13. Hand the still-draft PR to Gene for Katherine's audit. Report the head SHA, the Bugbot review SHA, the author login of your `cursor review` and verify comments, cloud-agent verify output, lane, and the base branch you used. Do not start the next phase until Gene assigns it (after this one is dual-PASS). Gene may assign your next phase **before Angelo merges** this PR — stack on your dual-PASS tip when he says so. Non-Pest work (implement/prep/`cursor review`) does **not** need the test slot.
+13. Hand the still-draft PR to Gene for Katherine's audit. Report the head SHA, the Bugbot review SHA, the author login of your `cursor review` and verify comments, cloud-agent verify output, lane, and the base branch you used. Do not start the next phase until Gene assigns it (after this one is dual-PASS). Gene may assign your next phase **before Angelo merges** this PR — stack on your dual-PASS tip when he says so (Phase N+1 inherits this tip). Waiting on Bugbot is a valid hold; stay on this phase until Gene says dual-PASS. Non-Pest work (implement/prep/`cursor review`/fold) does **not** need the test slot.
 
 14. When Katherine FAILs: implement every valid in-scope item from her triage table on the same branch, re-verify with one test command, push, post `cursor review` under Angelo's identity on that new commit, wait for Bugbot, post an updated verify evidence comment, then hand back to Gene. Never mark a Katherine-valid item false-positive to skip it. Still do not invert contract assertions or patch `app/` unless Angelo assigned it / the plan authorizes it.
 

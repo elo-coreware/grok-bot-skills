@@ -2,7 +2,8 @@
 name: qa-fix-plan-build
 description: >-
   Use this after qa-ci-log-pull and qa-validity-scan when no current plan covers
-  the latest develop CI run, or the newest plan's baseline is stale.
+  the latest develop CI run, or the newest plan's baseline is stale — and for
+  any STABLE/fix-plan docs update (one PR only).
 ---
 # QA fix plan build
 
@@ -18,6 +19,16 @@ After qa-ci-log-pull and qa-validity-scan, when no current plan covers the lates
 - Template of record: `docs/20260831-FAILING-TESTS-FIX-PLAN.markdown` (legacy path OK as template). New plans go under `docs/automated-tests/`.
 - Repo read access via `repo-delegate-to-cursor` (Composer 2.5 Fast) for **feature-history / git archaeology** (required — not optional).
 - Authority: `.cursor/rules/test-failure-triage.mdc`. Deeper ESCALATED follow-up still uses `qa-root-cause-investigate` when Gene assigns it.
+
+## ONE docs PR rule (Angelo 2026-09-14) — mandatory
+
+**Docs work on a fix plan must land in exactly one PR, in one go.** Do not open a stack of tiny docs PRs (NOTES scrub, then dig, then call-site count, then re-baseline) that each touch the same plan file — that cascades merge conflicts, noisies GitHub, and forces serial folds.
+
+- **New plan:** one PR for the full plan document.
+- **Plan update / re-baseline / NOTES scrub / residual dig / arithmetic fix:** amend or open **one** docs PR that includes every pending plan-doc change you already know about. If a related dig or NOTES item is in flight, fold it into that same PR before opening another.
+- **Never** open a follow-up docs-only PR that only exists because the previous docs PR is still unmerged — wait, amend the open tip, or ask Gene to hold merges until the single PR is complete.
+- **Conflict folds:** when Gene assigns a fold after Angelo merges, fold **exactly one** PR (the next in the merge queue), report MERGEABLE, and stop. Do not batch-fold the remaining stack.
+- **Many PRs are for code/test implement work** (Margaret/Garman phase PRs). Docs sprawl is not acceptable.
 
 ## Sequence of work
 
@@ -38,6 +49,7 @@ After qa-ci-log-pull and qa-validity-scan, when no current plan covers the lates
    - Pure scaffolding phases may use a short history note (`SCAFFOLDING — no product-intent dispute`) but must still not invent app behavior.
 10. Full failure inventory sorted by count, with a phase column.
 11. Recommended fix order and the per-phase AI session checklist.
+12. Ship **one** PR only (see ONE docs PR rule above).
 
 ## How to validate
 
@@ -46,6 +58,7 @@ After qa-ci-log-pull and qa-validity-scan, when no current plan covers the lates
 - Every count traces to a citable log line. Never estimate silently.
 - Every phase has a runnable `composer test:single` command.
 - **Every phase has a Feature-history subsection** with: symbol, cited SHA/PR or explicit UNKNOWN + search notes, classification, and Implementer instructions. A plan without this is incomplete — do not open the PR until it is present.
+- Diff is one cohesive docs PR — no sibling open docs PRs for the same plan file that you just created.
 
 ## What to return
 
