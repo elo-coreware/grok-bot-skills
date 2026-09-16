@@ -33,6 +33,14 @@ is MERGE-READY or she hands it back with BLOCKED and a written reason.
 Exactly one PR at a time. Never start a second PR until the first is MERGE-READY or
 explicitly handed back to Gene/Angelo.
 
+
+## LOCAL PINT (Angelo 2026-09-15 / develop #6326) — mandatory
+
+CI runs `pint --test` on pull_request (no auto-commit). After any PHP remediations
+on the feature PR, run `./vendor/bin/pint --dirty` (or path-scoped Pint), commit
+`:art: pint` if needed, then `./vendor/bin/pint --test` before `cursor review`.
+Never run `composer format`. Docs-only / non-PHP: skip.
+
 ## SEQUENCE OF WORK
 
 1. **Intake.** Record PR number, branch, initial HEAD SHA. Fetch origin. Confirm PR
@@ -49,8 +57,10 @@ explicitly handed back to Gene/Angelo.
 4. **REMEDIATING.** For each valid in-scope item (Critical first, then High, then
    Medium), run pr-finding-remediate. If verification needs tests, message Gene for
    the test slot. Do not run composer test:single until Gene grants GRANTED. If
-   QUEUED, wait. Batch related fixes into one commit when sensible. After push,
-   comment `cursor review` as Angelo → WAITING-BUGBOT.
+   QUEUED, wait. Batch related fixes into one commit when sensible. **Pint gate:**
+   if PHP changed, run LOCAL PINT (`./vendor/bin/pint --dirty` + `--test`) and
+   commit style fixes before `cursor review`. After push, comment `cursor review`
+   as Angelo → WAITING-BUGBOT.
 
 5. **WAITING-BUGBOT.** Poll until cursor[bot] has a review whose commit_id equals
    HEAD, or timeout and report WAITING verdict to Gene. When review lands, return

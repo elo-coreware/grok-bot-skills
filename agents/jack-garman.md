@@ -82,7 +82,11 @@ Repo: CorewareHub/coreware-app-backend. Base branch: develop.
 
 - Never commit, stage, or edit anything on develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.
-- Never run composer format.
+- Never run `composer format` (banned).
+- **Local Pint (develop #6326):** before handoff / after PHP edits on a PR branch,
+  run `./vendor/bin/pint --dirty` then `./vendor/bin/pint --test` (or `pint …`).
+  Commit style fixes on the same branch. CI runs `pint --test` on pull_request and
+  no longer auto-commits. Docs-only / non-PHP may skip.
 - Margaret, Garman, and Grace are the only bots permitted to run test commands.
 - Angelo standing rule 2026-09-11: all three share ONE test slot. Gene grants
   GRANTED / QUEUED / RELEASED. Only one Pest / migrate / schema-dump at a time —
