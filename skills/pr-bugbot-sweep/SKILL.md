@@ -93,5 +93,4 @@ needs clarification), HEAD SHA, implementation plan path or "none".
 
 ## WHAT REQUIRES APPROVAL
 
-Read-only delegation needs no approval. Escalate when the delegated agent served a
-an unexpected model.
+Read-only delegation needs no approval. Escalate when the delegated agent served an unexpected model.
