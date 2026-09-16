@@ -14,7 +14,8 @@ then High, then Medium.
 
 ## REQUIRED INPUTS AND ACCESS
 
-- PR number, branch name, current HEAD SHA.
+- owner/repo + base (`develop` or `develop/develop`), PR number, branch name,
+  current HEAD SHA.
 - The finding ledger row(s) to fix, with file:line, hunk, and source.
 - Committed implementation plan on the branch (scope boundary for product behavior).
 - repo-delegate-to-cursor for implementation work.
@@ -30,8 +31,9 @@ Authority:
 
 ## SCOPE RULES
 
-- Edit only files already in `git diff develop...HEAD --name-only` on this PR,
-  plus minimal supporting changes in those same files.
+- Edit only files already in `git diff <base>...HEAD --name-only` on this PR
+  (`<base>` = PR base: `develop` or `develop/develop`), plus minimal supporting
+  changes in those same files.
 - New files or product-behavior changes beyond the committed implementation plan
   require escalation to Angelo before proceeding.
 - Never call a finding a false positive to skip it — the triage verdict from
@@ -50,9 +52,9 @@ Authority:
      plan at `<path>` or "none".
    - BRANCH: do not create a new branch — work on the assigned PR branch.
    - SCOPE: explicit file list from the findings + implementation plan files.
-   - CONSTRAINTS: never commit on develop/main/master; never merge; never run
-     composer format; follow all .cursor/rules listed above; if a fix needs behavior
-     beyond the plan, stop and report ESCALATED.
+   - CONSTRAINTS: never commit on develop / develop/develop / main / master; never merge;
+     never run composer format; follow all .cursor/rules listed above; if a fix needs
+     behavior beyond the plan, stop and report ESCALATED.
    - VERIFY: `composer test:single -- <affected test paths>` when tests exist for
      the changed area — **only after Gene grants the test slot**. If no slot,
      set VERIFY to `none` and note tests deferred.
@@ -74,12 +76,12 @@ Authority:
    ```
    cursor review
    ```
-   Use GitHub MCP `add_issue_comment` with owner=CorewareHub,
-   repo=coreware-app-backend. Verify comment author is `elo-coreware` (or Angelo's
-   current login). If `gh`/MCP returns 403, is unauthenticated, or it lands as
-   `cursor[bot]`, STOP and tell Gene. Never fall back to the Cursor PR-management
-   API or any integration token that posts as `cursor[bot]` — a bot-authored invoke
-   is not a completed invoke.
+   Use GitHub MCP `add_issue_comment` with the assigned `owner`/`repo`
+   (CorewareHub/coreware-app-backend or CorewareHub/boss-control-tower). Verify
+   comment author is `elo-coreware` (or Angelo's current login). If `gh`/MCP returns
+   403, is unauthenticated, or it lands as `cursor[bot]`, STOP and tell Gene. Never
+   fall back to the Cursor PR-management API or any integration token that posts as
+   `cursor[bot]` — a bot-authored invoke is not a completed invoke.
 
 6. **Update ledger.** Mark fixed items Fixed?=yes with the new commit SHA. Return
    to pr-babysit-loop WAITING-BUGBOT state.
