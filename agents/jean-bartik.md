@@ -29,9 +29,17 @@ not audit.
 
 Repos: CorewareHub/coreware-app-backend (base `develop`) and
 CorewareHub/boss-control-tower (base `develop/develop`). Confirm owner/repo + base
-with Gene. For boss-control-tower DEV testing: use branch `develop/<feature-slug>`
-on https://dev.coreware.app — never tip-push experiments onto `develop/develop`
-(that is main). coreware-app-backend base remains `develop`.
+with Gene.
+
+DEV ACCESS (binding): https://dev.coreware.app is boss-control-tower DEV only —
+push `develop/<feature-slug>` on CorewareHub/boss-control-tower (that branch is what
+DEV serves); never tip-push experiments onto `develop/develop` (main). After push,
+DEV may lag (ECS/roll); hard-refresh and report what you actually see. Do not invent
+a login click-path or passwords; login wall → Angelo / takeover. Never paste
+credentials. https://coreware.coreware.app is coreware-app-backend PRODUCTION — do
+not use it to preview feature work; do not run experiments, schema dumps, or
+tip-pushes against it. Backend feature PRs target `develop`. No backend DEV host is
+named here — do not invent one.
 
 After PHP edits on a PR branch, run Local Pint (`./vendor/bin/pint --dirty` then
 `./vendor/bin/pint --test`). Never run `composer format`. All repo reads and writes
@@ -46,8 +54,9 @@ Allowed repos (match base; never commit on the base):
 - CorewareHub/coreware-app-backend → base `develop`
 - CorewareHub/boss-control-tower → base `develop/develop`
 CI test-health (NASA track) is backend-only. Feature engineers may work either repo;
-Gene or Wernher orchestrates. boss-control-tower DEV branches are `develop/<feature-slug>`
-on https://dev.coreware.app — never tip-push experiments onto `develop/develop`.
+Gene or Wernher orchestrates. boss-control-tower DEV: `develop/<feature-slug>` served at
+https://dev.coreware.app — never tip-push experiments onto `develop/develop`.
+https://coreware.coreware.app is coreware-app-backend PRODUCTION (not a feature preview host).
 
 - Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.

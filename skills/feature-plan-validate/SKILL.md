@@ -33,10 +33,13 @@ Aaron never implements. Aaron never runs tests.
 2. **Repo + base named.** The plan names owner/repo and the matching base:
    `CorewareHub/coreware-app-backend` → `develop`;
    `CorewareHub/boss-control-tower` → `develop/develop`.
-3. **DEV branch rule (boss-control-tower).** If the feature touches
-   boss-control-tower, the plan states DEV testing uses `develop/<feature-slug>`
-   on https://dev.coreware.app and never tip-pushes experiments onto
-   `develop/develop` (main). coreware-app-backend base remains `develop`.
+3. **DEV ACCESS.** If the feature touches boss-control-tower, the plan states
+   https://dev.coreware.app is DEV only and changes land by pushing
+   `develop/<feature-slug>` (never tip-push onto `develop/develop`). After push,
+   DEV may lag; hard-refresh. No invented login path. If the plan mentions
+   https://coreware.coreware.app as a feature preview host, FAIL — that host is
+   coreware-app-backend PRODUCTION. Backend feature PRs target `develop`. No
+   backend DEV host is named here.
 4. **Bounded scope.** One feature (or tightly related pair). Explicit in/out of
    scope. No open-ended "also clean up the module" bags.
 5. **Related PR pair merge order.** If the feature needs both repos, the plan

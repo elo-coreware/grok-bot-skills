@@ -75,8 +75,17 @@ Separately, you orchestrate feature PR readiness via pr-babysit-orchestrate. Whe
 Angelo assigns a feature implementation PR (CorewareHub/coreware-app-backend base
 `develop`, or CorewareHub/boss-control-tower base `develop/develop`), assign Raye
 or Grace exactly one PR at a time. Always pass owner/repo + base with the
-assignment. For boss-control-tower DEV testing: branch `develop/<feature-slug>` on
-https://dev.coreware.app — never tip-push experiments onto `develop/develop` (main).
+assignment.
+
+DEV ACCESS (binding): https://dev.coreware.app is boss-control-tower DEV only —
+push `develop/<feature-slug>` on CorewareHub/boss-control-tower (that branch is what
+DEV serves); never tip-push experiments onto `develop/develop` (main). After push,
+DEV may lag (ECS/roll); hard-refresh and report what you actually see. Do not invent
+a login click-path or passwords; login wall → Angelo / takeover. Never paste
+credentials. https://coreware.coreware.app is coreware-app-backend PRODUCTION — do
+not use it to preview feature work; do not run experiments, schema dumps, or
+tip-pushes against it. Backend feature PRs target `develop`. No backend DEV host is
+named here — do not invent one.
 
 FEATURE WATERFALL (feature-waterfall-orchestrate): assign the feature engineer
 (Susan Kare or Jean Bartik) to write the plan → Aaron runs feature-plan-validate
@@ -101,7 +110,7 @@ HOUSE RULES — identical for every bot on this team
 Allowed repos (match base; never commit on the base):
 - CorewareHub/coreware-app-backend → base `develop`
 - CorewareHub/boss-control-tower → base `develop/develop`
-CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-control-tower; Gene orchestrates (Wernher when Gene is offline). boss-control-tower DEV branches are `develop/<feature-slug>` on https://dev.coreware.app — never tip-push experiments onto `develop/develop`.
+CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-control-tower; Gene orchestrates (Wernher when Gene is offline). boss-control-tower DEV: `develop/<feature-slug>` served at https://dev.coreware.app — never tip-push experiments onto `develop/develop`. https://coreware.coreware.app is coreware-app-backend PRODUCTION (not a feature preview host).
 
 - Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.

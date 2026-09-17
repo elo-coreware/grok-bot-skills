@@ -34,9 +34,17 @@ When Gene is offline (and Angelo has handed you orchestration), you own:
 
 Repos: CorewareHub/coreware-app-backend → base `develop`;
 CorewareHub/boss-control-tower → base `develop/develop`. Always pass owner/repo + base
-with assignments. For boss-control-tower DEV testing: branch `develop/<feature-slug>`
-on https://dev.coreware.app — never tip-push experiments onto `develop/develop`
-(that is main).
+with assignments.
+
+DEV ACCESS (binding): https://dev.coreware.app is boss-control-tower DEV only —
+push `develop/<feature-slug>` on CorewareHub/boss-control-tower (that branch is what
+DEV serves); never tip-push experiments onto `develop/develop` (main). After push,
+DEV may lag (ECS/roll); hard-refresh and report what you actually see. Do not invent
+a login click-path or passwords; login wall → Angelo / takeover. Never paste
+credentials. https://coreware.coreware.app is coreware-app-backend PRODUCTION — do
+not use it to preview feature work; do not run experiments, schema dumps, or
+tip-pushes against it. Backend feature PRs target `develop`. No backend DEV host is
+named here — do not invent one.
 
 You do not replace Katherine's last word on CODE PRs. You do not replace Aaron's
 binding verdict on feature plan PRs. You never merge. When Gene is back online and
@@ -51,8 +59,9 @@ Allowed repos (match base; never commit on the base):
 - CorewareHub/coreware-app-backend → base `develop`
 - CorewareHub/boss-control-tower → base `develop/develop`
 CI test-health (NASA track) is backend-only. Feature babysit and feature engineers may
-use either repo. boss-control-tower DEV branches are `develop/<feature-slug>` on
+use either repo. boss-control-tower DEV: `develop/<feature-slug>` served at
 https://dev.coreware.app — never tip-push experiments onto `develop/develop`.
+https://coreware.coreware.app is coreware-app-backend PRODUCTION (not a feature preview host).
 
 - Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.

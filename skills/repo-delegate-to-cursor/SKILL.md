@@ -18,15 +18,30 @@ target. Do not delegate product edits here.
 
 ## ALLOWED REPOS
 
-| owner/repo | Base branch | DEV notes |
-|------------|-------------|-----------|
-| `CorewareHub/coreware-app-backend` | `develop` | Base remains `develop` |
-| `CorewareHub/boss-control-tower` | `develop/develop` | DEV testing: `develop/<feature-slug>` on https://dev.coreware.app — never tip-push experiments onto `develop/develop` (main) |
+| owner/repo | Base branch | Host notes |
+|------------|-------------|------------|
+| `CorewareHub/coreware-app-backend` | `develop` | Feature PRs target `develop`. **https://coreware.coreware.app is PRODUCTION** — not a DEV preview host. |
+| `CorewareHub/boss-control-tower` | `develop/develop` | DEV only: push `develop/<feature-slug>`; served at **https://dev.coreware.app**. Never tip-push experiments onto `develop/develop` (main). |
 
 Refuse any other owner/repo unless Angelo explicitly expands the allow-list. NASA CI
 test-health work stays on `coreware-app-backend`. Grace, Raye, Gene/Wernher
 orchestrating them, and feature engineers (Susan Kare, Jean Bartik) may be delegated
 on either allowed product repo.
+
+## DEV ACCESS (binding — do not invert)
+
+- **https://dev.coreware.app** is **boss-control-tower DEV only**. How changes reflect
+  there: push the feature tip to branch `develop/<feature-slug>` on
+  `CorewareHub/boss-control-tower`. That branch is what DEV serves.
+  `develop/develop` is the main branch — never tip-push experiments onto it. After
+  push, DEV may lag (ECS/roll); hard-refresh and re-check. Report what you actually
+  see. Do not invent a login click-path or passwords. If a bot hits a login wall,
+  escalate to Angelo / takeover. Never paste credentials.
+- **https://coreware.coreware.app** is **CorewareHub/coreware-app-backend PRODUCTION**.
+  Treat it as PROD. Do not use it to preview feature work. Do not run experiments,
+  schema dumps, or tip-pushes against it. Be careful whenever anyone accesses it.
+  Backend feature PRs still target `develop` (not PROD). There is **no** backend DEV
+  host named in this instruction — do not invent one.
 
 ## REQUIRED INPUTS AND ACCESS
 
@@ -34,7 +49,9 @@ on either allowed product repo.
 - **owner/repo** (required) — one of the allowed repos above.
 - **Base branch** matching that repo (`develop` or `develop/develop`) and the exact
   target branch name. Do not default blindly to `develop` when the repo is
-  boss-control-tower. For Control Tower DEV work, prefer `develop/<feature-slug>`.
+  boss-control-tower. For Control Tower DEV work, use `develop/<feature-slug>`
+  (served on https://dev.coreware.app). Never treat https://coreware.coreware.app
+  as a feature preview host — it is backend PRODUCTION.
 - Cursor Cloud Agents access.
 - gh authenticated for the chosen owner/repo.
 
@@ -106,8 +123,10 @@ on either allowed product repo.
 - owner/repo is on the allow-list and base matches that repo.
 - The branch exists and is not develop / develop/develop / main / master. In create
   mode it came from the stated base; in existing-branch mode it is the branch named
-  in BRANCH and no new branch was created. boss-control-tower DEV work should use
-  `develop/<feature-slug>`, not tip-pushes onto `develop/develop`.
+  in BRANCH and no new branch was created. boss-control-tower DEV work must use
+  `develop/<feature-slug>` on https://dev.coreware.app, not tip-pushes onto
+  `develop/develop`. Never use https://coreware.coreware.app to preview features
+  (that host is backend PRODUCTION).
 - Every touched file is inside SCOPE. Out-of-scope edits are a finding, not a bonus.
 - No polarity inversion. No new application-behavior change unless Angelo already approved that specific patch.
 - VERIFY output is quoted real output, not a claim that it passed.

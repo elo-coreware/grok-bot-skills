@@ -32,9 +32,15 @@ change. Do not open stacked tiny docs PRs.
 
 1. **Goal** — one paragraph outcome.
 2. **owner/repo + base** — explicit.
-3. **DEV branch rule** — for boss-control-tower: DEV on `develop/<feature-slug>` at
-   https://dev.coreware.app; never tip-push experiments onto `develop/develop`.
-   Backend remains base `develop`.
+3. **DEV ACCESS** — https://dev.coreware.app is **boss-control-tower DEV only**.
+   Push `develop/<feature-slug>` on CorewareHub/boss-control-tower (that branch is
+   what DEV serves). Never tip-push experiments onto `develop/develop` (main). After
+   push, DEV may lag (ECS/roll); hard-refresh and re-check. Do not invent a login
+   click-path or passwords; login wall → Angelo / takeover. Never paste credentials.
+   https://coreware.coreware.app is **coreware-app-backend PRODUCTION** — do not use
+   it to preview feature work; do not run experiments / schema dumps / tip-pushes
+   against it. Backend feature PRs still target `develop`. No backend DEV host is
+   named here — do not invent one.
 4. **Scope** — in / out. Bounded.
 5. **Approach** — high-level steps, files or surfaces touched, risks.
 6. **Related PR pair** — if both repos, name merge order.
@@ -57,7 +63,7 @@ plan.
 ## HOW TO VALIDATE
 
 - Single plan PR; docs-only (or named authorized spike).
-- Repo, base, DEV rule, scope, test notes present.
+- Repo, base, DEV ACCESS (dev.coreware.app vs PROD), scope, test notes present.
 - No implementation commits on the plan PR.
 
 ## WHAT TO RETURN

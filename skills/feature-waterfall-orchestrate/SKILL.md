@@ -38,9 +38,12 @@ PRs. Do not assign implement.
 - owner/repo + base for each PR:
   - `CorewareHub/coreware-app-backend` → `develop`
   - `CorewareHub/boss-control-tower` → `develop/develop`
-- **DEV branch rule:** boss-control-tower DEV testing uses `develop/<feature-slug>`
-  on https://dev.coreware.app. Never tip-push experiments onto `develop/develop`
-  (main). Backend base remains `develop`.
+- **DEV ACCESS:** https://dev.coreware.app is boss-control-tower DEV only — push
+  `develop/<feature-slug>` (that branch is what DEV serves); never tip-push
+  experiments onto `develop/develop`. After push, DEV may lag (ECS/roll); hard-refresh.
+  Login wall → Angelo / takeover; never invent passwords or paste credentials.
+  https://coreware.coreware.app is coreware-app-backend PRODUCTION — not a feature
+  preview host. Backend feature PRs target `develop`. No backend DEV host named here.
 - Direct messages to Aaron, Kare/Bartik, Raye/Grace, Katherine. Read-only gh.
 
 ## TEST SLOT QUEUE
