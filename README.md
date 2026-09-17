@@ -64,10 +64,21 @@ Each agent has `agents/<slug>.md` (human-readable) and `agents/<slug>.json` (mac
 
 Each skill lives at `skills/<skill-id>/SKILL.md`.
 
+## Routines
+
+Team liveness pings (not work dumps). See [`routines/`](routines/README.md).
+
+| File | Schedule (Asia/Manila) |
+|------|------------------------|
+| [weekday-liveness-20min](routines/weekday-liveness-20min.md) | Weekdays `*/20` 8:00 AM–8:40 PM PST |
+| [weekday-overnight-liveness-hourly](routines/weekday-overnight-liveness-hourly.md) | Weekdays hourly at `:47`, 9:00 PM–7:47 AM PST |
+
+Weekends off. Canonical copies live here. Only the orchestrator Angelo last talked to runs them (Gene live now; Wernher paused) — never both, or Angelo gets a double ping.
+
 ## Updating
 
-1. Edit agents or skills in a PR on this repo.
-2. After merge, sync into the live Grok Bot agent profiles / workflows.
+1. Edit agents, skills, or routines in a PR on this repo.
+2. After merge, sync into the live Grok Bot agent profiles / workflows / routines.
 3. Do not store secrets, tokens, or customer data here.
 
 Repo: CorewareHub/coreware-app-backend (product). This repo is bot capability VC only.

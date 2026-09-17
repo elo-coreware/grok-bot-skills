@@ -2,6 +2,8 @@
 
 Grok Bot **liveness** routines for the Coreware team. These are short status pings so Angelo can see who is responsive — not work dumps, not task assignments, not test runs.
 
+The two files here are the **canonical** wording and cron for both routines. Sync them into the live Grok Bot that currently owns orchestration. Do **not** run them on Gene and Wernher at the same time.
+
 ## Schedule (Asia/Manila / Philippine Standard Time)
 
 | Routine | When |
@@ -11,11 +13,18 @@ Grok Bot **liveness** routines for the Coreware team. These are short status pin
 
 **Weekends are off** (cron `1-5` only). Do not enable Saturday/Sunday fires.
 
-## Ownership
+## Ownership — one orchestrator only (no double ping)
 
-- **Gene Kranz** owns the orchestrator copy of these routines (day + overnight).
-- **Wernher von Braun** may keep a **separate** Grok Bot copy when he is covering as backup. Do not fold Wernher's overnight job into Gene's daytime prompt — keep the two bots' live configs distinct.
-- Other bots may copy the same intent into their own Grok Bot routines if Angelo asks; this directory is the source of truth for wording and cron.
+Angelo must not get two liveness pings for the same slot.
+
+- The orchestrator Angelo **last talked to** owns both liveness routines (day + overnight).
+- The **other** orchestrator stays **quiet** — those two routines must be **paused** on that bot.
+- **Right now:** Gene is last-talked-to → Gene's copies are the live ones; **Wernher's copies must be paused**.
+- If Angelo next assigns orchestration to Wernher → Wernher takes liveness and **Gene pauses**.
+
+Gene and Wernher must never both execute these routines while enabled. Canonical files in this repo are shared templates; only one live bot fires them.
+
+Other bots may copy the intent into their own Grok Bot routines only if Angelo asks; this directory remains the source of truth for wording and cron.
 
 ## Shape
 

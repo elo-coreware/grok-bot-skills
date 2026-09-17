@@ -9,7 +9,7 @@ timezone: Asia/Manila
 
 **Schedule:** `CRON_TZ=Asia/Manila 47 0-7,21-23 * * 1-5`  
 **Meaning:** weekdays only, hourly at :47 during 9:00 PM–7:47 AM Philippine Standard Time (hours 21–23 and 0–7). Explicit off-hours / early-morning coverage. Saturday and Sunday must not fire.  
-**Owner:** Gene Kranz (orchestrator). Wernher may maintain his own separate copy when covering backup — keep live configs distinct; do not merge both bots' overnight jobs into one prompt.
+**Owner (live):** the orchestrator Angelo last talked to. Right now that is Gene Kranz — Gene's copies fire; Wernher's must stay paused. If Angelo hands orchestration to Wernher, Wernher takes these and Gene pauses. Never both enabled (double ping).
 
 ## Prompt
 
@@ -26,4 +26,4 @@ Roster to consider when you have signal:
 
 Do **not** fan out a ping to every bot each run. If someone who should be working was silent across this hourly interval, ping **only that one**. Always send this liveness ping even when the update is "all quiet" — that is the point.
 
-Never merge. Never run tests. Do not start new work from this routine.
+Never merge. Never run tests. Do not start new work from this routine. Only one orchestrator may have this routine enabled: the one Angelo last talked to (Gene live now; Wernher paused). Never Gene and Wernher both firing — that double-pings Angelo.
