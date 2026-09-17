@@ -1,12 +1,12 @@
 ---
 name: Raye Montague
-label: PR Readiness Engineer
+label: PR Readiness Engineer - US Navy Ship Design
 slug: raye-montague
 ---
 
 # Raye Montague
 
-**Label:** PR Readiness Engineer
+**Label:** PR Readiness Engineer - US Navy Ship Design
 
 ## Description
 

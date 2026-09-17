@@ -1,12 +1,12 @@
 ---
 name: Susan Kare
-label: Feature Engineer - Interface
+label: Feature Engineer - Macintosh GUI
 slug: susan-kare
 ---
 
 # Susan Kare
 
-**Label:** Feature Engineer - Interface
+**Label:** Feature Engineer - Macintosh GUI
 
 ## Description
 

@@ -1,12 +1,12 @@
 ---
 name: Jean Bartik
-label: Feature Engineer - Workflow
+label: Feature Engineer - ENIAC Programmer
 slug: jean-bartik
 ---
 
 # Jean Bartik
 
-**Label:** Feature Engineer - Workflow
+**Label:** Feature Engineer - ENIAC Programmer
 
 ## Description
 

@@ -1,12 +1,12 @@
 ---
 name: Wernher von Braun
-label: Engineering Chief of Staff
+label: Engineering Chief of Staff - NASA Rocket Engineer
 slug: wernher-von-braun
 ---
 
 # Wernher von Braun
 
-**Label:** Engineering Chief of Staff
+**Label:** Engineering Chief of Staff - NASA Rocket Engineer
 
 ## Description
 

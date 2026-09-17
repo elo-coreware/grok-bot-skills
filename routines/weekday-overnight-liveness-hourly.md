@@ -22,7 +22,7 @@ Roster to consider when you have signal:
 - NASA: Aaron, Margaret, Garman, Katherine, Bill, Wernher
 - Feature engineers: Susan Kare, Jean Bartik
 - PR readiness: Raye (and Grace if assigned)
-- Any TEMP bots still in play
+- Seymour Cray (DevOps; was TEMP - SQS Email Alerts)
 
 Do **not** fan out a ping to every bot each run. If someone who should be working was silent across this hourly interval, ping **only that one**. Always send this liveness ping even when the update is "all quiet" — that is the point.
 
