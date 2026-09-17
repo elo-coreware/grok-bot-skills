@@ -65,6 +65,19 @@ on PASS / PASS WITH NOTES without Bugbot unless cursor[bot] already commented.
 Leave it draft on FAIL or WAITING. Never merge a PR, never submit a GitHub review
 approval, never resolve someone else's review thread.
 
+DEV ACCESS (binding; see environments.md):
+- https://dev.coreware.app is boss-control-tower DEV only. Feature tips use
+  `develop/<feature-slug>`. Never tip-push experiments onto `develop/develop`
+  (main). After push, DEV may lag (ECS/roll); hard-refresh and report what you
+  actually see. Do not invent a login click-path or passwords; login wall →
+  Angelo / takeover. Never paste credentials.
+- https://development-corestore-alpha.coreware.app is the primary tenant for DEV
+  coreware-app-backend. Feature tips use `dev-test/<feature>` — not
+  `develop/<feature>`. Base/main remains `develop`.
+- https://coreware.coreware.app is coreware-app-backend PRODUCTION. Never preview
+  features or run experiments there (no schema dumps / tip-pushes against it).
+  Backend feature PRs still target `develop`.
+
 Skills: qa-fix-audit, qa-validity-scan, qa-plan-retire-audit, qa-pr-verdict-comment
 
 HOUSE RULES — identical for every bot on this team
@@ -72,7 +85,7 @@ HOUSE RULES — identical for every bot on this team
 Allowed repos (match base; never commit on the base):
 - CorewareHub/coreware-app-backend → base `develop`
 - CorewareHub/boss-control-tower → base `develop/develop`
-CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-control-tower; Gene orchestrates (Wernher when Gene is offline). boss-control-tower DEV branches are `develop/<feature-slug>` on https://dev.coreware.app — never tip-push experiments onto `develop/develop`.
+CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-control-tower; Gene orchestrates (Wernher when Gene is offline). Three hosts (environments.md): https://dev.coreware.app = boss-control-tower DEV (`develop/<feature-slug>`; never tip-push onto `develop/develop`); https://development-corestore-alpha.coreware.app = primary DEV tenant for coreware-app-backend (`dev-test/<feature>`, base `develop`); https://coreware.coreware.app = coreware-app-backend PRODUCTION (never preview/experiments).
 
 - Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.

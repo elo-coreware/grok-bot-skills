@@ -20,13 +20,21 @@ target. Do not delegate product edits here.
 
 | owner/repo | Base branch | Host notes |
 |------------|-------------|------------|
-| `CorewareHub/coreware-app-backend` | `develop` | Feature PRs target `develop`. **https://coreware.coreware.app is PRODUCTION** — not a DEV preview host. |
+| `CorewareHub/coreware-app-backend` | `develop` | Feature PRs target `develop`. DEV tips: `dev-test/<feature>` on primary tenant **https://development-corestore-alpha.coreware.app**. **https://coreware.coreware.app is PRODUCTION** — never preview/experiments. |
 | `CorewareHub/boss-control-tower` | `develop/develop` | DEV only: push `develop/<feature-slug>`; served at **https://dev.coreware.app**. Never tip-push experiments onto `develop/develop` (main). |
 
 Refuse any other owner/repo unless Angelo explicitly expands the allow-list. NASA CI
 test-health work stays on `coreware-app-backend`. Grace, Raye, Gene/Wernher
 orchestrating them, and feature engineers (Susan Kare, Jean Bartik) may be delegated
 on either allowed product repo.
+
+## DEV TIPS (after allowed repos)
+
+- boss-control-tower → tip `develop/<feature-slug>` (DEV host https://dev.coreware.app).
+- coreware-app-backend → tip `dev-test/<feature>` (primary DEV tenant
+  https://development-corestore-alpha.coreware.app); base remains `develop`.
+- Never tip-push experiments onto `develop/develop` (Control Tower main) or use
+  https://coreware.coreware.app for feature preview (backend PRODUCTION).
 
 ## DEV ACCESS (binding — do not invert)
 
@@ -37,11 +45,13 @@ on either allowed product repo.
   push, DEV may lag (ECS/roll); hard-refresh and re-check. Report what you actually
   see. Do not invent a login click-path or passwords. If a bot hits a login wall,
   escalate to Angelo / takeover. Never paste credentials.
+- **https://development-corestore-alpha.coreware.app** is the **primary tenant for
+  DEV coreware-app-backend**. Feature tips use `dev-test/<feature>` — not
+  `develop/<feature>`. Base/main remains `develop`.
 - **https://coreware.coreware.app** is **CorewareHub/coreware-app-backend PRODUCTION**.
-  Treat it as PROD. Do not use it to preview feature work. Do not run experiments,
-  schema dumps, or tip-pushes against it. Be careful whenever anyone accesses it.
-  Backend feature PRs still target `develop` (not PROD). There is **no** backend DEV
-  host named in this instruction — do not invent one.
+  Treat it as PROD. Never preview features or run experiments there. Do not run
+  schema dumps or tip-pushes against it. Be careful whenever anyone accesses it.
+  Backend feature PRs still target `develop` (not PROD).
 
 ## REQUIRED INPUTS AND ACCESS
 
@@ -50,8 +60,10 @@ on either allowed product repo.
 - **Base branch** matching that repo (`develop` or `develop/develop`) and the exact
   target branch name. Do not default blindly to `develop` when the repo is
   boss-control-tower. For Control Tower DEV work, use `develop/<feature-slug>`
-  (served on https://dev.coreware.app). Never treat https://coreware.coreware.app
-  as a feature preview host — it is backend PRODUCTION.
+  (served on https://dev.coreware.app). For backend DEV tips, use `dev-test/<feature>`
+  (primary tenant https://development-corestore-alpha.coreware.app); base remains
+  `develop`. Never treat https://coreware.coreware.app as a feature preview host —
+  it is backend PRODUCTION.
 - Cursor Cloud Agents access.
 - gh authenticated for the chosen owner/repo.
 
@@ -125,8 +137,9 @@ on either allowed product repo.
   mode it came from the stated base; in existing-branch mode it is the branch named
   in BRANCH and no new branch was created. boss-control-tower DEV work must use
   `develop/<feature-slug>` on https://dev.coreware.app, not tip-pushes onto
-  `develop/develop`. Never use https://coreware.coreware.app to preview features
-  (that host is backend PRODUCTION).
+  `develop/develop`. Backend DEV tips use `dev-test/<feature>` on
+  https://development-corestore-alpha.coreware.app. Never use
+  https://coreware.coreware.app to preview features (backend PRODUCTION).
 - Every touched file is inside SCOPE. Out-of-scope edits are a finding, not a bonus.
 - No polarity inversion. No new application-behavior change unless Angelo already approved that specific patch.
 - VERIFY output is quoted real output, not a claim that it passed.
