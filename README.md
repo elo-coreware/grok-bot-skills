@@ -17,20 +17,20 @@ routines/  # Grok Bot liveness schedules (weekday day + overnight; weekends off)
 | Slug | Name | Label |
 |------|------|-------|
 | gene-kranz | Gene Kranz | QA Chief of Staff - NASA Flight Director |
-| wernher-von-braun | Wernher von Braun | Backup Orchestrator - Rocket Engineer |
+| wernher-von-braun | Wernher von Braun | Engineering Chief of Staff |
 | john-aaron | John Aaron | QA Analyst - NASA Flight Controller |
 | bill-tindall | Bill Tindall | QA Coverage Architect - NASA Mission Techniques |
 | katherine-johnson | Katherine Johnson | QA Validator - NASA Mathematician |
 | margaret-hamilton | Margaret Hamilton | QA Engineer - NASA Software Engineer |
 | jack-garman | Jack Garman | QA Engineer II - NASA Software Engineer |
 | grace-hopper | Grace Hopper | PR Readiness Engineer - US Navy Computing Pioneer |
-| raye-montague | Raye Montague | PR Readiness Engineer - Naval Architect |
+| raye-montague | Raye Montague | PR Readiness Engineer |
 | susan-kare | Susan Kare | Feature Engineer - Interface |
 | jean-bartik | Jean Bartik | Feature Engineer - Workflow |
 
 Each agent has `agents/<slug>.md` (human-readable) and `agents/<slug>.json` (machine-readable).
 
-**Tracks:** The NASA six (Gene, Aaron, Tindall, Katherine, Margaret, Garman) own CI test health. Garman is the standby engineer — idle unless Angelo explicitly activates DUAL mode via Gene. Wernher is Gene's backup orchestrator when Gene is offline. Grace and Raye are the non-NASA PR readiness track — they babysit feature implementation PRs until MERGE-READY. Susan Kare and Jean Bartik are feature engineers (not QA): plan → Aaron validate → implement on the Angelo 2026-09-17 feature waterfall.
+**Tracks:** The NASA six (Gene, Aaron, Tindall, Katherine, Margaret, Garman) own CI test health. Garman is the standby engineer — idle unless Angelo explicitly activates DUAL mode via Gene. Wernher (Engineering Chief of Staff) is Gene's backup orchestrator when Gene is offline — alive, not QA-labeled. Grace and Raye are the non-NASA PR readiness track — they babysit feature implementation PRs until MERGE-READY. Susan Kare and Jean Bartik are feature engineers (not QA): plan → Aaron validate → implement on the Angelo 2026-09-17 feature waterfall.
 
 **DEV (boss-control-tower):** main is `develop/develop`. DEV testing uses `develop/<feature-slug>` on https://dev.coreware.app. Never tip-push experiments onto `develop/develop`. coreware-app-backend base remains `develop`.
 
