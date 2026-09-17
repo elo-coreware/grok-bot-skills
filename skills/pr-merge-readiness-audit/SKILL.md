@@ -1,22 +1,27 @@
 ---
 name: pr-merge-readiness-audit
 description: >-
-  Use when pr-bugbot-sweep shows zero unfixed valid in-scope findings and Grace
-  must verify all merge gates before plan retirement
+  Use when pr-bugbot-sweep shows zero unfixed valid in-scope findings and Raye or
+  Grace must verify all merge gates before plan retirement
 ---
 # pr-merge-readiness-audit
 
 ## WHEN TO USE
 
-pr-babysit-loop has zero unfixed valid in-scope items on current HEAD and Grace
-needs to verify merge readiness before pr-plan-doc-retire and MERGE-READY verdict.
+pr-babysit-loop has zero unfixed valid in-scope items on current HEAD and Raye or
+Grace needs to verify merge readiness before pr-plan-doc-retire and MERGE-READY
+verdict.
 
 Gate 5 (implementation plan retired) is evaluated **after** gates 1–4 pass, by
 pr-plan-doc-retire — not in this audit pass.
 
 ## REQUIRED INPUTS AND ACCESS
 
-- owner/repo + base, PR number, branch name, current HEAD SHA.
+- owner/repo + base (`develop` for coreware-app-backend, or `develop/develop` for
+  boss-control-tower), PR number, branch name, current HEAD SHA.
+- **DEV branch rule (boss-control-tower):** DEV testing uses `develop/<feature-slug>`
+  on https://dev.coreware.app. Never tip-push experiments onto `develop/develop`
+  (main). Backend base remains `develop`.
 - Latest combined findings ledger from pr-bugbot-sweep.
 - gh authenticated for the assigned owner/repo (coreware-app-backend or
   boss-control-tower).
@@ -78,7 +83,7 @@ This skill evaluates gates **1–4 only**. Gate 5 is confirmed after pr-plan-doc
      resolve; never resolve conflicts yourself.
    - **WAITING** when `mergeable == "UNKNOWN"` — GitHub is still computing
      mergeability. Re-poll; do not report a verdict off an UNKNOWN.
-   - **PASS WITH NOTE, do not fail**, on these — they are not Grace defects:
+   - **PASS WITH NOTE, do not fail**, on these — they are not Raye/Grace defects:
      - `mergeStateStatus == "UNSTABLE"` — mergeable but commit status not passing.
        Gate 3 already owns CI; do not double-fail here.
      - `mergeStateStatus == "BLOCKED"` — branch protection (e.g. a required
@@ -87,7 +92,7 @@ This skill evaluates gates **1–4 only**. Gate 5 is confirmed after pr-plan-doc
    - **`isDraft == true`** — a draft cannot be merged. `mergeStateStatus` still
      reports `CLEAN` for drafts, so this must be checked separately. Never post
      MERGE-READY on a draft: surface it and tell Angelo to mark the PR ready
-     (Grace does not run `gh pr ready` unless Angelo asked her to).
+     (Raye/Grace does not run `gh pr ready` unless Angelo asked them to).
 
 5. **Record reviewed SHA.** Save HEAD SHA as `reviewed-sha` for pr-plan-doc-retire
    and the MERGE-READY verdict (reviewed-sha vs post-retire HEAD).

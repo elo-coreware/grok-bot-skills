@@ -1,15 +1,18 @@
 ---
 name: pr-babysit-loop
 description: >-
-  Use when Gene or Angelo assigns Grace one feature PR to babysit until MERGE-READY
+  Use when Gene, Wernher, or Angelo assigns Raye or Grace one feature
+  implementation PR to babysit until MERGE-READY
 ---
 # pr-babysit-loop
 
 ## WHEN TO USE
 
-Gene or Angelo assigns Grace exactly one feature PR (not a CI phase PR, not a
-docs/*-FAILING-TESTS-FIX-PLAN.markdown plan PR). Grace runs this loop until the PR
-is MERGE-READY or she hands it back with BLOCKED and a written reason.
+Gene, Wernher, or Angelo assigns Raye or Grace exactly one feature implementation PR
+(not a CI phase PR, not a docs/*-FAILING-TESTS-FIX-PLAN.markdown plan PR, not a
+feature plan PR awaiting Aaron). Feature waterfall: start only after Aaron PASS and
+the first implementation PR exists. The assignee runs this loop until the PR is
+MERGE-READY or hands it back with BLOCKED and a written reason.
 
 ## REQUIRED INPUTS AND ACCESS
 
@@ -18,6 +21,9 @@ is MERGE-READY or she hands it back with BLOCKED and a written reason.
 - owner/repo + base for the assigned PR (allowed:
   `CorewareHub/coreware-app-backend` → `develop`, or
   `CorewareHub/boss-control-tower` → `develop/develop`).
+- **DEV branch rule (boss-control-tower):** DEV testing uses `develop/<feature-slug>`
+  on https://dev.coreware.app. Never tip-push experiments onto `develop/develop`
+  (main). Backend base remains `develop`.
 - gh authenticated for that owner/repo.
 - Committed implementation plan on the branch when one exists (identification rules
   from .cursor/commands/git-commit.md step 5; BugBot-generated plans excluded).
@@ -34,7 +40,7 @@ is MERGE-READY or she hands it back with BLOCKED and a written reason.
 | READY | All five merge gates green; plan retired; MERGE-READY verdict posted |
 
 Exactly one PR at a time. Never start a second PR until the first is MERGE-READY or
-explicitly handed back to Gene/Angelo.
+explicitly handed back to Gene/Wernher/Angelo.
 
 
 ## LOCAL PINT (Angelo 2026-09-15 / develop #6326) — mandatory
@@ -59,8 +65,8 @@ Never run `composer format`. Docs-only / non-PHP: skip.
    If zero unfixed valid in-scope items → pr-merge-readiness-audit.
 
 4. **REMEDIATING.** For each valid in-scope item (Critical first, then High, then
-   Medium), run pr-finding-remediate. If verification needs tests, message Gene for
-   the test slot. Do not run composer test:single until Gene grants GRANTED. If
+   Medium), run pr-finding-remediate. If verification needs tests, message Wernher
+   (or Gene) for the test slot. Do not run composer test:single until GRANTED. If
    QUEUED, wait. Batch related fixes into one commit when sensible. **Pint gate:**
    if PHP changed, run LOCAL PINT (`./vendor/bin/pint --dirty` + `--test`) and
    commit style fixes before `cursor review`. After push, comment `cursor review`
@@ -89,13 +95,13 @@ Never run `composer format`. Docs-only / non-PHP: skip.
    Re-enter WAITING-CI for that run before posting MERGE-READY.
 
 8. **Handback.** On BLOCKED, post verdict, tell Gene the blocker, release the test
-   slot if held, and stop. Angelo or Gene must re-assign to resume.
+   slot if held, and stop. Angelo, Gene, or Wernher must re-assign to resume.
 
 ## HOW TO VALIDATE
 
-- Only one PR active in Grace's state at any time.
+- Only one PR active for the assignee (Raye or Grace) at any time.
 - Every fix commit followed by `cursor review` on that SHA.
-- Test runs only after Gene grants the slot.
+- Test runs only after Wernher/Gene grants the slot.
 - MERGE-READY never posted before pr-plan-doc-retire completes (when a plan existed).
 - Never merged the PR.
 
