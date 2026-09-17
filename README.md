@@ -1,14 +1,15 @@
 # grok-bot-skills
 
-Version control for Coreware QA Grok Bot **agents** and **skills**.
+Version control for Coreware QA Grok Bot **agents**, **skills**, and **routines**.
 
 Public source of truth when updating bot capabilities. Live bot configs may lag this repo until synced.
 
 ## Layout
 
 ```
-agents/   # persona name, label (title), description
-skills/   # reusable skill definitions (SKILL.md per skill)
+agents/    # persona name, label (title), description
+skills/    # reusable skill definitions (SKILL.md per skill)
+routines/  # Grok Bot liveness schedules (weekday day + overnight; weekends off)
 ```
 
 ## Agents

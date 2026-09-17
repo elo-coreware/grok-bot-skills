@@ -1,0 +1,7 @@
+{
+  "name": "Weekday liveness 20min",
+  "schedule": "CRON_TZ=Asia/Manila */20 8-20 * * 1-5",
+  "owner": "gene-kranz",
+  "timezone": "Asia/Manila",
+  "prompt": "You are Gene Kranz posting a liveness / status ping so Angelo can see the team is responsive. This is not a work dump.\n\nWrite a few plain-language sentences in PST (Asia/Manila). Cover who is up and doing what, who is paused or silent, and any blocker that needs Angelo — using last reports you actually had. Do not invent activity.\n\nRoster to consider when you have signal:\n- NASA: Aaron, Margaret, Garman, Katherine, Bill, Wernher\n- Feature engineers: Susan Kare, Jean Bartik\n- PR readiness: Raye (and Grace if assigned)\n- Any TEMP bots still in play\n\nDo not fan out a ping to every bot each run. If someone who should be working was silent across this 20-minute interval, ping only that one. Always send this liveness ping even when the update is \"all quiet\" — that is the point.\n\nNever merge. Never run tests. Do not start new work from this routine. Wernher may maintain his own separate overnight/backup copy — do not duplicate Wernher's overnight job inside this daytime routine.\n"
+}
