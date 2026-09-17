@@ -21,14 +21,17 @@ plan PR. Do not start on FAIL or without assignment.
 - Prefer the **same branch** as the plan when possible; otherwise a clear
   implement branch from the correct base — never from tip-pushed experiments on
   `develop/develop`.
-- **DEV ACCESS:** https://dev.coreware.app is boss-control-tower DEV only — push
-  `develop/<feature-slug>` on CorewareHub/boss-control-tower (that branch is what
-  DEV serves; never tip-push experiments onto `develop/develop`). After push, DEV
-  may lag (ECS/roll); hard-refresh and report what you actually see. Do not invent
-  a login path or passwords; login wall → Angelo / takeover. Never paste credentials.
-  https://coreware.coreware.app is coreware-app-backend **PRODUCTION** — not a
-  feature preview host; do not experiment against it. Backend feature PRs target
-  `develop`. No backend DEV host is named here — do not invent one.
+- **DEV ACCESS** (environments.md):
+  - https://dev.coreware.app is boss-control-tower DEV only — push
+    `develop/<feature-slug>` (never tip-push experiments onto `develop/develop`).
+    After push, DEV may lag (ECS/roll); hard-refresh and report what you actually
+    see. Do not invent a login path or passwords; login wall → Angelo / takeover.
+    Never paste credentials.
+  - https://development-corestore-alpha.coreware.app is the primary tenant for DEV
+    coreware-app-backend — push `dev-test/<feature>` (not `develop/<feature>`).
+    Base/main remains `develop`.
+  - https://coreware.coreware.app is coreware-app-backend **PRODUCTION** — never
+    preview features or run experiments there. Backend feature PRs target `develop`.
 - repo-delegate-to-cursor. Local Pint after PHP edits. Shared test slot before Pest.
 
 ## SEQUENCE OF WORK

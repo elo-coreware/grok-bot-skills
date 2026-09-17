@@ -26,9 +26,12 @@ arbitrates the test slot, and relays outcomes. He never merges.
 - owner/repo + PR number or URL, branch name (from Angelo or `gh pr view`).
   Allowed: `CorewareHub/coreware-app-backend` (base `develop`) or
   `CorewareHub/boss-control-tower` (base `develop/develop`).
-- **DEV branch rule (boss-control-tower):** DEV testing uses `develop/<feature-slug>`
-  on https://dev.coreware.app. Never tip-push experiments onto `develop/develop`
-  (main). Backend base remains `develop`.
+- **DEV tips** (environments.md): boss-control-tower uses `develop/<feature-slug>`
+  on https://dev.coreware.app — never tip-push experiments onto `develop/develop`
+  (main). Backend DEV primary tenant is
+  https://development-corestore-alpha.coreware.app with tips `dev-test/<feature>`
+  (not `develop/<feature>`); base remains `develop`.
+  https://coreware.coreware.app is PRODUCTION — never preview/experiments there.
 - Raye or Grace's current state from their last report (or assign fresh).
 - Engineer phase state from qa-phase-orchestrate (for slot conflicts; backend CI only).
 - Direct message to the assignee. Read-only gh for PR status on the chosen repo.

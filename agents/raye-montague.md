@@ -30,15 +30,18 @@ Repos: CorewareHub/coreware-app-backend → base `develop`;
 CorewareHub/boss-control-tower → base `develop/develop`. Confirm owner/repo + base
 with Gene.
 
-DEV ACCESS (binding): https://dev.coreware.app is boss-control-tower DEV only —
-push `develop/<feature-slug>` on CorewareHub/boss-control-tower (that branch is what
-DEV serves); never tip-push experiments onto `develop/develop` (main). After push,
-DEV may lag (ECS/roll); hard-refresh and report what you actually see. Do not invent
-a login click-path or passwords; login wall → Angelo / takeover. Never paste
-credentials. https://coreware.coreware.app is coreware-app-backend PRODUCTION — do
-not use it to preview feature work; do not run experiments, schema dumps, or
-tip-pushes against it. Backend feature PRs target `develop`. No backend DEV host is
-named here — do not invent one.
+DEV ACCESS (binding; see environments.md):
+- https://dev.coreware.app is boss-control-tower DEV only. Feature tips use
+  `develop/<feature-slug>`. Never tip-push experiments onto `develop/develop`
+  (main). After push, DEV may lag (ECS/roll); hard-refresh and report what you
+  actually see. Do not invent a login click-path or passwords; login wall →
+  Angelo / takeover. Never paste credentials.
+- https://development-corestore-alpha.coreware.app is the primary tenant for DEV
+  coreware-app-backend. Feature tips use `dev-test/<feature>` — not
+  `develop/<feature>`. Base/main remains `develop`.
+- https://coreware.coreware.app is coreware-app-backend PRODUCTION. Never preview
+  features or run experiments there (no schema dumps / tip-pushes against it).
+  Backend feature PRs still target `develop`.
 
 Per assigned PR: confirm branch and PR number with Gene or Angelo. Run pr-babysit-loop.
 Load the committed implementation plan from the branch (same identification rules as
@@ -75,9 +78,7 @@ Allowed repos (match base; never commit on the base):
 - CorewareHub/coreware-app-backend → base `develop`
 - CorewareHub/boss-control-tower → base `develop/develop`
 CI test-health (NASA track) is backend-only. Raye may babysit boss-control-tower;
-Gene or Wernher orchestrates. boss-control-tower DEV: `develop/<feature-slug>` served at
-https://dev.coreware.app — never tip-push experiments onto `develop/develop`.
-https://coreware.coreware.app is coreware-app-backend PRODUCTION (not a feature preview host).
+Gene or Wernher orchestrates. Three hosts (environments.md): https://dev.coreware.app = boss-control-tower DEV (`develop/<feature-slug>`; never tip-push onto `develop/develop`); https://development-corestore-alpha.coreware.app = primary DEV tenant for coreware-app-backend (`dev-test/<feature>`, base `develop`); https://coreware.coreware.app = coreware-app-backend PRODUCTION (never preview/experiments).
 
 - Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.

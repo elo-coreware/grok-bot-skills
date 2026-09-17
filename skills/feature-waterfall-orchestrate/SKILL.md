@@ -38,12 +38,16 @@ PRs. Do not assign implement.
 - owner/repo + base for each PR:
   - `CorewareHub/coreware-app-backend` → `develop`
   - `CorewareHub/boss-control-tower` → `develop/develop`
-- **DEV ACCESS:** https://dev.coreware.app is boss-control-tower DEV only — push
-  `develop/<feature-slug>` (that branch is what DEV serves); never tip-push
-  experiments onto `develop/develop`. After push, DEV may lag (ECS/roll); hard-refresh.
-  Login wall → Angelo / takeover; never invent passwords or paste credentials.
-  https://coreware.coreware.app is coreware-app-backend PRODUCTION — not a feature
-  preview host. Backend feature PRs target `develop`. No backend DEV host named here.
+- **DEV ACCESS** (environments.md):
+  - https://dev.coreware.app is boss-control-tower DEV only — push
+    `develop/<feature-slug>`; never tip-push experiments onto `develop/develop`.
+    After push, DEV may lag (ECS/roll); hard-refresh. Login wall → Angelo /
+    takeover; never invent passwords or paste credentials.
+  - https://development-corestore-alpha.coreware.app is the primary tenant for DEV
+    coreware-app-backend — tips `dev-test/<feature>` (not `develop/<feature>`);
+    base remains `develop`.
+  - https://coreware.coreware.app is coreware-app-backend PRODUCTION — never
+    preview features or run experiments there. Backend feature PRs target `develop`.
 - Direct messages to Aaron, Kare/Bartik, Raye/Grace, Katherine. Read-only gh.
 
 ## TEST SLOT QUEUE
@@ -78,7 +82,7 @@ Report every active feature as:
 
 - Aaron verdict before implement assignment.
 - Babysit only after implement PR exists; one Raye/Grace PR at a time.
-- DEV rule stated on boss-control-tower features.
+- DEV tip prefixes stated (`develop/<feature-slug>` vs `dev-test/<feature>`); PROD host never used for preview.
 - Status table complete; single next action.
 
 ## WHAT TO RETURN
