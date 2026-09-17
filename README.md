@@ -17,20 +17,21 @@ routines/  # Grok Bot liveness schedules (weekday day + overnight; weekends off)
 | Slug | Name | Label |
 |------|------|-------|
 | gene-kranz | Gene Kranz | QA Chief of Staff - NASA Flight Director |
-| wernher-von-braun | Wernher von Braun | Engineering Chief of Staff |
+| wernher-von-braun | Wernher von Braun | Engineering Chief of Staff - NASA Rocket Engineer |
 | john-aaron | John Aaron | QA Analyst - NASA Flight Controller |
 | bill-tindall | Bill Tindall | QA Coverage Architect - NASA Mission Techniques |
 | katherine-johnson | Katherine Johnson | QA Validator - NASA Mathematician |
 | margaret-hamilton | Margaret Hamilton | QA Engineer - NASA Software Engineer |
 | jack-garman | Jack Garman | QA Engineer II - NASA Software Engineer |
 | grace-hopper | Grace Hopper | PR Readiness Engineer - US Navy Computing Pioneer |
-| raye-montague | Raye Montague | PR Readiness Engineer |
-| susan-kare | Susan Kare | Feature Engineer - Interface |
-| jean-bartik | Jean Bartik | Feature Engineer - Workflow |
+| raye-montague | Raye Montague | PR Readiness Engineer - US Navy Ship Design |
+| susan-kare | Susan Kare | Feature Engineer - Macintosh GUI |
+| jean-bartik | Jean Bartik | Feature Engineer - ENIAC Programmer |
+| seymour-cray | Seymour Cray | DevOps Engineer - Cray-1 Architect |
 
 Each agent has `agents/<slug>.md` (human-readable) and `agents/<slug>.json` (machine-readable).
 
-**Tracks:** The NASA six (Gene, Aaron, Tindall, Katherine, Margaret, Garman) own CI test health. Garman is the standby engineer — idle unless Angelo explicitly activates DUAL mode via Gene. Wernher (Engineering Chief of Staff) is Gene's backup orchestrator when Gene is offline — alive, not QA-labeled. Grace and Raye are the non-NASA PR readiness track — they babysit feature implementation PRs until MERGE-READY. Susan Kare and Jean Bartik are feature engineers (not QA): plan → Aaron validate → implement on the Angelo 2026-09-17 feature waterfall.
+**Tracks:** The NASA six (Gene, Aaron, Tindall, Katherine, Margaret, Garman) own CI test health. Garman is the standby engineer — idle unless Angelo explicitly activates DUAL mode via Gene. Wernher (Engineering Chief of Staff - NASA Rocket Engineer) is Gene's backup orchestrator when Gene is offline — alive, not QA-labeled. Grace and Raye are the non-NASA PR readiness track — they babysit feature implementation PRs until MERGE-READY. Susan Kare and Jean Bartik are feature engineers (not QA): plan → Aaron validate → implement on the Angelo 2026-09-17 feature waterfall. Seymour Cray (DevOps Engineer - Cray-1 Architect) is Angelo-only DevOps — permanent rename of TEMP - SQS Email Alerts; sole bot allowed on Angelo's local machine for AWS.
 
 **DEV ACCESS:** https://dev.coreware.app is boss-control-tower DEV only (`develop/<feature-slug>`; never tip-push onto `develop/develop`). https://coreware.coreware.app is coreware-app-backend **PRODUCTION** — not a feature preview host. Backend feature PRs target `develop`. No backend DEV host is named here.
 
