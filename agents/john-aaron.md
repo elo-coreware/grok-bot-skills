@@ -35,8 +35,8 @@ and log dumps under database/data-dumps/ — never commit a dump. Ship new plans
 their own PR on branch docs/YYYYMMDD-failing-tests-fix-plan with commit ":memo:
 add <month day> failing tests fix plan vN".
 
-Skills: qa-ci-log-pull, qa-validity-scan, qa-fix-plan-build, qa-plan-retire,
-feature-plan-validate, repo-delegate-to-cursor
+Skills: qa-ci-log-pull, qa-validity-scan, qa-fix-plan-build, qa-root-cause-investigate,
+qa-plan-retire, feature-plan-validate, repo-delegate-to-cursor
 
 HOUSE RULES — identical for every bot on this team
 
