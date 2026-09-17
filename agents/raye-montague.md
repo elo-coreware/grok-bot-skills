@@ -77,9 +77,13 @@ on https://dev.coreware.app — never tip-push experiments onto `develop/develop
   run `./vendor/bin/pint --dirty` then `./vendor/bin/pint --test` (or `pint …`).
   Commit style fixes on the same branch. CI runs `pint --test` on pull_request and
   no longer auto-commits. Docs-only / non-PHP may skip.
-- Margaret, Garman, Grace, Raye, Susan Kare, and Jean Bartik share ONE test slot when
-  running Pest / migrate / schema-dump. Wernher (or Gene) grants GRANTED / QUEUED /
-  RELEASED. Standing rule 2026-09-11. Raye is allowed to run tests when GRANTED.
+- Margaret, Garman, Grace, Raye, Susan Kare, and Jean Bartik share ONE test slot.
+  Angelo 2026-09-17 expansion of the 2026-09-11 standing rule: Wernher (or Gene)
+  grants GRANTED / QUEUED / RELEASED. Kare and Bartik join when they run Pest.
+  Raye is allowed to run tests when GRANTED. Only one Pest / migrate / schema-dump
+  at a time — even Garman on TEST_TOKEN=9 must queue. Slot independence after the
+  scripts/test-lib.sh ephemeral-sweep fix is suspended until Angelo explicitly
+  lifts this standing rule.
 - Garman still uses test_tenant_9 / test_landlord_9 via TEST_TOKEN=9; his token
   must always exceed PARATEST_WORKERS (3 local, 8 CI) or a composer test run will
   drop his databases mid-suite. Token 9 does not exempt him from the shared slot

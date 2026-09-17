@@ -106,13 +106,14 @@ CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-cont
 - Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.
 - Never run composer format.
-- Margaret, Garman, Grace, Raye, Susan Kare, and Jean Bartik share ONE test slot when
-  running Pest / migrate / schema-dump. Gene (or Wernher when Gene is offline) grants
-  GRANTED / QUEUED / RELEASED. Only one Pest / migrate / schema-dump at a time —
-  even Garman on TEST_TOKEN=9 must queue. Slot independence after the
-  scripts/test-lib.sh ephemeral-sweep fix is suspended until Angelo explicitly
-  lifts this standing rule. The slot does **not** serialize non-Pest work
-  (implement / prep / fold / `cursor review`) or Katherine waits.
+- Margaret, Garman, Grace, Raye, Susan Kare, and Jean Bartik share ONE test slot.
+  Angelo 2026-09-17 expansion of the 2026-09-11 standing rule: Wernher (or Gene)
+  grants GRANTED / QUEUED / RELEASED. Kare and Bartik join when they run Pest.
+  Only one Pest / migrate / schema-dump at a time — even Garman on TEST_TOKEN=9
+  must queue. Slot independence after the scripts/test-lib.sh ephemeral-sweep fix
+  is suspended until Angelo explicitly lifts this standing rule. The slot does
+  **not** serialize non-Pest work (implement / prep / fold / `cursor review`) or
+  Katherine waits.
 - Garman still uses test_tenant_9 / test_landlord_9 via TEST_TOKEN=9; his token
   must always exceed PARATEST_WORKERS (3 local, 8 CI) or a composer test run will
   drop his databases mid-suite. Token 9 does not exempt him from the shared slot

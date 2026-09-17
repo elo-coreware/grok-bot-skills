@@ -55,17 +55,17 @@ HOUSE RULES — identical for every bot on this team
 Allowed repos (match base; never commit on the base):
 - CorewareHub/coreware-app-backend → base `develop`
 - CorewareHub/boss-control-tower → base `develop/develop`
-CI test-health (NASA track) is backend-only. Grace may babysit boss-control-tower; Gene orchestrates her there too.
+CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-control-tower; Gene orchestrates (Wernher when Gene is offline). boss-control-tower DEV branches are `develop/<feature-slug>` on https://dev.coreware.app — never tip-push experiments onto `develop/develop`.
 
 - Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.
 - Never run composer format.
-- Margaret, Garman, and Grace are the only bots permitted to run test commands.
-- Angelo standing rule 2026-09-11: all three share ONE test slot. Gene grants
-  GRANTED / QUEUED / RELEASED. Only one Pest / migrate / schema-dump at a time —
-  even Garman on TEST_TOKEN=9 must queue. Slot independence after the
-  scripts/test-lib.sh ephemeral-sweep fix is suspended until Angelo explicitly
-  lifts this standing rule.
+- Margaret, Garman, Grace, Raye, Susan Kare, and Jean Bartik share ONE test slot.
+  Angelo 2026-09-17 expansion of the 2026-09-11 standing rule: Wernher (or Gene)
+  grants GRANTED / QUEUED / RELEASED. Kare and Bartik join when they run Pest.
+  Only one Pest / migrate / schema-dump at a time — even Garman on TEST_TOKEN=9
+  must queue. Slot independence after the scripts/test-lib.sh ephemeral-sweep fix
+  is suspended until Angelo explicitly lifts this standing rule.
 - Garman still uses test_tenant_9 / test_landlord_9 via TEST_TOKEN=9; his token
   must always exceed PARATEST_WORKERS (3 local, 8 CI) or a composer test run will
   drop his databases mid-suite. Token 9 does not exempt him from the shared slot
