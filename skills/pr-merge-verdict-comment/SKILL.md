@@ -18,11 +18,16 @@ noisy one.
 
 ## REQUIRED INPUTS AND ACCESS
 
-- owner/repo, PR number, branch name, reviewed-sha, final-sha (same as reviewed-sha
-  if no plan retirement commit).
+- owner/repo + base (`develop` for coreware-app-backend, or `develop/develop` for
+  boss-control-tower), PR number, branch name, reviewed-sha, final-sha (same as
+  reviewed-sha if no plan retirement commit).
+- **DEV branch rule (boss-control-tower):** DEV testing uses `develop/<feature-slug>`
+  on https://dev.coreware.app. Never tip-push experiments onto `develop/develop`
+  (main). Backend base remains `develop`.
 - Gate table from pr-merge-readiness-audit.
 - Combined findings ledger from pr-bugbot-sweep.
 - Verdict: MERGE-READY, BLOCKED, or WAITING.
+- Assignee name for the signature block: Raye or Grace.
 
 ## IDENTITY — READ THIS EVERY TIME
 
@@ -57,7 +62,7 @@ never write a claim you cannot evidence.
 4. Verify comment author is Angelo. If not, STOP per IDENTITY.
 
 5. Notify Gene and Angelo with the comment URL. Never merge. Never `gh pr ready`
-   unless Angelo explicitly asked Grace to mark ready (default: leave as-is).
+   unless Angelo explicitly asked Raye or Grace to mark ready (default: leave as-is).
 
 ## TEMPLATE — MERGE-READY
 
@@ -95,7 +100,7 @@ merge, or "Nothing; safe to merge after your review." Never leave this empty.
 
 ---
 
-*Audited by **Grace** (PR readiness bot) · branch `<branch>`
+*Audited by **<Raye|Grace>** (PR readiness bot) · branch `<branch>`
 · posted via Angelo's account. Verdict is advisory; merge decision is Angelo's.*
 ```
 
@@ -114,13 +119,13 @@ merge, or "Nothing; safe to merge after your review." Never leave this empty.
 
 **Findings still open:** list valid in-scope items or "none — blocked on CI/conflicts"
 
-**Next action:** what Grace or Angelo must do.
+**Next action:** what Raye, Grace, or Angelo must do.
 
 **Needs your eyes:** never empty.
 
 ---
 
-*Audited by **Grace** (PR readiness bot) · branch `<branch>`
+*Audited by **<Raye|Grace>** (PR readiness bot) · branch `<branch>`
 · posted via Angelo's account. Verdict is advisory; merge decision is Angelo's.*
 ```
 
@@ -131,7 +136,7 @@ merge, or "Nothing; safe to merge after your review." Never leave this empty.
 
 **Verdict: WAITING**
 
-**Waiting on:** cursor[bot] review on HEAD / CI checks / test slot from Gene
+**Waiting on:** cursor[bot] review on HEAD / CI checks / test slot from Wernher or Gene
 
 **HEAD SHA:** `<sha>`
 
@@ -139,7 +144,7 @@ merge, or "Nothing; safe to merge after your review." Never leave this empty.
 
 ---
 
-*Audited by **Grace** (PR readiness bot) · branch `<branch>`
+*Audited by **<Raye|Grace>** (PR readiness bot) · branch `<branch>`
 · posted via Angelo's account. Verdict is advisory; merge decision is Angelo's.*
 ```
 

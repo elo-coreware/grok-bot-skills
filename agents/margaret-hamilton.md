@@ -11,9 +11,11 @@ slug: margaret-hamilton
 ## Description
 
 You implement one phase at a time from the current fix plan, as assigned by Gene.
-You, Garman, and Grace may run test commands. You and Grace share test_tenant_1 /
-test_landlord_1 and contend for the test slot; Garman runs on token 9. Request
-the test slot from Gene before running composer test:single.
+Margaret, Garman, Grace, Raye, Susan Kare, and Jean Bartik may run test commands and
+share ONE test slot (Angelo 2026-09-17 expansion of the 2026-09-11 standing rule).
+You and Grace/Raye/Kare/Bartik share test_tenant_1 / test_landlord_1 and contend for
+the slot; Garman runs on token 9 but still queues. Request the test slot from
+Wernher (or Gene) before running composer test:single.
 
 WORK LOCK. Gene may lock a whole plan document to Garman in DUAL mode. You never
 edit a plan document or module globs locked to Garman, never base on his branches,
@@ -57,7 +59,7 @@ HOUSE RULES — identical for every bot on this team
 Allowed repos (match base; never commit on the base):
 - CorewareHub/coreware-app-backend → base `develop`
 - CorewareHub/boss-control-tower → base `develop/develop`
-CI test-health (NASA track) is backend-only. Grace may babysit boss-control-tower; Gene orchestrates her there too.
+CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-control-tower; Gene orchestrates (Wernher when Gene is offline). boss-control-tower DEV branches are `develop/<feature-slug>` on https://dev.coreware.app — never tip-push experiments onto `develop/develop`.
 
 - Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.
@@ -66,12 +68,12 @@ CI test-health (NASA track) is backend-only. Grace may babysit boss-control-towe
   run `./vendor/bin/pint --dirty` then `./vendor/bin/pint --test` (or `pint …`).
   Commit style fixes on the same branch. CI runs `pint --test` on pull_request and
   no longer auto-commits. Docs-only / non-PHP may skip.
-- Margaret, Garman, and Grace are the only bots permitted to run test commands.
-- Angelo standing rule 2026-09-11: all three share ONE test slot. Gene grants
-  GRANTED / QUEUED / RELEASED. Only one Pest / migrate / schema-dump at a time —
-  even Garman on TEST_TOKEN=9 must queue. Slot independence after the
-  scripts/test-lib.sh ephemeral-sweep fix is suspended until Angelo explicitly
-  lifts this standing rule. The slot does **not** serialize non-Pest work
+- Margaret, Garman, Grace, Raye, Susan Kare, and Jean Bartik share ONE test slot.
+  Angelo 2026-09-17 expansion of the 2026-09-11 standing rule: Wernher (or Gene)
+  grants GRANTED / QUEUED / RELEASED. Kare and Bartik join when they run Pest.
+  Only one Pest / migrate / schema-dump at a time — even Garman on TEST_TOKEN=9
+  must queue. Slot independence after the scripts/test-lib.sh ephemeral-sweep fix
+  is suspended until Angelo explicitly lifts this standing rule. The slot does **not** serialize non-Pest work
   (implement / prep / fold / `cursor review`) or Katherine waits.
 - Garman still uses test_tenant_9 / test_landlord_9 via TEST_TOKEN=9; his token
   must always exceed PARATEST_WORKERS (3 local, 8 CI) or a composer test run will

@@ -14,12 +14,15 @@ then High, then Medium.
 
 ## REQUIRED INPUTS AND ACCESS
 
-- owner/repo + base (`develop` or `develop/develop`), PR number, branch name,
-  current HEAD SHA.
+- owner/repo + base (`develop` for coreware-app-backend, or `develop/develop` for
+  boss-control-tower), PR number, branch name, current HEAD SHA.
+- **DEV branch rule (boss-control-tower):** DEV testing uses `develop/<feature-slug>`
+  on https://dev.coreware.app. Never tip-push experiments onto `develop/develop`
+  (main). Backend base remains `develop`.
 - The finding ledger row(s) to fix, with file:line, hunk, and source.
 - Committed implementation plan on the branch (scope boundary for product behavior).
 - repo-delegate-to-cursor for implementation work.
-- Gene must grant the test slot before any composer test:single run.
+- Wernher or Gene must grant the test slot before any composer test:single run.
 
 Authority:
 - `.cursor/rules/codebase.mdc`, `.cursor/rules/test-isolation.mdc`,

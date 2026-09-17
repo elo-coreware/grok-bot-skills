@@ -8,7 +8,7 @@ description: >-
 
 ## WHEN TO USE
 
-pr-merge-readiness-audit gates 1–4 are green on HEAD. Grace must retire the
+pr-merge-readiness-audit gates 1–4 are green on HEAD. Raye or Grace must retire the
 implementation plan file so it is not merged into `<base>` (repo bloat), while
 preserving its content in PR history.
 
@@ -17,13 +17,17 @@ as N/A — proceed directly to pr-merge-verdict-comment MERGE-READY.
 
 ## REQUIRED INPUTS AND ACCESS
 
-- owner/repo + base, PR number, branch name, reviewed-sha from
+- owner/repo + base (`develop` for coreware-app-backend, or `develop/develop` for
+  boss-control-tower), PR number, branch name, reviewed-sha from
   pr-merge-readiness-audit (HEAD when gates 1–4 passed).
+- **DEV branch rule (boss-control-tower):** DEV testing uses `develop/<feature-slug>`
+  on https://dev.coreware.app. Never tip-push experiments onto `develop/develop`
+  (main). Backend base remains `develop`.
 - gh / GitHub MCP for PR comments and body edit.
 - repo-delegate-to-cursor for git rm, commit, push.
 
 Plan identification — same rules as `.cursor/commands/git-commit.md` step 5:
-1. Plan assigned or attached for this PR in Grace's context.
+1. Plan assigned or attached for this PR in Raye or Grace's context.
 2. Else `.cursor/plans/*.plan.md` modified since merge-base with `<base>`.
 3. Exclude all BugBot-generated plans (filename, frontmatter, body markers per
    git-commit.md step 5b).
