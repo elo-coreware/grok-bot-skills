@@ -34,7 +34,7 @@ Each agent has `agents/<slug>.md` (human-readable) and `agents/<slug>.json` (mac
 
 **Tracks:** The NASA six (Gene, Aaron, Tindall, Katherine, Margaret, Garman) own CI test health. Garman is the standby engineer — idle unless Angelo explicitly activates DUAL mode via Gene. Wernher (Engineering Chief of Staff - NASA Rocket Engineer) is Gene's backup orchestrator when Gene is offline — alive, not QA-labeled. Grace and Raye are the non-NASA PR readiness track — they babysit feature PRs until MERGE-READY. Susan Kare, Jean Bartik, and Adele Goldberg are feature engineers (not QA): plan → Aaron validate → implement → Bugbot → audit on **one PR per feature per repo** (Angelo standing rule 2026-09-18; related pair in the other repo stays separate). Seymour Cray (DevOps Engineer - Cray-1 Architect) is Angelo-only DevOps — permanent rename of TEMP - SQS Email Alerts; sole bot allowed on Angelo's local machine for AWS.
 
-**Environments:** Site URLs live in [`environments.md`](environments.md). https://coreware.coreware.app is PRODUCTION — never use it for feature preview.
+**Environments:** Site URLs live in [`environments.md`](environments.md), including Control Tower landlord PRODUCTION vs backend/tenant PRODUCTION. PROD web hosts — observe / peek only (Angelo 2026-09-18): bots may ONLY observe or peek either PROD host when Angelo explicitly asks — NO modifying. Default is never modify.
 
 ## Skills
 
@@ -62,6 +62,7 @@ Each agent has `agents/<slug>.md` (human-readable) and `agents/<slug>.json` (mac
 | pr-merge-readiness-audit | Grace / Raye |
 | pr-plan-doc-retire | Grace / Raye |
 | pr-merge-verdict-comment | Grace / Raye |
+| prod-tenant-log-pull | Seymour |
 | repo-delegate-to-cursor | shared |
 
 Each skill lives at `skills/<skill-id>/SKILL.md`.

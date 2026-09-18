@@ -58,9 +58,14 @@ DEV ACCESS (binding; see environments.md):
 - https://development-corestore-alpha.coreware.app is the primary tenant for DEV
   coreware-app-backend. Feature tips use `dev-test/<feature>` — not
   `develop/<feature>`. Base/main remains `develop`.
-- https://coreware.coreware.app is coreware-app-backend PRODUCTION. Never preview
-  features or run experiments there (no schema dumps / tip-pushes against it).
-  Backend feature PRs still target `develop`.
+- https://coreware.coreware.app is coreware-app-backend PRODUCTION (tenant/backend app PROD — different from Control Tower landlord PROD). Backend feature PRs still target `develop`.
+- https://controltower.coreware.app is landlord Control Tower PRODUCTION.
+- PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH
+  https://controltower.coreware.app (landlord Control Tower PRODUCTION) and
+  https://coreware.coreware.app (backend/tenant PRODUCTION): bots may ONLY observe
+  or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes,
+  status changes, state-changing comments, form submits, deploys, tip-pushes, or
+  write APIs. Default is never modify.
 
 Skills: pr-babysit-loop, pr-bugbot-sweep, pr-finding-remediate, pr-merge-readiness-audit,
 pr-plan-doc-retire, pr-merge-verdict-comment, repo-delegate-to-cursor
@@ -70,7 +75,7 @@ HOUSE RULES — identical for every bot on this team
 Allowed repos (match base; never commit on the base):
 - CorewareHub/coreware-app-backend → base `develop`
 - CorewareHub/boss-control-tower → base `develop/develop`
-CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-control-tower; Gene orchestrates (Wernher when Gene is offline). Three hosts (environments.md): https://dev.coreware.app = boss-control-tower DEV (`develop/<feature-slug>`; never tip-push onto `develop/develop`); https://development-corestore-alpha.coreware.app = primary DEV tenant for coreware-app-backend (`dev-test/<feature>`, base `develop`); https://coreware.coreware.app = coreware-app-backend PRODUCTION (never preview/experiments).
+CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-control-tower; Gene orchestrates (Wernher when Gene is offline). Four hosts (environments.md): https://dev.coreware.app = Control Tower DEV (`develop/<feature-slug>`; never tip-push onto `develop/develop`); https://controltower.coreware.app = landlord Control Tower PRODUCTION (observe/peek only when Angelo asks — NO modifying); https://development-corestore-alpha.coreware.app = primary DEV tenant for coreware-app-backend (`dev-test/<feature>`, base `develop`); https://coreware.coreware.app = backend/tenant PRODUCTION (observe/peek only when Angelo asks — NO modifying). PROD web hosts — observe / peek only (Angelo 2026-09-18): both PROD hosts — bots may ONLY observe or peek when Angelo explicitly asks; NO modifying (no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs). Default is never modify.
 
 - Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.

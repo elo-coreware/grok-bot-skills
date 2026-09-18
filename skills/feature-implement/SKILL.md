@@ -30,8 +30,10 @@ WITH NOTES on the **same** feature PR. Do not start on FAIL or without assignmen
   - https://development-corestore-alpha.coreware.app is the primary tenant for DEV
     coreware-app-backend — push `dev-test/<feature>` (not `develop/<feature>`).
     Base/main remains `develop`.
-  - https://coreware.coreware.app is coreware-app-backend **PRODUCTION** — never
-    preview features or run experiments there. Backend feature PRs target `develop`.
+  - https://coreware.coreware.app is coreware-app-backend **PRODUCTION** (tenant/backend app PROD — different from Control Tower landlord PROD).
+    Backend feature PRs target `develop`.
+  - https://controltower.coreware.app is landlord Control Tower **PRODUCTION**.
+  - PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PRODUCTION) and https://coreware.coreware.app (backend/tenant PRODUCTION): bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
 - repo-delegate-to-cursor. Local Pint after PHP edits. Shared test slot before Pest.
 
 ## ONE FEATURE PR RULE

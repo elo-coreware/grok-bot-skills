@@ -42,9 +42,10 @@ Aaron never implements. Aaron never runs tests.
    - coreware-app-backend DEV: primary tenant
      https://development-corestore-alpha.coreware.app; tips `dev-test/<feature>` —
      not `develop/<feature>`; base remains `develop`.
-   - https://coreware.coreware.app as a feature preview host = FAIL (PRODUCTION).
-     Never preview features or run experiments there. Backend feature PRs target
-     `develop`.
+   - https://coreware.coreware.app as a feature preview / write host = FAIL (backend/tenant PRODUCTION).
+     Backend feature PRs target `develop`.
+   - https://controltower.coreware.app as a feature preview / write host = FAIL (landlord Control Tower PRODUCTION).
+   - PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PRODUCTION) and https://coreware.coreware.app (backend/tenant PRODUCTION): bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify. Any plan that implies modifying either PROD host = FAIL.
 4. **Bounded scope.** One feature (or tightly related pair across repos). Explicit
    in/out of scope. No open-ended "also clean up the module" bags.
 5. **Related PR pair merge order.** If the feature needs both repos, the plan names

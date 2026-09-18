@@ -32,7 +32,7 @@ arbitrates the test slot, and relays outcomes. He never merges.
   (main). Backend DEV primary tenant is
   https://development-corestore-alpha.coreware.app with tips `dev-test/<feature>`
   (not `develop/<feature>`); base remains `develop`.
-  https://coreware.coreware.app is PRODUCTION — never preview/experiments there.
+  PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PRODUCTION) and https://coreware.coreware.app (backend/tenant PRODUCTION): bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
 - Raye or Grace's current state from their last report (or assign fresh).
 - Engineer phase state from qa-phase-orchestrate (for slot conflicts; backend CI only).
 - Direct message to the assignee. Read-only gh for PR status on the chosen repo.
