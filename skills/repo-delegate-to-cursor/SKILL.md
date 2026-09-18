@@ -77,7 +77,7 @@ on either allowed product repo.
 
    BRANCH — owner/repo, base branch, and the branch name to create. **Existing-branch mode:**
    when the work is remediation on a branch that already exists (Raye/Grace on an
-   assigned feature PR, or Kare/Bartik continuing a plan/implement branch), state the
+   assigned feature PR, or Kare/Bartik/Goldberg continuing a feature PR branch), state the
    existing branch to check out and say explicitly "do not create a new branch".
    Everything else in this skill applies unchanged.
 
@@ -101,10 +101,11 @@ on either allowed product repo.
    this exception to CI phase work — the NASA engineers' `app/` restriction is
    unchanged.
 
-   **Feature engineer exception (Kare/Bartik):** on an assigned feature-plan-build or
-   feature-implement branch, scope follows the committed plan. Product-behavior beyond
-   the plan requires Angelo. Local Pint after PHP edits. Request the shared test slot
-   before Pest.
+   **Feature engineer exception (Kare/Bartik/Goldberg):** on an assigned feature-plan-build or
+   feature-implement branch (same feature PR — standing rule 2026-09-18), scope follows the
+   committed plan. Product-behavior beyond the plan requires Angelo. Local Pint after PHP
+   edits. Request the shared test slot before Pest. Never open a second PR for the same
+   feature in the same repo.
 
    VERIFY — the exact verification commands to run, or `none` for read-only/planning work.
    When the delegation is Garman's, prefix verify with `TEST_TOKEN=9` (e.g.
@@ -116,7 +117,7 @@ on either allowed product repo.
 
 4. Supervise until it finishes. **Concurrency (Angelo 2026-09-09 / standing rule 2026-09-11):** Exactly one agent
    may run **tests / migrate / schema dump** per database pair at a time. Margaret,
-   Grace, Raye, Susan Kare, and Jean Bartik share token 1 (`test_tenant_1` /
+   Grace, Raye, Susan Kare, Jean Bartik, and Adele Goldberg share token 1 (`test_tenant_1` /
    `test_landlord_1`); Gene or Wernher arbitrates (GRANTED / QUEUED / RELEASED) and
    Margaret takes precedence unless Angelo prioritizes the feature PR. Garman uses
    `TEST_TOKEN=9` for his DB pair but stays in the same shared slot — no parallel Pest
