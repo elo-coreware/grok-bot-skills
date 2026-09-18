@@ -51,7 +51,7 @@ there — name it under Related PR pair.
    - https://coreware.coreware.app is **coreware-app-backend PRODUCTION** (tenant/backend app PROD — different from Control Tower landlord PROD).
      Backend feature PRs still target `develop`.
    - https://controltower.coreware.app is **landlord Control Tower PRODUCTION**.
-   - PRODUCTION HARD RULE (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PROD) and https://coreware.coreware.app (backend/tenant app PROD): bots may ONLY observe / peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, comments that change state, deploys, tip-pushes, form submits, or any write API. Read-only / peek only.
+   - PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PRODUCTION) and https://coreware.coreware.app (backend/tenant PRODUCTION): bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
 4. **Scope** — in / out. Bounded.
 5. **Approach** — high-level steps, files or surfaces touched, risks.
 6. **Related PR pair** — if both repos, name merge order (each repo still one PR).

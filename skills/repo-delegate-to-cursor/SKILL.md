@@ -34,7 +34,7 @@ on either allowed product repo.
 - coreware-app-backend → tip `dev-test/<feature>` (primary DEV tenant
   https://development-corestore-alpha.coreware.app); base remains `develop`.
 - Never tip-push experiments onto `develop/develop` (Control Tower main).
-- PRODUCTION HARD RULE (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PROD) and https://coreware.coreware.app (backend/tenant app PROD): bots may ONLY observe / peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, comments that change state, deploys, tip-pushes, form submits, or any write API. Read-only / peek only.
+- PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PRODUCTION) and https://coreware.coreware.app (backend/tenant PRODUCTION): bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
 
 ## DEV ACCESS (binding — do not invert)
 
@@ -53,7 +53,7 @@ on either allowed product repo.
   Backend feature PRs still target `develop` (not PROD).
 - **https://controltower.coreware.app** is **landlord Control Tower PRODUCTION**.
   Do not confuse with https://coreware.coreware.app (backend/tenant PRODUCTION).
-- PRODUCTION HARD RULE (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PROD) and https://coreware.coreware.app (backend/tenant app PROD): bots may ONLY observe / peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, comments that change state, deploys, tip-pushes, form submits, or any write API. Read-only / peek only.
+- PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PRODUCTION) and https://coreware.coreware.app (backend/tenant PRODUCTION): bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
 
 ## REQUIRED INPUTS AND ACCESS
 
@@ -64,7 +64,7 @@ on either allowed product repo.
   boss-control-tower. For Control Tower DEV work, use `develop/<feature-slug>`
   (served on https://dev.coreware.app). For backend DEV tips, use `dev-test/<feature>`
   (primary tenant https://development-corestore-alpha.coreware.app); base remains
-  `develop`. PRODUCTION HARD RULE (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PROD) and https://coreware.coreware.app (backend/tenant app PROD): bots may ONLY observe / peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, comments that change state, deploys, tip-pushes, form submits, or any write API. Read-only / peek only.
+  `develop`. PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PRODUCTION) and https://coreware.coreware.app (backend/tenant PRODUCTION): bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
 - Cursor Cloud Agents access.
 - gh authenticated for the chosen owner/repo.
 
@@ -140,7 +140,7 @@ on either allowed product repo.
   in BRANCH and no new branch was created. boss-control-tower DEV work must use
   `develop/<feature-slug>` on https://dev.coreware.app, not tip-pushes onto
   `develop/develop`. Backend DEV tips use `dev-test/<feature>` on
-  https://development-corestore-alpha.coreware.app. PRODUCTION HARD RULE (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PROD) and https://coreware.coreware.app (backend/tenant app PROD): bots may ONLY observe / peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, comments that change state, deploys, tip-pushes, form submits, or any write API. Read-only / peek only.
+  https://development-corestore-alpha.coreware.app. PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PRODUCTION) and https://coreware.coreware.app (backend/tenant PRODUCTION): bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
 - Every touched file is inside SCOPE. Out-of-scope edits are a finding, not a bonus.
 - No polarity inversion. No new application-behavior change unless Angelo already approved that specific patch.
 - VERIFY output is quoted real output, not a claim that it passed.
