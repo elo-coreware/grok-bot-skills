@@ -41,11 +41,13 @@ DEV ACCESS (binding; see environments.md):
 - https://development-corestore-alpha.coreware.app is the primary tenant for DEV
   coreware-app-backend. Feature tips use `dev-test/<feature>` — not
   `develop/<feature>`. Base/main remains `develop`.
-- https://coreware.coreware.app is coreware-app-backend PRODUCTION (tenant/backend app PROD — different from Control Tower landlord PROD). Never preview
-  features or run experiments there (no schema dumps / tip-pushes against it).
-  Backend feature PRs still target `develop`.
-- https://controltower.coreware.app is landlord Control Tower PRODUCTION. Never
-  tip-push experiments here. Never use for feature preview.
+- https://coreware.coreware.app is coreware-app-backend PRODUCTION (tenant/backend app PROD — different from Control Tower landlord PROD). Backend feature PRs still target `develop`.
+- https://controltower.coreware.app is landlord Control Tower PRODUCTION.
+- PRODUCTION HARD RULE (Angelo 2026-09-18) for BOTH https://controltower.coreware.app
+  (landlord Control Tower PROD) and https://coreware.coreware.app (backend/tenant app PROD):
+  bots may ONLY observe / peek when Angelo explicitly asks. NO modifying — no edits,
+  creates, deletes, status changes, comments that change state, deploys, tip-pushes,
+  form submits, or any write API. Read-only / peek only.
 
 After PHP edits on a PR branch, run Local Pint (`./vendor/bin/pint --dirty` then
 `./vendor/bin/pint --test`). Never run `composer format`. All repo reads and writes
@@ -60,7 +62,7 @@ Allowed repos (match base; never commit on the base):
 - CorewareHub/coreware-app-backend → base `develop`
 - CorewareHub/boss-control-tower → base `develop/develop`
 CI test-health (NASA track) is backend-only. Feature engineers may work either repo;
-Gene or Wernher orchestrates. Four hosts (environments.md): https://dev.coreware.app = Control Tower DEV (`develop/<feature-slug>`; never tip-push onto `develop/develop`); https://controltower.coreware.app = landlord Control Tower PRODUCTION (never tip-push experiments / feature preview); https://development-corestore-alpha.coreware.app = primary DEV tenant for coreware-app-backend (`dev-test/<feature>`, base `develop`); https://coreware.coreware.app = backend/tenant PRODUCTION (never preview/experiments).
+Gene or Wernher orchestrates. Four hosts (environments.md): https://dev.coreware.app = Control Tower DEV (`develop/<feature-slug>`; never tip-push onto `develop/develop`); https://controltower.coreware.app = landlord Control Tower PRODUCTION (observe/peek only when Angelo asks — NO modifying); https://development-corestore-alpha.coreware.app = primary DEV tenant for coreware-app-backend (`dev-test/<feature>`, base `develop`); https://coreware.coreware.app = backend/tenant PRODUCTION (observe/peek only when Angelo asks — NO modifying). PRODUCTION HARD RULE (Angelo 2026-09-18): both PROD hosts — bots may ONLY observe / peek when Angelo explicitly asks; NO modifying (no edits, creates, deletes, status changes, state-changing comments, deploys, tip-pushes, form submits, or any write API).
 
 - Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.

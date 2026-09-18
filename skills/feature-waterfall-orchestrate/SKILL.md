@@ -58,10 +58,10 @@ PASS); re-validate. No stacked tiny docs PRs. Do not assign implement.
   - https://development-corestore-alpha.coreware.app is the primary tenant for DEV
     coreware-app-backend — tips `dev-test/<feature>` (not `develop/<feature>`);
     base remains `develop`.
-  - https://coreware.coreware.app is coreware-app-backend PRODUCTION (tenant/backend app PROD — different from Control Tower landlord PROD) — never
-    preview features or run experiments there. Backend feature PRs target `develop`.
-  - https://controltower.coreware.app is landlord Control Tower PRODUCTION — never
-    tip-push experiments here. Never use for feature preview.
+  - https://coreware.coreware.app is coreware-app-backend PRODUCTION (tenant/backend app PROD — different from Control Tower landlord PROD).
+    Backend feature PRs target `develop`.
+  - https://controltower.coreware.app is landlord Control Tower PRODUCTION.
+  - PRODUCTION HARD RULE (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PROD) and https://coreware.coreware.app (backend/tenant app PROD): bots may ONLY observe / peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, comments that change state, deploys, tip-pushes, form submits, or any write API. Read-only / peek only.
 - Direct messages to Aaron, Kare/Bartik/Goldberg, Raye/Grace, Katherine. Read-only gh.
 
 ## TEST SLOT QUEUE

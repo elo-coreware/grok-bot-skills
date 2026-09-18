@@ -18,8 +18,7 @@ then High, then Medium.
   boss-control-tower), PR number, branch name, current HEAD SHA.
 - **DEV branch rule (boss-control-tower):** DEV testing uses `develop/<feature-slug>`
   on https://dev.coreware.app. Never tip-push experiments onto `develop/develop`
-  (main). https://controltower.coreware.app is landlord Control Tower PRODUCTION —
-  never tip-push experiments or feature preview there. Backend base remains `develop`.
+  (main). PRODUCTION HARD RULE (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PROD) and https://coreware.coreware.app (backend/tenant app PROD): bots may ONLY observe / peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, comments that change state, deploys, tip-pushes, form submits, or any write API. Read-only / peek only. Backend base remains `develop`.
 - The finding ledger row(s) to fix, with file:line, hunk, and source.
 - Committed implementation plan on the branch (scope boundary for product behavior).
 - repo-delegate-to-cursor for implementation work.

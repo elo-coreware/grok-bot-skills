@@ -20,8 +20,8 @@ target. Do not delegate product edits here.
 
 | owner/repo | Base branch | Host notes |
 |------------|-------------|------------|
-| `CorewareHub/coreware-app-backend` | `develop` | Feature PRs target `develop`. DEV tips: `dev-test/<feature>` on primary tenant **https://development-corestore-alpha.coreware.app**. **https://coreware.coreware.app is PRODUCTION** — never preview/experiments. |
-| `CorewareHub/boss-control-tower` | `develop/develop` | DEV: push `develop/<feature-slug>`; served at **https://dev.coreware.app**. Never tip-push onto `develop/develop` (main). **https://controltower.coreware.app is landlord Control Tower PRODUCTION** — never tip-push experiments or feature preview there. |
+| `CorewareHub/coreware-app-backend` | `develop` | Feature PRs target `develop`. DEV tips: `dev-test/<feature>` on primary tenant **https://development-corestore-alpha.coreware.app**. **https://coreware.coreware.app is PRODUCTION** — observe/peek only when Angelo asks; NO modifying. |
+| `CorewareHub/boss-control-tower` | `develop/develop` | DEV: push `develop/<feature-slug>`; served at **https://dev.coreware.app**. Never tip-push onto `develop/develop` (main). **https://controltower.coreware.app is landlord Control Tower PRODUCTION** — observe/peek only when Angelo asks; NO modifying. |
 
 Refuse any other owner/repo unless Angelo explicitly expands the allow-list. NASA CI
 test-health work stays on `coreware-app-backend`. Grace, Raye, Gene/Wernher
@@ -33,9 +33,8 @@ on either allowed product repo.
 - boss-control-tower → tip `develop/<feature-slug>` (DEV host https://dev.coreware.app).
 - coreware-app-backend → tip `dev-test/<feature>` (primary DEV tenant
   https://development-corestore-alpha.coreware.app); base remains `develop`.
-- Never tip-push experiments onto `develop/develop` (Control Tower main), use
-  https://coreware.coreware.app for feature preview (backend/tenant PRODUCTION), or use
-  https://controltower.coreware.app for feature preview (landlord Control Tower PRODUCTION).
+- Never tip-push experiments onto `develop/develop` (Control Tower main).
+- PRODUCTION HARD RULE (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PROD) and https://coreware.coreware.app (backend/tenant app PROD): bots may ONLY observe / peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, comments that change state, deploys, tip-pushes, form submits, or any write API. Read-only / peek only.
 
 ## DEV ACCESS (binding — do not invert)
 
@@ -51,12 +50,10 @@ on either allowed product repo.
   `develop/<feature>`. Base/main remains `develop`.
 - **https://coreware.coreware.app** is **CorewareHub/coreware-app-backend PRODUCTION**
   (tenant/backend app PROD — different from Control Tower landlord PROD).
-  Treat it as PROD. Never preview features or run experiments there. Do not run
-  schema dumps or tip-pushes against it. Be careful whenever anyone accesses it.
   Backend feature PRs still target `develop` (not PROD).
 - **https://controltower.coreware.app** is **landlord Control Tower PRODUCTION**.
-  Never tip-push experiments here. Never use for feature preview. Do not confuse
-  with https://coreware.coreware.app (backend/tenant PRODUCTION).
+  Do not confuse with https://coreware.coreware.app (backend/tenant PRODUCTION).
+- PRODUCTION HARD RULE (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PROD) and https://coreware.coreware.app (backend/tenant app PROD): bots may ONLY observe / peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, comments that change state, deploys, tip-pushes, form submits, or any write API. Read-only / peek only.
 
 ## REQUIRED INPUTS AND ACCESS
 
@@ -67,9 +64,7 @@ on either allowed product repo.
   boss-control-tower. For Control Tower DEV work, use `develop/<feature-slug>`
   (served on https://dev.coreware.app). For backend DEV tips, use `dev-test/<feature>`
   (primary tenant https://development-corestore-alpha.coreware.app); base remains
-  `develop`. Never treat https://coreware.coreware.app as a feature preview host —
-  it is backend/tenant PRODUCTION. Never treat https://controltower.coreware.app as a
-  feature preview host — it is landlord Control Tower PRODUCTION.
+  `develop`. PRODUCTION HARD RULE (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PROD) and https://coreware.coreware.app (backend/tenant app PROD): bots may ONLY observe / peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, comments that change state, deploys, tip-pushes, form submits, or any write API. Read-only / peek only.
 - Cursor Cloud Agents access.
 - gh authenticated for the chosen owner/repo.
 
@@ -145,9 +140,7 @@ on either allowed product repo.
   in BRANCH and no new branch was created. boss-control-tower DEV work must use
   `develop/<feature-slug>` on https://dev.coreware.app, not tip-pushes onto
   `develop/develop`. Backend DEV tips use `dev-test/<feature>` on
-  https://development-corestore-alpha.coreware.app. Never use
-  https://coreware.coreware.app to preview features (backend/tenant PRODUCTION). Never use
-  https://controltower.coreware.app to preview features (landlord Control Tower PRODUCTION).
+  https://development-corestore-alpha.coreware.app. PRODUCTION HARD RULE (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PROD) and https://coreware.coreware.app (backend/tenant app PROD): bots may ONLY observe / peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, comments that change state, deploys, tip-pushes, form submits, or any write API. Read-only / peek only.
 - Every touched file is inside SCOPE. Out-of-scope edits are a finding, not a bonus.
 - No polarity inversion. No new application-behavior change unless Angelo already approved that specific patch.
 - VERIFY output is quoted real output, not a claim that it passed.

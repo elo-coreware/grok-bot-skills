@@ -22,8 +22,7 @@ as N/A — proceed directly to pr-merge-verdict-comment MERGE-READY.
   pr-merge-readiness-audit (HEAD when gates 1–4 passed).
 - **DEV branch rule (boss-control-tower):** DEV testing uses `develop/<feature-slug>`
   on https://dev.coreware.app. Never tip-push experiments onto `develop/develop`
-  (main). https://controltower.coreware.app is landlord Control Tower PRODUCTION —
-  never tip-push experiments or feature preview there. Backend base remains `develop`.
+  (main). PRODUCTION HARD RULE (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PROD) and https://coreware.coreware.app (backend/tenant app PROD): bots may ONLY observe / peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, comments that change state, deploys, tip-pushes, form submits, or any write API. Read-only / peek only. Backend base remains `develop`.
 - gh / GitHub MCP for PR comments and body edit.
 - repo-delegate-to-cursor for git rm, commit, push.
 
