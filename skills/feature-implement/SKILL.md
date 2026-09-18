@@ -30,8 +30,10 @@ WITH NOTES on the **same** feature PR. Do not start on FAIL or without assignmen
   - https://development-corestore-alpha.coreware.app is the primary tenant for DEV
     coreware-app-backend — push `dev-test/<feature>` (not `develop/<feature>`).
     Base/main remains `develop`.
-  - https://coreware.coreware.app is coreware-app-backend **PRODUCTION** — never
+  - https://coreware.coreware.app is coreware-app-backend **PRODUCTION** (tenant/backend app PROD — different from Control Tower landlord PROD) — never
     preview features or run experiments there. Backend feature PRs target `develop`.
+  - https://controltower.coreware.app is landlord Control Tower **PRODUCTION** — never
+    tip-push experiments here. Never use for feature preview.
 - repo-delegate-to-cursor. Local Pint after PHP edits. Shared test slot before Pest.
 
 ## ONE FEATURE PR RULE

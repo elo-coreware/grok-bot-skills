@@ -23,7 +23,8 @@ noisy one.
   reviewed-sha if no plan retirement commit).
 - **DEV branch rule (boss-control-tower):** DEV testing uses `develop/<feature-slug>`
   on https://dev.coreware.app. Never tip-push experiments onto `develop/develop`
-  (main). Backend base remains `develop`.
+  (main). https://controltower.coreware.app is landlord Control Tower PRODUCTION —
+  never tip-push experiments or feature preview there. Backend base remains `develop`.
 - Gate table from pr-merge-readiness-audit.
 - Combined findings ledger from pr-bugbot-sweep.
 - Verdict: MERGE-READY, BLOCKED, or WAITING.

@@ -32,7 +32,9 @@ arbitrates the test slot, and relays outcomes. He never merges.
   (main). Backend DEV primary tenant is
   https://development-corestore-alpha.coreware.app with tips `dev-test/<feature>`
   (not `develop/<feature>`); base remains `develop`.
-  https://coreware.coreware.app is PRODUCTION — never preview/experiments there.
+  https://coreware.coreware.app is backend/tenant PRODUCTION — never preview/experiments there.
+  https://controltower.coreware.app is landlord Control Tower PRODUCTION — never tip-push
+  experiments or feature preview there.
 - Raye or Grace's current state from their last report (or assign fresh).
 - Engineer phase state from qa-phase-orchestrate (for slot conflicts; backend CI only).
 - Direct message to the assignee. Read-only gh for PR status on the chosen repo.

@@ -48,9 +48,11 @@ there — name it under Related PR pair.
    - https://development-corestore-alpha.coreware.app is the **primary tenant for
      DEV coreware-app-backend**. Feature tips: `dev-test/<feature>` — not
      `develop/<feature>`. Base/main remains `develop`.
-   - https://coreware.coreware.app is **coreware-app-backend PRODUCTION**. Never
+   - https://coreware.coreware.app is **coreware-app-backend PRODUCTION** (tenant/backend app PROD — different from Control Tower landlord PROD). Never
      preview features or run experiments there (no schema dumps / tip-pushes).
      Backend feature PRs still target `develop`.
+   - https://controltower.coreware.app is **landlord Control Tower PRODUCTION**. Never
+     tip-push experiments here. Never use for feature preview.
 4. **Scope** — in / out. Bounded.
 5. **Approach** — high-level steps, files or surfaces touched, risks.
 6. **Related PR pair** — if both repos, name merge order (each repo still one PR).
@@ -75,7 +77,7 @@ named in the plan.
 
 - Single feature PR for this feature in this repo; docs-only at plan stage (or named
   authorized spike).
-- Repo, base, DEV ACCESS (three hosts / tip prefixes), scope, test notes present.
+- Repo, base, DEV ACCESS (four hosts / tip prefixes), scope, test notes present.
 - No premature implementation commits before Aaron PASS + Gene assign implement.
 - No expectation of a later separate implement PR in the same repo.
 

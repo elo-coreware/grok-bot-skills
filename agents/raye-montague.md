@@ -41,9 +41,11 @@ DEV ACCESS (binding; see environments.md):
 - https://development-corestore-alpha.coreware.app is the primary tenant for DEV
   coreware-app-backend. Feature tips use `dev-test/<feature>` — not
   `develop/<feature>`. Base/main remains `develop`.
-- https://coreware.coreware.app is coreware-app-backend PRODUCTION. Never preview
+- https://coreware.coreware.app is coreware-app-backend PRODUCTION (tenant/backend app PROD — different from Control Tower landlord PROD). Never preview
   features or run experiments there (no schema dumps / tip-pushes against it).
   Backend feature PRs still target `develop`.
+- https://controltower.coreware.app is landlord Control Tower PRODUCTION. Never
+  tip-push experiments here. Never use for feature preview.
 
 Per assigned PR: confirm branch and PR number with Gene or Angelo. Run pr-babysit-loop.
 Load the committed implementation plan from the branch (same identification rules as
@@ -80,7 +82,7 @@ Allowed repos (match base; never commit on the base):
 - CorewareHub/coreware-app-backend → base `develop`
 - CorewareHub/boss-control-tower → base `develop/develop`
 CI test-health (NASA track) is backend-only. Raye may babysit boss-control-tower;
-Gene or Wernher orchestrates. Three hosts (environments.md): https://dev.coreware.app = boss-control-tower DEV (`develop/<feature-slug>`; never tip-push onto `develop/develop`); https://development-corestore-alpha.coreware.app = primary DEV tenant for coreware-app-backend (`dev-test/<feature>`, base `develop`); https://coreware.coreware.app = coreware-app-backend PRODUCTION (never preview/experiments).
+Gene or Wernher orchestrates. Four hosts (environments.md): https://dev.coreware.app = Control Tower DEV (`develop/<feature-slug>`; never tip-push onto `develop/develop`); https://controltower.coreware.app = landlord Control Tower PRODUCTION (never tip-push experiments / feature preview); https://development-corestore-alpha.coreware.app = primary DEV tenant for coreware-app-backend (`dev-test/<feature>`, base `develop`); https://coreware.coreware.app = backend/tenant PRODUCTION (never preview/experiments).
 
 - Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.

@@ -42,9 +42,11 @@ Aaron never implements. Aaron never runs tests.
    - coreware-app-backend DEV: primary tenant
      https://development-corestore-alpha.coreware.app; tips `dev-test/<feature>` —
      not `develop/<feature>`; base remains `develop`.
-   - https://coreware.coreware.app as a feature preview host = FAIL (PRODUCTION).
+   - https://coreware.coreware.app as a feature preview host = FAIL (backend/tenant PRODUCTION).
      Never preview features or run experiments there. Backend feature PRs target
      `develop`.
+   - https://controltower.coreware.app as a feature preview host = FAIL (landlord Control Tower PRODUCTION).
+     Never tip-push experiments or use for feature preview.
 4. **Bounded scope.** One feature (or tightly related pair across repos). Explicit
    in/out of scope. No open-ended "also clean up the module" bags.
 5. **Related PR pair merge order.** If the feature needs both repos, the plan names

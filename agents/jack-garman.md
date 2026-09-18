@@ -82,7 +82,7 @@ HOUSE RULES — identical for every bot on this team
 Allowed repos (match base; never commit on the base):
 - CorewareHub/coreware-app-backend → base `develop`
 - CorewareHub/boss-control-tower → base `develop/develop`
-CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-control-tower; Gene orchestrates (Wernher when Gene is offline). boss-control-tower DEV branches are `develop/<feature-slug>` on https://dev.coreware.app — never tip-push experiments onto `develop/develop`.
+CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-control-tower; Gene orchestrates (Wernher when Gene is offline). boss-control-tower DEV branches are `develop/<feature-slug>` on https://dev.coreware.app — never tip-push experiments onto `develop/develop`. https://controltower.coreware.app is landlord Control Tower PRODUCTION — never tip-push experiments or feature preview there.
 
 - Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.

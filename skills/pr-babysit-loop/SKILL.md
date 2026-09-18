@@ -25,7 +25,8 @@ and a written reason.
   `CorewareHub/boss-control-tower` → `develop/develop`).
 - **DEV branch rule (boss-control-tower):** DEV testing uses `develop/<feature-slug>`
   on https://dev.coreware.app. Never tip-push experiments onto `develop/develop`
-  (main). Backend base remains `develop`.
+  (main). https://controltower.coreware.app is landlord Control Tower PRODUCTION —
+  never tip-push experiments or feature preview there. Backend base remains `develop`.
 - gh authenticated for that owner/repo.
 - Committed implementation plan on the branch when one exists (identification rules
   from .cursor/commands/git-commit.md step 5; BugBot-generated plans excluded).

@@ -58,8 +58,10 @@ PASS); re-validate. No stacked tiny docs PRs. Do not assign implement.
   - https://development-corestore-alpha.coreware.app is the primary tenant for DEV
     coreware-app-backend — tips `dev-test/<feature>` (not `develop/<feature>`);
     base remains `develop`.
-  - https://coreware.coreware.app is coreware-app-backend PRODUCTION — never
+  - https://coreware.coreware.app is coreware-app-backend PRODUCTION (tenant/backend app PROD — different from Control Tower landlord PROD) — never
     preview features or run experiments there. Backend feature PRs target `develop`.
+  - https://controltower.coreware.app is landlord Control Tower PRODUCTION — never
+    tip-push experiments here. Never use for feature preview.
 - Direct messages to Aaron, Kare/Bartik/Goldberg, Raye/Grace, Katherine. Read-only gh.
 
 ## TEST SLOT QUEUE
