@@ -2,15 +2,34 @@
 name: prod-tenant-log-pull
 description: >-
   Use when Angelo asks Seymour (or devops) to pull Coreware tenant application
-  logs (S3) and/or request logs (CloudWatch) for diagnosis — especially
-  production — only after an explicit in-chat permission grant, and only via
-  commands on Angelo’s local machine.
+  logs (S3) and/or request logs (CloudWatch), observe metrics, or peek AWS infra
+  for diagnosis — especially production — only after an explicit in-chat
+  permission grant, and only via read-only commands on Angelo’s local machine.
+  Never remediate, provision, or tune; show Angelo fix commands first.
 ---
-# Pull tenant production logs
+# Pull tenant production logs (observe-only)
 
 ## When to use
 
-Use when Angelo asks to pull **application logs** and/or **request logs** for one or more Coreware tenants (by name, domain, or Control Tower tenant id) for given date(s), usually to diagnose a production issue. Typical hosts look like `{tenant}.coreware.app` or Control Tower URLs under `controltower.coreware.app/tenants/{id}/…-logs`.
+Use when Angelo asks to pull **application logs** and/or **request logs** for one or more Coreware tenants (by name, domain, or Control Tower tenant id) for given date(s), or to **observe metrics / peek AWS infrastructure** for diagnosis. Typical hosts look like `{tenant}.coreware.app` or Control Tower URLs under `controltower.coreware.app/tenants/{id}/…-logs`.
+
+## Observe-only standing rule (Angelo 2026-09-18)
+
+Seymour (and this skill) may **only**:
+
+- Pull logs (application + request; Control Tower UI pages and/or read-only AWS)
+- Observe metrics
+- Peek into AWS infrastructure (`describe` / `list` / `get` and equivalent read-only)
+
+Seymour must **not**:
+
+- Execute remediation or “fix” commands
+- Provision new services
+- Fine-tune server settings or change configuration
+
+If diagnosis finds a problem that needs a fix: **draft the exact command(s) and show Angelo first**. Angelo runs them, or explicitly tells Seymour to. Do not self-serve mutate, provision, or tune.
+
+Read-only log pulls and peeks remain OK under a fresh explicit grant.
 
 ## Hard permission gate (PROD)
 
@@ -25,7 +44,7 @@ The permission must name at least:
 
 If any of those are missing, stop and ask. If the grant is only for peeking landlord metadata, do not widen into tenant DB writes or other accounts.
 
-This work runs **only on Angelo’s registered local computer** (his AWS CLI / SSO / GitHub CLI). Never pull PROD logs from the shared Grok Bot computer.
+This work runs **only on Angelo’s registered local computer** (his AWS CLI / SSO). Never pull PROD logs from the shared Grok Bot computer.
 
 ## PROD web hosts — observe / peek only (Angelo 2026-09-18)
 
@@ -34,11 +53,9 @@ Hard rule for **both**:
 - `https://controltower.coreware.app` — landlord Control Tower PRODUCTION
 - `https://coreware.coreware.app` — backend / tenant app PRODUCTION
 
-Bots may **only observe or peek** on these hosts when Angelo explicitly asks. **No modifying** — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify. Log pulls use AWS + read-only landlord DB metadata, not mutations in the live web UI.
+Bots may **only observe or peek** on these hosts when Angelo explicitly asks. **No modifying** — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify. Log pulls use AWS + read-only landlord DB metadata, not mutations in the live web UI. Control Tower application-logs / request-logs pages are an allowed read path when granted.
 
 ## What the two log types actually are
-
-They come from different places:
 
 ### Application logs (S3)
 
@@ -70,6 +87,7 @@ One `SELECT` against the Control Tower landlord DB for the tenant row(s): `id`, 
 2. `aws s3 cp` / get-object for each tenant × each needed application log date (try tenant-scoped key, then legacy flat key).
 3. `aws logs filter-log-events` per tenant per agreed window with `"HTTP_REQUEST:TENANT_{id}"`, follow `nextToken` to the end (or Angelo’s cap). Save raw JSON; optionally flatten to timestamp / method / status / duration / url text.
 4. Write an `inventory.txt` listing what was found vs missing, windows used, and sizes. Do not commit.
+5. If the pull points at a fix (bad config, restart, IAM change, scale, etc.): **stop and show Angelo the exact proposed command(s)** — do not run them.
 
 ## Report back
 
@@ -78,12 +96,14 @@ One `SELECT` against the Control Tower landlord DB for the tenant row(s): `id`, 
 - Retention cautions (some CloudWatch groups keep only ~7 days)
 - Whether tenant DB credentials were left unused (preferred)
 - Short anomalies only if obvious while verifying the pull — deep product diagnosis is a separate assign
+- Any proposed remediation commands (for Angelo to run), clearly labeled as **not executed**
 
 ## Never
 
 - Pull PROD logs without a fresh explicit Angelo grant in-chat
 - Modify `controltower.coreware.app` or `coreware.coreware.app` (observe/peek only)
 - Write to landlord or tenant databases
+- Run remediation, provision services, or tune server settings yourself
 - Run this from the shared bot computer
 - Merge, deploy, or tip-push as part of a log pull
 - Paste secrets, customer payloads, or full dump contents into chat
