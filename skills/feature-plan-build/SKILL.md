@@ -1,17 +1,18 @@
 ---
 name: feature-plan-build
 description: >-
-  Feature engineer writes one feature plan PR after ~80% of details are filled,
-  then stops until Aaron PASS and Gene assigns implement
+  Feature engineer opens or updates ONE feature branch/PR; plan docs land first;
+  stop until Aaron PASS — no later separate implement PR
 ---
 # feature-plan-build
 
 ## WHEN TO USE
 
-Susan Kare, Jean Bartik, or another assigned feature engineer reaches ~80% detail
-completeness on an Angelo-requested feature. Write the plan and open **one** plan
-PR. Stop. Do not implement until Aaron PASSes feature-plan-validate and Gene (or
-Wernher) assigns feature-implement.
+Susan Kare, Jean Bartik, Adele Goldberg, or another assigned feature engineer
+reaches ~80% detail completeness on an Angelo-requested feature. Write the plan and
+open or update **one** feature PR with plan docs first. Stop. Do not implement until
+Aaron PASSes feature-plan-validate and Gene (or Wernher) assigns feature-implement
+on **this same** branch/PR.
 
 ## REQUIRED INPUTS AND ACCESS
 
@@ -23,10 +24,16 @@ Wernher) assigns feature-implement.
 - repo-delegate-to-cursor for docs writes and PR open.
 - Never commit on develop / develop/develop / main / master.
 
-## ONE PLAN PR RULE
+## ONE FEATURE PR RULE (Angelo standing rule 2026-09-18)
 
-Exactly one plan PR per feature. Amend the same PR tip if Aaron FAILs or details
-change. Do not open stacked tiny docs PRs.
+Exactly **one** feature PR per feature per repo for the whole waterfall (plan →
+implement → Bugbot → code validation/audit). Plan docs land first on that branch/PR.
+After Aaron PASS, the same engineer commits implement on the **same** branch/PR —
+do **not** expect or open a later separate implement PR in this repo. Amend the same
+PR tip if Aaron FAILs or details change. Do not open stacked tiny docs PRs.
+
+A related pair in the **other** repo (backend vs Control Tower) is a separate PR
+there — name it under Related PR pair.
 
 ## PLAN CONTENTS (minimum)
 
@@ -46,34 +53,38 @@ change. Do not open stacked tiny docs PRs.
      Backend feature PRs still target `develop`.
 4. **Scope** — in / out. Bounded.
 5. **Approach** — high-level steps, files or surfaces touched, risks.
-6. **Related PR pair** — if both repos, name merge order.
+6. **Related PR pair** — if both repos, name merge order (each repo still one PR).
 7. **Test notes** — regressable behavior and how to verify (DEV and/or Pest).
 8. **Open questions** — only residual items that do not block planning; escalate
    product-behavior ambiguity to Angelo before opening if critical.
 
-Prefer docs-only. An authorized spike needs Angelo's written go-ahead named in the
-plan.
+Prefer docs-only at this stage. An authorized spike needs Angelo's written go-ahead
+named in the plan.
 
 ## SEQUENCE OF WORK
 
 1. Confirm ~80% details and owner/repo + base with Gene.
-2. Draft the plan document on a feature branch (not the base).
-3. Open one plan PR targeting the correct base.
-4. Notify Gene that the plan PR is ready for Aaron feature-plan-validate.
+2. Draft the plan document on a feature branch (not the base). Prefer reusing an
+   existing open feature PR tip for this feature if one already exists.
+3. Open or update **one** feature PR targeting the correct base (plan docs first).
+4. Notify Gene that the feature PR is ready for Aaron feature-plan-validate.
 5. **STOP.** Do not implement. Do not request babysit. Wait for Aaron PASS + Gene
-   assign implement.
+   assign implement on **this same** PR. Do not open a second PR for implement.
 
 ## HOW TO VALIDATE
 
-- Single plan PR; docs-only (or named authorized spike).
+- Single feature PR for this feature in this repo; docs-only at plan stage (or named
+  authorized spike).
 - Repo, base, DEV ACCESS (three hosts / tip prefixes), scope, test notes present.
-- No implementation commits on the plan PR.
+- No premature implementation commits before Aaron PASS + Gene assign implement.
+- No expectation of a later separate implement PR in the same repo.
 
 ## WHAT TO RETURN
 
-Plan path, PR URL, branch, owner/repo + base, next action: wait for Aaron.
+Plan path, PR URL, branch, owner/repo + base, next action: wait for Aaron (same PR).
 
 ## WHAT REQUIRES APPROVAL
 
-Opening the plan PR needs no approval. Product-behavior beyond the brief → Angelo.
-Never merge. Never start feature-implement without Aaron PASS + Gene assignment.
+Opening or updating the feature PR needs no approval. Product-behavior beyond the
+brief → Angelo. Never merge. Never start feature-implement without Aaron PASS + Gene
+assignment. Never open a second PR for the same feature in the same repo.

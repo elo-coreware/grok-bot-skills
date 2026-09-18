@@ -27,11 +27,12 @@ routines/  # Grok Bot liveness schedules (weekday day + overnight; weekends off)
 | raye-montague | Raye Montague | PR Readiness Engineer - US Navy Ship Design |
 | susan-kare | Susan Kare | Feature Engineer - Macintosh GUI |
 | jean-bartik | Jean Bartik | Feature Engineer - ENIAC Programmer |
+| adele-goldberg | Adele Goldberg | Feature Engineer - Smalltalk Pioneer |
 | seymour-cray | Seymour Cray | DevOps Engineer - Cray-1 Architect |
 
 Each agent has `agents/<slug>.md` (human-readable) and `agents/<slug>.json` (machine-readable).
 
-**Tracks:** The NASA six (Gene, Aaron, Tindall, Katherine, Margaret, Garman) own CI test health. Garman is the standby engineer — idle unless Angelo explicitly activates DUAL mode via Gene. Wernher (Engineering Chief of Staff - NASA Rocket Engineer) is Gene's backup orchestrator when Gene is offline — alive, not QA-labeled. Grace and Raye are the non-NASA PR readiness track — they babysit feature implementation PRs until MERGE-READY. Susan Kare and Jean Bartik are feature engineers (not QA): plan → Aaron validate → implement on the Angelo 2026-09-17 feature waterfall. Seymour Cray (DevOps Engineer - Cray-1 Architect) is Angelo-only DevOps — permanent rename of TEMP - SQS Email Alerts; sole bot allowed on Angelo's local machine for AWS.
+**Tracks:** The NASA six (Gene, Aaron, Tindall, Katherine, Margaret, Garman) own CI test health. Garman is the standby engineer — idle unless Angelo explicitly activates DUAL mode via Gene. Wernher (Engineering Chief of Staff - NASA Rocket Engineer) is Gene's backup orchestrator when Gene is offline — alive, not QA-labeled. Grace and Raye are the non-NASA PR readiness track — they babysit feature PRs until MERGE-READY. Susan Kare, Jean Bartik, and Adele Goldberg are feature engineers (not QA): plan → Aaron validate → implement → Bugbot → audit on **one PR per feature per repo** (Angelo standing rule 2026-09-18; related pair in the other repo stays separate). Seymour Cray (DevOps Engineer - Cray-1 Architect) is Angelo-only DevOps — permanent rename of TEMP - SQS Email Alerts; sole bot allowed on Angelo's local machine for AWS.
 
 **Environments:** Site URLs live in [`environments.md`](environments.md). https://coreware.coreware.app is PRODUCTION — never use it for feature preview.
 
@@ -53,8 +54,8 @@ Each agent has `agents/<slug>.md` (human-readable) and `agents/<slug>.json` (mac
 | qa-phase-fix | Margaret / Garman |
 | qa-fix-audit | Katherine |
 | qa-pr-verdict-comment | Katherine |
-| feature-plan-build | Susan Kare / Jean Bartik |
-| feature-implement | Susan Kare / Jean Bartik |
+| feature-plan-build | Susan Kare / Jean Bartik / Adele Goldberg |
+| feature-implement | Susan Kare / Jean Bartik / Adele Goldberg |
 | pr-babysit-loop | Grace / Raye |
 | pr-bugbot-sweep | Grace / Raye |
 | pr-finding-remediate | Grace / Raye |

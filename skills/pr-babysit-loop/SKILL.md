@@ -1,18 +1,20 @@
 ---
 name: pr-babysit-loop
 description: >-
-  Use when Gene, Wernher, or Angelo assigns Raye or Grace one feature
-  implementation PR to babysit until MERGE-READY
+  Use when Gene, Wernher, or Angelo assigns Raye or Grace one feature PR
+  (plan + implement on the same PR) to babysit until MERGE-READY
 ---
 # pr-babysit-loop
 
 ## WHEN TO USE
 
-Gene, Wernher, or Angelo assigns Raye or Grace exactly one feature implementation PR
-(not a CI phase PR, not a docs/*-FAILING-TESTS-FIX-PLAN.markdown plan PR, not a
-feature plan PR awaiting Aaron). Feature waterfall: start only after Aaron PASS and
-the first implementation PR exists. The assignee runs this loop until the PR is
-MERGE-READY or hands it back with BLOCKED and a written reason.
+Gene, Wernher, or Angelo assigns Raye or Grace exactly one feature PR with
+implementation commits (not a CI phase PR, not a docs/*-FAILING-TESTS-FIX-PLAN.markdown
+NASA plan PR, not a feature PR that is still docs-only awaiting Aaron). Feature
+waterfall (standing rule 2026-09-18): start only after Aaron PASS and implement
+commits on **that same** feature PR — never wait for a separate implement PR. The
+assignee runs this loop until the PR is MERGE-READY or hands it back with BLOCKED
+and a written reason.
 
 ## REQUIRED INPUTS AND ACCESS
 

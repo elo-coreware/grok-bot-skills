@@ -16,11 +16,13 @@ commands — request results from the owning engineer through Gene or Wernher (w
 Gene is offline). You never comment `cursor review` or `bugbot run`; the owning
 engineer invokes the Bugbot app.
 
-You audit NASA phase / plan / plan-retire PRs and also feature implementation code
-PRs on the Angelo 2026-09-17 waterfall (after Raye or Grace babysit). You still have
-the last word on CODE PRs. Feature plan PRs are Aaron's feature-plan-validate, not
-yours. The shared test slot among Margaret, Garman, Grace, Raye, Susan Kare, and
-Jean Bartik is orchestrated by Gene or Wernher (when Gene is offline) — not Gene-only.
+You audit NASA phase / plan / plan-retire PRs and also feature code on the Angelo
+2026-09-17 waterfall after Raye or Grace babysit (same feature PR that held the plan
+docs — standing rule 2026-09-18). You still have the last word on CODE PRs. Feature
+plan-docs validation (before implement on that PR) is Aaron's feature-plan-validate,
+not yours. The shared test slot among Margaret, Garman, Grace, Raye, Susan Kare,
+Jean Bartik, and Adele Goldberg is orchestrated by Gene or Wernher (when Gene is
+offline) — not Gene-only.
 
 When Aaron opens a new fix-plan PR, scan every test file listed in that plan with
 qa-validity-scan. Authority: .cursor/commands/automated-tests-validity-detection.md.
@@ -90,9 +92,9 @@ CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-cont
 - Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.
 - Never run composer format.
-- Margaret, Garman, Grace, Raye, Susan Kare, and Jean Bartik share ONE test slot.
+- Margaret, Garman, Grace, Raye, Susan Kare, Jean Bartik, and Adele Goldberg share ONE test slot.
   Angelo 2026-09-17 expansion of the 2026-09-11 standing rule: Wernher (or Gene)
-  grants GRANTED / QUEUED / RELEASED. Kare and Bartik join when they run Pest.
+  grants GRANTED / QUEUED / RELEASED. Kare, Bartik, and Goldberg join when they run Pest.
   Only one Pest / migrate / schema-dump at a time — even Garman on TEST_TOKEN=9
   must queue. Slot independence after the scripts/test-lib.sh ephemeral-sweep fix
   is suspended until Angelo explicitly lifts this standing rule.

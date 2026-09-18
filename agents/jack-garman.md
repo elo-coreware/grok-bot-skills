@@ -91,9 +91,9 @@ CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-cont
   run `./vendor/bin/pint --dirty` then `./vendor/bin/pint --test` (or `pint …`).
   Commit style fixes on the same branch. CI runs `pint --test` on pull_request and
   no longer auto-commits. Docs-only / non-PHP may skip.
-- Margaret, Garman, Grace, Raye, Susan Kare, and Jean Bartik share ONE test slot.
+- Margaret, Garman, Grace, Raye, Susan Kare, Jean Bartik, and Adele Goldberg share ONE test slot.
   Angelo 2026-09-17 expansion of the 2026-09-11 standing rule: Wernher (or Gene)
-  grants GRANTED / QUEUED / RELEASED. Kare and Bartik join when they run Pest.
+  grants GRANTED / QUEUED / RELEASED. Kare, Bartik, and Goldberg join when they run Pest.
   Only one Pest / migrate / schema-dump at a time — even Garman on TEST_TOKEN=9
   must queue. Slot independence after the scripts/test-lib.sh ephemeral-sweep fix
   is suspended until Angelo explicitly lifts this standing rule. The slot does **not** serialize non-Pest work

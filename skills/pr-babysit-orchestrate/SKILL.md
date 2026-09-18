@@ -3,20 +3,21 @@ name: pr-babysit-orchestrate
 description: >-
   Use when Angelo or Gene assigns a feature PR to Raye or Grace, either reports
   status, or the shared test slot must be granted among Margaret, Garman, Grace,
-  Raye, Susan Kare, and Jean Bartik
+  Raye, Susan Kare, Jean Bartik, and Adele Goldberg
 ---
 # pr-babysit-orchestrate
 
 ## WHEN TO USE
 
-- Angelo asks Gene (or Wernher when Gene is offline) to babysit a feature
-  implementation PR (provides PR number or URL).
+- Angelo asks Gene (or Wernher when Gene is offline) to babysit a feature PR
+  (provides PR number or URL).
 - Raye or Grace reports MERGE-READY, BLOCKED, or WAITING and needs relay to Angelo.
-- Grace, Raye, Margaret, Garman, Susan Kare, or Jean Bartik requests the shared
-  test slot (Kare/Bartik only when they run Pest).
+- Grace, Raye, Margaret, Garman, Susan Kare, Jean Bartik, or Adele Goldberg
+  requests the shared test slot (feature engineers only when they run Pest).
 - Daily brief includes a PR readiness row.
-- Feature waterfall: babysit starts only after Aaron PASS on the plan and the
-  first implementation PR exists.
+- Feature waterfall (standing rule 2026-09-18): babysit starts only after Aaron PASS
+  on the plan and **that same** feature PR has implementation commits (one PR for
+  plan + implement — never a separate implement PR in the same repo).
 
 Gene or Wernher never runs pr-babysit-loop himself. He assigns Raye or Grace,
 arbitrates the test slot, and relays outcomes. He never merges.
@@ -39,13 +40,13 @@ arbitrates the test slot, and relays outcomes. He never merges.
 ## TEST SLOT QUEUE
 
 The slot covers test-running work on the shared Grok Bot cloud computer.
-**Angelo standing rule 2026-09-11:** Margaret, Garman, Grace, Raye, Susan Kare, and
-Jean Bartik all contend for **one** slot (GRANTED / QUEUED / RELEASED). Garman still
-verifies on token 9 (`test_tenant_9` / `test_landlord_9`) but must queue here — he
-is **not** outside the queue. Kare and Bartik join when they run Pest. Slot
-independence after the `scripts/test-lib.sh` ephemeral-sweep fix stays suspended
-until Angelo explicitly lifts the standing rule. Gene records that the standing
-rule is in force; Wernher grants when Gene is offline.
+**Angelo standing rule 2026-09-11:** Margaret, Garman, Grace, Raye, Susan Kare,
+Jean Bartik, and Adele Goldberg all contend for **one** slot (GRANTED / QUEUED /
+RELEASED). Garman still verifies on token 9 (`test_tenant_9` / `test_landlord_9`)
+but must queue here — he is **not** outside the queue. Feature engineers join when
+they run Pest. Slot independence after the `scripts/test-lib.sh` ephemeral-sweep
+fix stays suspended until Angelo explicitly lifts the standing rule. Gene records
+that the standing rule is in force; Wernher grants when Gene is offline.
 
 **The slot covers test-running work only** — Pest, migrate, or
 `test:generate-schema-dump`, i.e. any delegation whose VERIFY is not `none`.
@@ -77,11 +78,12 @@ prioritizes the feature PR.
 
 1. **Assign.** When Angelo provides a PR (or the feature waterfall reaches babysit):
    - Confirm owner/repo is allowed and PR is open, targets the matching base
-     (`develop` or `develop/develop`), and is a feature implementation PR (not a CI
-     phase PR, not a docs/*-FAILING-TESTS-FIX-PLAN.markdown plan PR, not a feature
-     plan PR awaiting Aaron).
-   - Feature waterfall: confirm Aaron PASS on the plan and that the first
-     implementation PR exists before starting babysit.
+     (`develop` or `develop/develop`), and is a feature PR with implementation
+     commits (not a CI phase PR, not a docs/*-FAILING-TESTS-FIX-PLAN.markdown NASA
+     plan PR, not a feature PR that is still docs-only awaiting Aaron).
+   - Feature waterfall: confirm Aaron PASS on the plan and that implement commits
+     exist on **that same** feature PR before starting babysit (one-PR rule
+     2026-09-18 — do not wait for a separate implement PR).
    - If Raye or Grace already babysits another PR, STOP — one PR at a time across
      both. Finish or hand back the current one first.
    - Message the assignee (Raye or Grace): owner/repo, base, PR number, URL, branch,
@@ -101,9 +103,9 @@ prioritizes the feature PR.
      on cursor[bot] or CI.
 
 4. **Separation from CI pipeline.** Never assign Raye/Grace a fix/ci-tests-phase-*
-   branch or docs plan PR. Never assign a NASA engineer a feature PR Raye/Grace owns.
-   Katherine audits code PRs (and NASA phase PRs); Raye/Grace babysit feature
-   implementation PRs — different tracks.
+   branch or NASA docs plan PR. Never assign a NASA engineer a feature PR Raye/Grace
+   owns. Katherine audits code on feature PRs (and NASA phase PRs); Raye/Grace
+   babysit feature PRs after implement — different tracks.
 
 5. **Daily brief row.** Add to Gene's brief:
    ```
@@ -112,17 +114,19 @@ prioritizes the feature PR.
 
 ## HOW TO VALIDATE
 
-- At most one feature implementation PR assigned to Raye or Grace at a time.
+- At most one feature PR assigned to Raye or Grace at a time.
 - At most one test slot GRANTED at a time on token 1.
-- Garman, Kare, and Bartik appear in the queue while the 2026-09-11 standing rule
-  is in force when they need Pest.
+- Garman, Kare, Bartik, and Goldberg appear in the queue while the 2026-09-11
+  standing rule is in force when they need Pest.
 - MERGE-READY relay includes comment URL and both SHAs when plan was retired.
 - Raye/Grace never assigned to CI phase work.
+- Babysit targets the same PR that held the plan (no separate implement-PR wait).
 
 ## WHAT TO RETURN
 
-Assignee (Raye or Grace), PR, branch, state, test slot holder (or free), Garman/Kare/Bartik
-slot state when relevant, relay messages sent to Angelo, daily brief line.
+Assignee (Raye or Grace), PR, branch, state, test slot holder (or free),
+Garman/Kare/Bartik/Goldberg slot state when relevant, relay messages sent to Angelo,
+daily brief line.
 
 ## WHAT REQUIRES APPROVAL
 
