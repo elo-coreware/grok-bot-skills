@@ -23,11 +23,22 @@ Bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no e
 | Env | URL | Notes |
 |-----|-----|-------|
 | DEV | https://dev.coreware.app | Feature tips use `develop/<feature-slug>`. Never tip-push experiments onto `develop/develop` (that is main). |
-| PRODUCTION | https://controltower.coreware.app | Landlord Control Tower PRODUCTION. PROD web hosts — observe / peek only (Angelo 2026-09-18): bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify. Never tip-push experiments. Never use for feature preview. |
+| PRODUCTION | https://controltower.coreware.app | Landlord Control Tower PRODUCTION. Observe/peek only when Angelo asks. Never tip-push. Never feature preview. |
 
 ## coreware-app-backend
 
 | Env | URL | Notes |
 |-----|-----|-------|
-| DEV (primary tenant) | https://development-corestore-alpha.coreware.app | Primary DEV tenant. Feature tips use `dev-test/<feature>` — not `develop/<feature>`. Base/main remains `develop`. |
-| PRODUCTION | https://coreware.coreware.app | Tenant/backend app PRODUCTION — different from Control Tower landlord PROD. PROD web hosts — observe / peek only (Angelo 2026-09-18): bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify. Never use for feature preview or experiments. Backend feature PRs target `develop`. |
+| DEV (primary tenant) | https://development-corestore-alpha.coreware.app | Primary DEV tenant. Feature tips use `dev-test/<feature>` — not `develop/<feature>`. Base remains `develop`. |
+| PRODUCTION | https://coreware.coreware.app | Tenant/backend PRODUCTION — different from Control Tower landlord PROD. Observe/peek only when Angelo asks. Never feature preview. Backend feature PRs target `develop`. |
+
+## PROD recheck vs DEV writes (Angelo 2026-09-20)
+
+When Angelo asks a feature engineer (or any bot) to recheck PROD: peek/observe ONLY on
+https://controltower.coreware.app and https://coreware.coreware.app. NO modifying.
+
+If you need to change data to test a feature, use DEV only:
+- https://dev.coreware.app (Control Tower DEV)
+- https://development-corestore-alpha.coreware.app (backend DEV primary tenant)
+
+Never mutate PROD to verify.
