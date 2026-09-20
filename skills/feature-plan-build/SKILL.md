@@ -1,4 +1,5 @@
 ---
+name: feature-plan-build
 description: >-
   Feature engineer opens or updates ONE feature branch/PR; plan docs land first;
   write plans Aaron can ledger (cited paths, success bar, test notes); stop
