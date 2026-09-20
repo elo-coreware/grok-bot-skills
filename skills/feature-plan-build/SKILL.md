@@ -1,5 +1,4 @@
 ---
-name: feature-plan-build
 description: >-
   Feature engineer opens or updates ONE feature branch/PR; plan docs land first;
   write plans Aaron can ledger (cited paths, success bar, test notes); stop
@@ -15,7 +14,7 @@ Susan Kare, Jean Bartik, Adele Goldberg, or another assigned feature engineer re
 
 - Feature brief from Angelo / Gene (goal, repos, constraints, open questions resolved enough to plan).
 - owner/repo + base:
-  - `CorewareHub/coreware-app-backend` → `dev-test`
+  - `CorewareHub/coreware-app-backend` → `develop`
   - `CorewareHub/boss-control-tower` → `develop/develop`
 - repo-delegate-to-cursor for docs writes and PR open.
 - Never commit on develop / develop/develop / dev-test / main / master.
@@ -26,16 +25,26 @@ Exactly **one** feature PR per feature per repo for the whole waterfall (plan �
 
 A related pair in the **other** repo (backend vs Control Tower) is a separate PR there — name it under Related PR pair.
 
+## BACKEND BRANCHING (Angelo 2026-09-21, clarified)
+
+For `CorewareHub/coreware-app-backend`:
+
+- **Tip names:** `feature/<name>` for features; `fix/<name>` for fixes. Do **not** use tip prefix `dev-test/<name>` as the default.
+- **Normal PR base:** `develop`.
+- **`dev-test` is situational:** use it only when you need to run tests, or need the change to reflect on coreware-app-backend DEV (primary tenant https://development-corestore-alpha.coreware.app). Do not make every backend PR target `dev-test`.
+- Never tip-push experiments onto a protected base. Never commit on `develop`, `dev-test`, `main`, or `master`.
+- Control Tower unchanged: base `develop/develop`; DEV tips `develop/<feature-slug>` on https://dev.coreware.app.
+
 ## PLAN CONTENTS (minimum)
 
 1. **Goal** — one paragraph outcome, plus a crisp **success bar** (what must be true on DEV or in code for the feature to count as done).
 2. **owner/repo + base** — explicit.
 3. **DEV ACCESS** (environments.md) —
    - https://dev.coreware.app is **boss-control-tower DEV only**. Feature tips: `develop/<feature-slug>`. Never tip-push experiments onto `develop/develop` (main). After push, DEV may lag (ECS/roll); hard-refresh and re-check. Do not invent a login click-path or passwords; login wall → Angelo / takeover. Never paste credentials.
-   - https://development-corestore-alpha.coreware.app is the **primary tenant for DEV coreware-app-backend**. Feature tips: `feature/<name>` (features) or `fix/<name>` (fixes). Base is `dev-test`.
-   - https://coreware.coreware.app is **coreware-app-backend PRODUCTION** (tenant/backend app PROD — different from Control Tower landlord PROD). Backend feature/fix PRs target `dev-test`.
+   - https://development-corestore-alpha.coreware.app is the **primary tenant for DEV coreware-app-backend**. Feature tips: `feature/<name>`; fix tips: `fix/<name>` (not `dev-test/<name>` by default). Base is normally `develop`. Use `dev-test` only for tests or DEV reflection.
+   - https://coreware.coreware.app is **coreware-app-backend PRODUCTION** (tenant/backend app PROD — different from Control Tower landlord PROD). Backend feature/fix PRs normally target `develop`; use `dev-test` only for tests or DEV reflection.
    - https://controltower.coreware.app is **landlord Control Tower PRODUCTION**.
-   - PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app and https://coreware.coreware.app: bots may ONLY observe or peek when Angelo explicitly asks. NO modifying. Default is never modify.
+   - PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app and https://coreware.coreware.app: bots may ONLY observe / peek when Angelo explicitly asks. NO modifying. Default is never modify.
 4. **Scope** — in / out. Bounded. No silent product-behavior rewrite.
 5. **Approach** — high-level steps, **cited files or surfaces** (`app/...`, routes, migrations, contracts, Blade/Vue paths as applicable), risks.
 6. **Related PR pair** — if both repos, name merge order (each repo still one PR).
@@ -59,7 +68,7 @@ Aaron runs `feature-plan-validate` as a business analyst + QA analyst. Every PAS
 Rules Aaron applies (do not fight them in the plan):
 
 - **Backend-heavy:** he validates from plan text + cited paths/contracts/migrations/test notes — he will **not** browse for every claim.
-- **UI/DEV:** he samples live only when the claim is verifyable and a live check is cheap/decisive. Unverifiable user-visible claims → FAIL or PASS WITH NOTES, never a silent PASS.
+- **UI/DEV:** he samples live only when the claim is verifyable and a live check is cheap and decisive. Unverifiable user-visible claims → FAIL or PASS WITH NOTES, never a silent PASS.
 - **BLOCKER / HIGH** findings block PASS until fixed or justified in writing on the same PR tip.
 - Gene will not assign `feature-implement` until Aaron's verdict comment includes the ledger (and a comment URL).
 
