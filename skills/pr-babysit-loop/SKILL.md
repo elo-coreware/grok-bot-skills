@@ -9,12 +9,22 @@ description: >-
 
 Gene or Angelo assigns Grace exactly one feature PR (not a CI phase PR, not a docs/*-FAILING-TESTS-FIX-PLAN.markdown plan PR). Grace runs this loop until the PR is MERGE-READY or she hands it back with BLOCKED and a written reason.
 
+## BACKEND BRANCHING (Angelo 2026-09-21, clarified)
+
+For `CorewareHub/coreware-app-backend`:
+
+- **Tip names:** `feature/<name>` for features; `fix/<name>` for fixes. Do **not** use tip prefix `dev-test/<name>` as the default.
+- **Normal PR base:** `develop`.
+- **`dev-test` is situational:** use it only when you need to run tests, or need the change to reflect on coreware-app-backend DEV (primary tenant https://development-corestore-alpha.coreware.app). Do not make every backend PR target `dev-test`.
+- Never tip-push experiments onto a protected base. Never commit on `develop`, `dev-test`, `main`, or `master`.
+- Control Tower unchanged: base `develop/develop`; DEV tips `develop/<feature-slug>` on https://dev.coreware.app.
+
 ## REQUIRED INPUTS AND ACCESS
 
 - PR number and URL, branch name, head SHA at assignment.
 - Read/write on the PR branch via repo-delegate-to-cursor.
 - owner/repo + base for the assigned PR (allowed:
-  `CorewareHub/coreware-app-backend` → `dev-test`, or
+  `CorewareHub/coreware-app-backend` → `develop`, or
   `CorewareHub/boss-control-tower` → `develop/develop`).
 - gh authenticated for that owner/repo.
 - Committed implementation plan on the branch when one exists (identification rules
@@ -36,35 +46,55 @@ Exactly one PR at a time. Never start a second PR until the first is MERGE-READY
 
 ## LOCAL PINT (Angelo 2026-09-15 / develop #6326) — mandatory
 
-CI runs `pint --test` on pull_request (no auto-commit). After any PHP remediations on the feature PR, run `./vendor/bin/pint --dirty` (or path-scoped Pint) and commit `:art: pint` if needed, then `./vendor/bin/pint --test` before `cursor review`. Never run `composer format`. Docs-only / non-PHP: skip.
+CI runs `pint --test` on pull_request (no auto-commit). After any PHP remediations on the feature PR, run `./vendor/bin/pint --dirty` (or path-scoped Pint) and commit `:art: pint` if needed, then `./vendor/bin/pint --test` before `cursor review`.
+Never run `composer format`. Docs-only / non-PHP: skip.
 
 ## SEQUENCE OF WORK
 
 1. **Intake.** Record owner/repo, base branch, PR number, branch, initial HEAD SHA.
-   Fetch origin. Confirm PR is open and targets the correct base (`dev-test` or
+   Fetch origin. Confirm PR is open and targets the correct base (`develop` or
    `develop/develop` per allow-list). If merge conflicts with `<base>` exist before
    work starts, post BLOCKED verdict and ask Angelo to resolve — do not merge `<base>`
    yourself unless Gene or Angelo explicitly assigns conflict resolution.
 
-2. **SWEEPING.** Run pr-bugbot-sweep. Produce the combined findings ledger (local /bugbot + /bugbot-triage + cursor[bot] HEAD threads).
+2. **SWEEPING.** Run pr-bugbot-sweep. Produce the combined findings ledger (local
+   /bugbot + /bugbot-triage + cursor[bot] HEAD threads).
 
-3. **Decision.** If the ledger has unfixed valid in-scope items → REMEDIATING. If zero unfixed valid in-scope items → pr-merge-readiness-audit.
+3. **Decision.** If the ledger has unfixed valid in-scope items → REMEDIATING.
+   If zero unfixed valid in-scope items → pr-merge-readiness-audit.
 
-4. **REMEDIATING.** For each valid in-scope item (Critical first, then High, then Medium), run pr-finding-remediate. If verification needs tests, message Gene for the test slot. Do not run composer test:single until Gene grants GRANTED. If QUEUED, wait. Batch related fixes into one commit when sensible. **Pint gate:** if PHP changed, run LOCAL PINT (`./vendor/bin/pint --dirty` + `--test`) and commit style fixes before `cursor review`. After push, comment `cursor review` as Angelo → WAITING-BUGBOT.
+4. **REMEDIATING.** For each valid in-scope item (Critical first, then High, then
+   Medium), run pr-finding-remediate. If verification needs tests, message Gene for
+   the test slot. Do not run composer test:single until Gene grants GRANTED. If
+   QUEUED, wait. Batch related fixes into one commit when sensible. **Pint gate:**
+   if PHP changed, run LOCAL PINT (`./vendor/bin/pint --dirty` + `--test`) and
+   commit style fixes before `cursor review`. After push, comment `cursor review` as
+   Angelo → WAITING-BUGBOT.
 
-5. **WAITING-BUGBOT.** Poll until cursor[bot] has a review whose commit_id equals HEAD, or timeout and report WAITING verdict to Gene. When review lands, return to SWEEPING (re-triage GitHub threads + optional fresh local sweep if findings changed materially).
+5. **WAITING-BUGBOT.** Poll until cursor[bot] has a review whose commit_id equals
+   HEAD, or timeout and report WAITING verdict to Gene. When review lands, return to
+   SWEEPING (re-triage GitHub threads + optional fresh local sweep if findings
+   changed materially).
 
-6. **Merge readiness.** When sweep shows zero unfixed valid in-scope items, run pr-merge-readiness-audit (gates 1–4). Route on the outcome:
+6. **Merge readiness.** When sweep shows zero unfixed valid in-scope items, run
+   pr-merge-readiness-audit (gates 1–4). Route on the outcome:
    - Gate 1 or 2 fail → back to SWEEPING or REMEDIATING.
    - Gate 3 pending, or gate 4 `mergeable == "UNKNOWN"` → WAITING-CI.
    - Gate 3 red or gate 4 conflicts → post BLOCKED.
-   - Gates 1–4 pass → pr-plan-doc-retire → pr-merge-verdict-comment MERGE-READY → notify Gene and Angelo.
+   - Gates 1–4 pass → pr-plan-doc-retire → pr-merge-verdict-comment MERGE-READY →
+     notify Gene and Angelo.
 
-7. **WAITING-CI.** Poll `gh pr checks <PR>` until every required check resolves on HEAD, or GitHub finishes computing mergeability. Then re-run pr-merge-readiness-audit — do not skip straight to a verdict off a stale gate table. On red CI, post BLOCKED. If checks stay pending beyond one hour, report WAITING to Gene rather than polling silently.
+7. **WAITING-CI.** Poll `gh pr checks <PR>` until every required check resolves on
+   HEAD, or GitHub finishes computing mergeability. Then re-run
+   pr-merge-readiness-audit — do not skip straight to a verdict off a stale gate
+   table. On red CI, post BLOCKED. If checks stay pending beyond one hour, report
+   WAITING to Gene rather than polling silently.
 
-   The plan retirement commit in step 6 starts a fresh CI run on the new HEAD. Re-enter WAITING-CI for that run before posting MERGE-READY.
+   The plan retirement commit in step 6 starts a fresh CI run on the new HEAD.
+   Re-enter WAITING-CI for that run before posting MERGE-READY.
 
-8. **Handback.** On BLOCKED, post verdict, tell Gene the blocker, release the test slot if held, and stop. Angelo or Gene must re-assign to resume.
+8. **Handback.** On BLOCKED, post verdict, tell Gene the blocker, release the test
+   slot if held, and stop. Angelo or Gene must re-assign to resume.
 
 ## HOW TO VALIDATE
 
@@ -76,8 +106,11 @@ CI runs `pint --test` on pull_request (no auto-commit). After any PHP remediatio
 
 ## WHAT TO RETURN
 
-State, PR number, branch, current HEAD SHA, findings ledger summary (valid remaining / fixed / dismissed), gate table, verdict comment URL, blocker if BLOCKED.
+State, PR number, branch, current HEAD SHA, findings ledger summary (valid remaining /
+fixed / dismissed), gate table, verdict comment URL, blocker if BLOCKED.
 
 ## WHAT REQUIRES APPROVAL
 
-Pushing fix commits and posting comments need no approval when posting as Angelo. Never merge. Escalate to Angelo for scope beyond the implementation plan, unresolvable conflicts, or repeated remediation failure on the same finding.
+Pushing fix commits and posting comments need no approval when posting as Angelo.
+Never merge. Escalate to Angelo for scope beyond the implementation plan, unresolvable
+conflicts, or repeated remediation failure on the same finding.
