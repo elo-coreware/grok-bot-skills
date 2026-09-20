@@ -15,7 +15,7 @@ Run this after a feature ships to DEV, when Angelo asks for another verification
 ## Environments (hard rules)
 
 - Control Tower DEV: `https://dev.coreware.app` on branch tip `develop/<feature-slug>`. Never tip-push experiments onto `develop/develop`.
-- Backend / tenant DEV: primary tenant `https://development-corestore-alpha.coreware.app`. Backend feature tips use `dev-test/<feature>`, not `develop/<feature>`.
+- Backend / tenant DEV: primary tenant `https://development-corestore-alpha.coreware.app`. Backend feature tips use `feature/<name>` (features) or `fix/<name>` (fixes), not `develop/<feature>`.
 - Never use `https://coreware.coreware.app` to preview or experiment (that host is PRODUCTION).
 - PROD web hosts — observe / peek only (Angelo 2026-09-18; clarified 2026-09-20): `https://controltower.coreware.app` and `https://coreware.coreware.app`. When Angelo asks for a PROD recheck: peek/observe ONLY. NO modifying (no edits, creates, deletes, status changes, write form submits, deploys, tip-pushes, or write APIs). Default is never modify.
 - If you must change data to verify a feature, use DEV only (`https://dev.coreware.app` and/or `https://development-corestore-alpha.coreware.app`). Never mutate PROD to test.
