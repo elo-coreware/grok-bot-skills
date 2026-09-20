@@ -1,0 +1,19 @@
+{
+  "synced_at": "2026-09-20",
+  "source": "live Grok Bot profiles (Angelo manual tweaks)",
+  "agents": [
+    {"slug": "gene-kranz", "name": "Gene Kranz", "title": "QA Chief of Staff - NASA Flight Director", "avatar_shape": "blob", "avatar_color": "blue"},
+    {"slug": "wernher-von-braun", "name": "Wernher von Braun", "title": "Engineering Chief of Staff - NASA Rocket Engineer", "avatar_shape": "wedge", "avatar_color": "blue"},
+    {"slug": "john-aaron", "name": "John Aaron", "title": "QA Analyst - NASA Flight Controller", "avatar_shape": "hex", "avatar_color": "cyan"},
+    {"slug": "katherine-johnson", "name": "Katherine Johnson", "title": "QA Validator - NASA Mathematician", "avatar_shape": "gem", "avatar_color": "violet"},
+    {"slug": "margaret-hamilton", "name": "Margaret Hamilton", "title": "QA Engineer - NASA Software Engineer", "avatar_shape": "hex", "avatar_color": "yellow"},
+    {"slug": "jack-garman", "name": "Jack Garman", "title": "QA Engineer - NASA Software Engineer", "avatar_shape": "blob", "avatar_color": "yellow"},
+    {"slug": "bill-tindall", "name": "Bill Tindall", "title": "QA Coverage Architect - NASA Mission Techniques", "avatar_shape": "squircle", "avatar_color": "brown"},
+    {"slug": "susan-kare", "name": "Susan Kare", "title": "Feature Engineer - Macintosh GUI", "avatar_shape": "blob", "avatar_color": "green"},
+    {"slug": "jean-bartik", "name": "Jean Bartik", "title": "Feature Engineer - ENIAC Programmer", "avatar_shape": "squircle", "avatar_color": "green"},
+    {"slug": "adele-goldberg", "name": "Adele Goldberg", "title": "Feature Engineer - Smalltalk GUI", "avatar_shape": "cloud", "avatar_color": "green"},
+    {"slug": "raye-montague", "name": "Raye Montague", "title": "PR Readiness Engineer - US Navy Ship Design", "avatar_shape": "blob", "avatar_color": "orange"},
+    {"slug": "grace-hopper", "name": "Grace Hopper", "title": "PR Readiness Engineer - US Navy Computing Pioneer", "avatar_shape": "cloud", "avatar_color": "orange"},
+    {"slug": "seymour-cray", "name": "Seymour Cray", "title": "DevOps Engineer - Cray-1 Architect", "avatar_shape": "squircle", "avatar_color": "red"}
+  ]
+}
