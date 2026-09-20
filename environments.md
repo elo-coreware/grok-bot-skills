@@ -29,8 +29,8 @@ Bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no e
 
 | Env | URL | Notes |
 |-----|-----|-------|
-| DEV (primary tenant) | https://development-corestore-alpha.coreware.app | Primary DEV tenant. Feature tips use `dev-test/<feature>` — not `develop/<feature>`. Base remains `develop`. |
-| PRODUCTION | https://coreware.coreware.app | Tenant/backend PRODUCTION — different from Control Tower landlord PROD. Observe/peek only when Angelo asks. Never feature preview. Backend feature PRs target `develop`. |
+| DEV (primary tenant) | https://development-corestore-alpha.coreware.app | Primary DEV tenant. Tips: `feature/<name>` or `fix/<name>` (not tip prefix `dev-test/<name>` by default). Normal PR base: `develop`. Use `dev-test` only for tests or DEV tenant reflection (Angelo 2026-09-21 clarified). |
+| PRODUCTION | https://coreware.coreware.app | Tenant/backend PRODUCTION — different from Control Tower landlord PROD. Observe/peek only when Angelo asks. Never feature preview. Backend feature PRs normally target `develop`. |
 
 ## PROD recheck vs DEV writes (Angelo 2026-09-20)
 
