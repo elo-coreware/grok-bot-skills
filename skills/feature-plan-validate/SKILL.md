@@ -51,7 +51,7 @@ For `CorewareHub/coreware-app-backend`:
    - coreware-app-backend DEV: primary tenant https://development-corestore-alpha.coreware.app; tips `feature/<name>` or `fix/<name>`; base is normally `develop` (`dev-test` only for tests/DEV).
    - https://coreware.coreware.app as a feature preview / write host = FAIL (backend/tenant PRODUCTION). Backend feature/fix PRs normally target `develop`; use `dev-test` only for tests or DEV reflection.
    - https://controltower.coreware.app as a feature preview / write host = FAIL (landlord Control Tower PRODUCTION).
-   - PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app and https://coreware.coreware.app: bots may ONLY observe when Angelo explicitly asks. NO modifying. Default is never modify. Any plan that implies modifying either PROD host = FAIL.
+   - PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app and https://coreware.coreware.app: bots may ONLY observe / peek when Angelo explicitly asks. NO modifying. Default is never modify. Any plan that implies modifying either PROD host = FAIL.
 4. **Bounded scope.** One feature (or tightly related pair across repos). Explicit in/out of scope. No open-ended "also clean up the module" bags. No silent product-behavior rewrite.
 5. **Related PR pair merge order.** If the feature needs both repos, the plan names both PRs (or planned branches) and the merge order — each repo still one PR (standing rule 2026-09-18).
 6. **Test notes.** For any regressable behavior, the plan lists what to verify (manual DEV and/or Pest paths) so babysit and Katherine have a contract.
