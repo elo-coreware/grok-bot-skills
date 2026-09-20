@@ -5,7 +5,6 @@ description: >-
   implement on the SAME PR → Raye/Grace babysit → Katherine audit → Angelo
   merge; require ledger comment URL before implement.
 ---
-# feature-waterfall-orchestrate
 
 ## WHEN TO USE
 
@@ -21,7 +20,7 @@ Neither Gene nor Wernher implements or audits. Aaron validates plans (QA Analyst
 2. At ~80% complete, assign the feature engineer (Susan Kare — Control Tower / platform-banner / UI-surface; Jean Bartik — Action Plan / service-request workflow; Adele Goldberg when Gene routes a feature to her) to feature-plan-build → **one feature PR** (plan docs land first on that branch/PR).
 3. Assign Aaron feature-plan-validate on **that same PR** (PASS / PASS WITH NOTES / FAIL). Binding on the plan. Docs may still be the only files at validate time. Aaron never implements. Aaron must post an **evidence ledger** in the verdict comment (see feature-plan-validate).
 4. On PASS / PASS WITH NOTES **and** a ledger comment URL is on record, assign the **same** feature engineer feature-implement on the **same branch / same PR**. Do **not** open a separate implement PR in the same repo. Do **not** assign implement if Aaron's verdict lacks a ledger (or an explicit backend-only ledger section). On FAIL: engineer amends; re-validate.
-5. When that PR has implementation commits (after Aaron PASS), assign Raye or Grace pr-babysit-orchestrate / pr-babysit-loop (one PR at a time) on **that same PR**.
+5. When that PR has implementation commits (after Aaron PASS), assign Raye or Grace pr-babysit-orchestrate / pr-babysit-loop (one PR at a time) on that **same PR**.
 6. After babysit MERGE-READY (or as Gene schedules), Katherine audits **that same PR** (code). Katherine is not the plan gate.
 7. Angelo merges.
 
@@ -29,18 +28,28 @@ Neither Gene nor Wernher implements or audits. Aaron validates plans (QA Analyst
 
 On Aaron FAIL: engineer amends the **same** feature PR (still docs-only until PASS); re-validate. No stacked tiny docs PRs. Do not assign implement.
 
+## BACKEND BRANCHING (Angelo 2026-09-21, clarified)
+
+For `CorewareHub/coreware-app-backend`:
+
+- **Tip names:** `feature/<name>` for features; `fix/<name>` for fixes. Do **not** use tip prefix `dev-test/<name>` as the default.
+- **Normal PR base:** `develop`.
+- **`dev-test` is situational:** use it only when you need to run tests, or need the change to reflect on coreware-app-backend DEV (primary tenant https://development-corestore-alpha.coreware.app). Do not make every backend PR target `dev-test`.
+- Never tip-push experiments onto a protected base. Never commit on `develop`, `dev-test`, `main`, or `master`.
+- Control Tower unchanged: base `develop/develop`; DEV tips `develop/<feature-slug>` on https://dev.coreware.app.
+
 ## REQUIRED INPUTS AND ACCESS
 
 - Feature name, owning engineer, Angelo brief.
 - owner/repo + base for each PR:
-  - `CorewareHub/coreware-app-backend` → `dev-test`
+  - `CorewareHub/coreware-app-backend` → `develop`
   - `CorewareHub/boss-control-tower` → `develop/develop`
 - **DEV ACCESS** (environments.md):
-  - https://dev.coreware.app is boss-control-tower DEV only — push `develop/<feature-slug>`; never tip-push experiments onto `develop/develop`. After push, DEV may lag (ECS/roll); hard-refresh. Login wall → Angelo / takeover; never invent passwords or paste credentials.
-  - https://development-corestore-alpha.coreware.app is the primary tenant for DEV coreware-app-backend — tips `feature/<name>` or `fix/<name>`; base is `dev-test`.
-  - https://coreware.coreware.app is coreware-app-backend PRODUCTION (tenant/backend app PROD — different from Control Tower landlord PROD). Backend feature/fix PRs target `dev-test`.
+  - https://dev.coreware.app is boss-control-tower DEV only — push `develop/<feature-slug>`; never tip-push onto `develop/develop`. After push, DEV may lag (ECS/roll); hard-refresh. Login wall → Angelo / takeover; never invent passwords or paste credentials.
+  - https://development-corestore-alpha.coreware.app is the primary tenant for DEV coreware-app-backend — tips `feature/<name>` or `fix/<name>`; base is normally `develop` (`dev-test` only for tests/DEV).
+  - https://coreware.coreware.app is coreware-app-backend PRODUCTION (tenant/backend app PROD — different from Control Tower landlord PROD). Backend feature/fix PRs normally target `develop`; use `dev-test` only for tests or DEV reflection.
   - https://controltower.coreware.app is landlord Control Tower PRODUCTION.
-  - PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app and https://coreware.coreware.app: bots may ONLY observe or peek when Angelo explicitly asks. NO modifying. Default is never modify.
+  - PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app and https://coreware.coreware.app: bots may ONLY observe / peek when Angelo explicitly asks. NO modifying. Default is never modify.
 - Direct messages to Aaron, Kare/Bartik/Goldberg, Raye/Grace, Katherine. Read-only gh.
 - Before implement: Aaron's verdict **comment URL** (must include evidence ledger).
 
@@ -72,7 +81,7 @@ Report every active feature as:
 - Aaron verdict **with evidence ledger** before implement assignment.
 - Same PR used for plan docs and implement; no second feature PR in the same repo.
 - Babysit only after implement commits exist on that PR; one Raye/Grace PR at a time.
-- DEV tip prefixes stated (CT `develop/<feature-slug>`; backend `feature/<name>` or `fix/<name>` off `dev-test`); PROD host never used for preview.
+- DEV tip prefixes stated (CT `develop/<feature-slug>`; backend `feature/<name>` or `fix/<name>`; use `dev-test` only for tests/DEV); PROD host never used for preview.
 - Status table complete (including ledger URL); single next action.
 
 ## WHAT TO RETURN
