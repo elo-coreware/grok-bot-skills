@@ -26,25 +26,35 @@ Act as a business analyst and QA analyst on the plan text:
 - Prefer cited `app/` / module paths, migrations, API contracts, and explicit test notes over narrative confidence.
 - Do **not** rubberstamp. A silent PASS with no evidence ledger is forbidden.
 
+## BACKEND BRANCHING (Angelo 2026-09-21, clarified)
+
+For `CorewareHub/coreware-app-backend`:
+
+- **Tip names:** `feature/<name>` for features; `fix/<name>` for fixes. Do **not** use tip prefix `dev-test/<name>` as the default.
+- **Normal PR base:** `develop`.
+- **`dev-test` is situational:** use it only when you need to run tests, or need the change to reflect on coreware-app-backend DEV (primary tenant https://development-corestore-alpha.coreware.app). Do not make every backend PR target `dev-test`.
+- Never tip-push experiments onto a protected base. Never commit on `develop`, `dev-test`, `main`, or `master`.
+- Control Tower unchanged: base `develop/develop`; DEV tips `develop/<feature-slug>` on https://dev.coreware.app.
+
 ## REQUIRED INPUTS AND ACCESS
 
-- owner/repo + PR number / URL, branch, base (`dev-test` or `develop/develop`).
+- owner/repo + PR number / URL, branch, base (`develop` or `develop/develop`).
 - The plan document on the PR (docs-only at this stage, or an authorized spike called out in the plan). Same PR will later receive implement commits after PASS.
 - Read access via repo-delegate-to-cursor / gh. Write access only for the GitHub PR comment under Angelo.
 
 ## CHECKLIST (all required)
 
 1. **Docs-only (or authorized spike) at validate time.** At Aaron's pass, the PR must still be documentation / plan only, unless Angelo already authorized a named spike in writing. Premature code implementation before PASS = FAIL. (After PASS, the **same** PR receives implement commits — that is expected later, not now.)
-2. **Repo + base named.** The plan names owner/repo and the matching base: `CorewareHub/coreware-app-backend` → `dev-test`; `CorewareHub/boss-control-tower` → `develop/develop`.
+2. **Repo + base named.** The plan names owner/repo and the matching base: `CorewareHub/coreware-app-backend` → `develop`; `CorewareHub/boss-control-tower` → `develop/develop`.
 3. **DEV ACCESS** (environments.md). Plan must match tip prefixes and hosts:
    - boss-control-tower: https://dev.coreware.app is DEV only; tips `develop/<feature-slug>` (never tip-push onto `develop/develop`). After push, DEV may lag; hard-refresh. No invented login path.
-   - coreware-app-backend DEV: primary tenant https://development-corestore-alpha.coreware.app; tips `feature/<name>` (features) or `fix/<name>` (fixes); base is `dev-test`.
-   - https://coreware.coreware.app as a feature preview / write host = FAIL (backend/tenant PRODUCTION). Backend feature/fix PRs target `dev-test`.
+   - coreware-app-backend DEV: primary tenant https://development-corestore-alpha.coreware.app; tips `feature/<name>` or `fix/<name>`; base is normally `develop` (`dev-test` only for tests/DEV).
+   - https://coreware.coreware.app as a feature preview / write host = FAIL (backend/tenant PRODUCTION). Backend feature/fix PRs normally target `develop`; use `dev-test` only for tests or DEV reflection.
    - https://controltower.coreware.app as a feature preview / write host = FAIL (landlord Control Tower PRODUCTION).
-   - PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app and https://coreware.coreware.app: bots may ONLY observe or peek when Angelo explicitly asks. NO modifying. Default is never modify. Any plan that implies modifying either PROD host = FAIL.
+   - PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app and https://coreware.coreware.app: bots may ONLY observe when Angelo explicitly asks. NO modifying. Default is never modify. Any plan that implies modifying either PROD host = FAIL.
 4. **Bounded scope.** One feature (or tightly related pair across repos). Explicit in/out of scope. No open-ended "also clean up the module" bags. No silent product-behavior rewrite.
 5. **Related PR pair merge order.** If the feature needs both repos, the plan names both PRs (or planned branches) and the merge order — each repo still one PR (standing rule 2026-09-18).
-6. **Test notes.** For any regressable behavior, the plan lists what to verify (manual on DEV and/or Pest paths) so babysit and Katherine have a contract.
+6. **Test notes.** For any regressable behavior, the plan lists what to verify (manual DEV and/or Pest paths) so babysit and Katherine have a contract.
 7. **Severity gate.** Any unaddressed BLOCKER finding = FAIL. Every HIGH must be fixed or justified in writing on the plan (or in Aaron's ledger notes).
 
 ## EVIDENCE LEDGER (mandatory)
