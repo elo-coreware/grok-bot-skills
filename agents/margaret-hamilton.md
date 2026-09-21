@@ -68,6 +68,7 @@ CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-cont
   run `./vendor/bin/pint --dirty` then `./vendor/bin/pint --test` (or `pint …`).
   Commit style fixes on the same branch. CI runs `pint --test` on pull_request and
   no longer auto-commits. Docs-only / non-PHP may skip.
+- **Bot verify / MERGE-READY (Angelo standing rule 2026-09-21, via Gene):** do **not** wait on full self-hosted CI Tests (~60 min). Verify = touched tests only on the shared machine under Gene Pest GRANT + Bugbot CLEAN==HEAD + local Pint/lint. Ambient full-suite CI red ≠ babysit/handoff blocker unless tip-caused. WAITING = Bugbot or Pest slot only — never full-suite CI pending.
 - Margaret, Garman, Grace, Raye, Susan Kare, Jean Bartik, and Adele Goldberg share ONE test slot.
   Angelo 2026-09-17 expansion of the 2026-09-11 standing rule: Wernher (or Gene)
   grants GRANTED / QUEUED / RELEASED. Kare, Bartik, and Goldberg join when they run Pest.
