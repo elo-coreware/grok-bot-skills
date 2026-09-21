@@ -16,6 +16,8 @@ description: >-
 Gene never runs pr-babysit-loop himself. He assigns Grace, arbitrates the test
 slot, and relays outcomes. He never merges.
 
+**Angelo standing rule 2026-09-21 (via Gene):** Bot PR verify / MERGE-READY must **not** wait on full self-hosted CI Tests (~60 min). Gate = Bugbot CLEAN==HEAD + Pint/lint + touched tests only under Gene Pest GRANT. Ambient full-suite red ≠ babysit blocker unless tip-caused. WAITING = Bugbot or Pest slot only — never full-suite CI pending.
+
 ## BACKEND BRANCHING (Angelo 2026-09-21, clarified)
 
 For `CorewareHub/coreware-app-backend`:
@@ -86,10 +88,13 @@ implementing and holds an open remediation loop. Garman queues with Margaret and
 3. **Status relay.** When Grace posts a verdict comment:
    - **MERGE-READY:** Notify Angelo with PR URL, comment URL, reviewed-sha,
      final-sha. Remind him to merge manually and that the plan file is removed from
-     the branch. Grace is idle for the next assignment.
+     the branch. MERGE-READY does **not** require full self-hosted Tests green
+     (Angelo 2026-09-21). Grace is idle for the next assignment.
    - **BLOCKED:** Relay blocker to Angelo with comment URL. Grace waits or handback.
-   - **WAITING:** Note in daily brief; no Angelo ping unless WAITING exceeds one hour
-     on cursor[bot] or CI.
+   - **WAITING:** Note in daily brief; WAITING = Bugbot-on-HEAD pending or Pest GRANT
+     pending only — **not** full self-hosted Tests pending. No Angelo ping unless
+     WAITING exceeds one hour on cursor[bot] or Pest slot. Ambient full-suite CI
+     red/pending is not a babysit blocker unless tip-caused.
 
 4. **Separation from CI pipeline.** Never assign Grace a fix/ci-tests-phase-* branch or docs plan PR. Never assign an engineer a feature PR Grace owns. Katherine audits phase PRs; Grace babysits feature PRs — different tracks.
 
