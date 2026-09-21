@@ -75,6 +75,14 @@ Authority files:
    Split sources: `local /bugbot` vs `cursor[bot]`. Only **Valid + in-scope + Fixed?=no**
    items enter the remediation queue.
 
+
+## INVOKE GATING (Angelo 2026-09-21)
+
+This skill does **not** post `cursor review`. If a caller asks whether to
+re-invoke Bugbot: follow pr-babysit-loop **CURSOR REVIEW INVOKE GATE** — do not
+advise a second bare invoke while one is PENDING for HEAD, or when cursor[bot]
+already reviewed HEAD (example: CorewareHub/coreware-app-backend#6487).
+
 ## RULES
 
 - Never resolve a cursor[bot] review thread on GitHub. Reply in a PR comment if
