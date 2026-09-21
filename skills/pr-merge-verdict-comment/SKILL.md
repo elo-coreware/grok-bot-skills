@@ -8,10 +8,14 @@ description: >-
 
 ## WHEN TO USE
 
-- **MERGE-READY:** pr-plan-doc-retire completed (or gate 5 N/A), CI green on final-sha.
-- **BLOCKED:** pr-merge-readiness-audit gate 1, 2, or 4 failed; CI failed; scope
-  escalation; deletion-only assertion failed.
-- **WAITING:** cursor[bot] has not reviewed HEAD; CI checks pending.
+- **MERGE-READY:** pr-plan-doc-retire completed (or gate 5 N/A); Bugbot CLEAN on
+  reviewed-sha; Pint/lint clean; touched tests passed under Pest GRANT. Full
+  self-hosted Tests green is **not** required (Angelo 2026-09-21).
+- **BLOCKED:** pr-merge-readiness-audit gate 1, 2, or 4 failed; tip-caused
+  touched-test / Pint failure; scope escalation; deletion-only assertion failed.
+  Ambient full-suite CI red alone is **not** BLOCKED.
+- **WAITING:** cursor[bot] has not reviewed HEAD, **or** Pest GRANT not yet
+  available for touched-test verify. Not "CI pending" for the full suite.
 
 Post for every verdict, not only MERGE-READY — a silent BLOCKED is worse than a
 noisy one.
@@ -75,7 +79,7 @@ never write a claim you cannot evidence.
 |------|--------|
 | 1 Local sweep (zero unfixed valid in-scope) | pass |
 | 2 cursor[bot] on reviewed-sha | pass |
-| 3 CI checks (green on final-sha) | pass |
+| 3 Verify (touched tests + Pint/lint; full suite N/A) | pass |
 | 4 Mergeable with <base> | pass |
 | 5 Implementation plan retired | pass / N/A |
 
@@ -84,7 +88,8 @@ never write a claim you cannot evidence.
 Gate 2 is asserted against `reviewed-sha`, not `final-sha`. When a plan retirement
 commit moved HEAD, state the deletion-only delta explicitly:
 `git diff <reviewed-sha>..<final-sha> --name-only` returned only the plan path, so
-no new Bugbot review was required. CI is green on `final-sha`.
+no new Bugbot review was required. Full self-hosted Tests green is not required
+on `final-sha` (Angelo 2026-09-21); ambient CI debt OK unless tip-caused.
 
 **Merge state:** `mergeable` / `mergeStateStatus` / draft — call out `BLOCKED`
 (needs your approving review), `UNSTABLE`, or `isDraft: true` (you must mark the
@@ -117,7 +122,7 @@ merge, or "Nothing; safe to merge after your review." Never leave this empty.
 |------|--------|
 | 1–5 | pass / fail / waiting / N/A |
 
-**Findings still open:** list valid in-scope items or "none — blocked on CI/conflicts"
+**Findings still open:** list valid in-scope items or "none — blocked on conflicts / tip-caused verify"
 
 **Next action:** what Raye, Grace, or Angelo must do.
 
@@ -136,7 +141,7 @@ merge, or "Nothing; safe to merge after your review." Never leave this empty.
 
 **Verdict: WAITING**
 
-**Waiting on:** cursor[bot] review on HEAD / CI checks / test slot from Wernher or Gene
+**Waiting on:** cursor[bot] review on HEAD / Pest GRANT for touched tests (not full-suite CI)
 
 **HEAD SHA:** `<sha>`
 

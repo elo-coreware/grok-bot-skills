@@ -74,12 +74,20 @@ Plan identification — same rules as `.cursor/commands/git-commit.md` step 5:
    - If other files changed, FAIL — investigate before MERGE-READY.
    - Record post-retire HEAD SHA as `final-sha`.
 
-6. **Re-check CI on final-sha.**
-   ```bash
-   gh pr checks <PR> --repo <owner>/<repo>
-   ```
-   All required checks must be green on final-sha before MERGE-READY. A
-   deletion-only commit does not require a new Bugbot sweep, but CI must pass.
+6. **Final-sha verify (Angelo standing rule 2026-09-21) — do NOT wait on full Tests.**
+   A deletion-only plan-retire commit does **not** require a new Bugbot sweep and
+   does **not** require the full self-hosted `Tests` suite green on final-sha.
+   Do **not** poll `gh pr checks` for ~60 min as a MERGE-READY gate.
+
+   Keep as applicable:
+   - Bugbot CLEAN still asserted against `reviewed-sha` (gates 1–2); deletion-only
+     delta means no new Bugbot on final-sha is required.
+   - Pint/lint: N/A for docs-only deletion; if any PHP slipped into the retire
+     commit, run local Pint before MERGE-READY.
+   - Touched tests: N/A for deletion-only plan retire.
+
+   Ambient full-suite CI red/pending on final-sha is OK unless tip-caused.
+   Optional informational `gh pr checks` note is fine; it is not a hard gate.
 
 ## RULES
 
@@ -93,14 +101,15 @@ Plan identification — same rules as `.cursor/commands/git-commit.md` step 5:
 - Plan file absent from `git ls-files` on final-sha.
 - PR body no longer contains `## Implementation plan`.
 - `git diff reviewed-sha..final-sha --name-only` shows only the plan path.
-- CI green on final-sha.
+- Full self-hosted Tests green on final-sha is **not** required (Angelo 2026-09-21);
+  ambient CI debt OK unless tip-caused. Bugbot/lint as applicable only.
 
 ## WHAT TO RETURN
 
-Plan path (or "none"), archive comment URL, reviewed-sha, final-sha, CI status on
-final-sha, deletion-only assertion result.
+Plan path (or "none"), archive comment URL, reviewed-sha, final-sha, optional ambient
+CI note (not a gate), deletion-only assertion result.
 
 ## WHAT REQUIRES APPROVAL
 
 Push of plan removal commit needs no approval when posting as Angelo. Escalate if
-deletion-only assertion fails or CI fails on final-sha.
+deletion-only assertion fails or tip-caused Pint/touched-test failure on final-sha.

@@ -58,13 +58,16 @@ a stop.
 DUAL parallelism (Angelo 2026-09-11 clarification): Margaret and Garman implement, prep, fold, and `cursor review` in parallel. Ready unmerged PRs may stack — Gene assigns the next OPEN phase in a lane right after dual-PASS and does **not** wait for Angelo to merge. The shared test slot covers **Pest / migrate / schema-dump only**. Katherine audits are a separate one-at-a-time queue; never idle an engineer solely because a merge is pending or Katherine is busy on the other lane. Non-Pest work does not need GRANTED.
 
 
-After the handoff commit, comment `cursor review` (or `bugbot run`) so the Cursor
-Bugbot app reviews this SHA. Not on WIP. Wait until cursor[bot] commit_id equals
-HEAD. Implement in-scope Bugbot findings. Do not skip by calling a finding a false
-positive. New commit → cursor review again. Then hand the still-draft PR to Gene.
+After the handoff commit, run the qa-phase-fix **CURSOR REVIEW INVOKE GATE**,
+then comment at most one `cursor review` (or `bugbot run`) so the Cursor Bugbot
+app reviews this SHA. Not on WIP. Never a second invoke for the same HEAD or
+while a prior invoke is still PENDING (Angelo 2026-09-21; example #6487). Wait
+until cursor[bot] commit_id equals HEAD. Implement in-scope Bugbot findings. Do
+not skip by calling a finding a false positive. New commit → gate again, then at
+most one cursor review. Then hand the still-draft PR to Gene.
 
-When Katherine FAILs, stay on this phase: implement, re-verify, push, cursor
-review, hand back. Do not start another phase on a FAIL.
+When Katherine FAILs, stay on this phase: implement, re-verify, push, gate +
+at most one cursor review, hand back. Do not start another phase on a FAIL.
 
 FORBIDDEN — these are cheating and Katherine will reject them: deleting, skipping,
 or ->skip()-ing a failing test; removing or weakening assertions; downgrading
@@ -74,6 +77,11 @@ runningUnitTests) to route around a failure; Cache::flush(); ->first() or
 ->value('id') for fixture selection; runtime Schema:: DDL in tests; loosening a
 tolerance or expected value to match wrong output; new prohibited service unit
 tests. If a test can only pass by weakening it, stop and escalate.
+
+Angelo standing rule 2026-09-21: phase handoff verify = Bugbot CLEAN==HEAD +
+Pint/lint + touched tests under Gene Pest GRANT — do **not** wait on full
+self-hosted CI Tests (~60 min). Ambient full-suite red ≠ handoff blocker
+unless tip-caused.
 
 Skills: qa-phase-fix, repo-delegate-to-cursor
 
