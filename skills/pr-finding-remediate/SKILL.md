@@ -75,22 +75,30 @@ Authority:
    git push origin HEAD
    ```
 
-5. **Re-invoke Bugbot app.** Comment on the PR as Angelo:
+5. **Re-invoke Bugbot app (gated).** Run the **CURSOR REVIEW INVOKE GATE** in
+   pr-babysit-loop first (HEAD SHA, bare invoke comments, cursor[bot] reviews).
+   If HEAD is already reviewed by cursor[bot], or a prior `cursor review` /
+   `bugbot run` is still PENDING for this HEAD, do **not** post — return to
+   WAITING-BUGBOT. Only when the gate allows, comment on the PR as Angelo:
    ```
    cursor review
    ```
-   Use GitHub MCP `add_issue_comment` with the assigned `owner`/`repo`
-   (CorewareHub/coreware-app-backend or CorewareHub/boss-control-tower). Verify
-   comment author is `elo-coreware` (or Angelo's current login). If `gh`/MCP returns
-   403, is unauthenticated, or it lands as `cursor[bot]`, STOP and tell Gene. Never
-   fall back to the Cursor PR-management API or any integration token that posts as
-   `cursor[bot]` — a bot-authored invoke is not a completed invoke.
+   Exactly one invoke per HEAD SHA. Use GitHub MCP `add_issue_comment` with the
+   assigned `owner`/`repo` (CorewareHub/coreware-app-backend or
+   CorewareHub/boss-control-tower). Verify comment author is `elo-coreware` (or
+   Angelo's current login). If `gh`/MCP returns 403, is unauthenticated, or it
+   lands as `cursor[bot]`, STOP and tell Gene. Never fall back to the Cursor
+   PR-management API or any integration token that posts as `cursor[bot]` — a
+   bot-authored invoke is not a completed invoke.
 
 6. **Update ledger.** Mark fixed items Fixed?=yes with the new commit SHA. Return
    to pr-babysit-loop WAITING-BUGBOT state.
 
 ## FORBIDDEN
 
+- Posting a second `cursor review` / `bugbot run` for the same HEAD SHA, or
+  re-invoking while a prior bare invoke is still PENDING (Angelo 2026-09-21;
+  example #6487).
 - Skipping a valid finding by reclassifying it without a fresh bugbot-triage pass.
 - Resolving cursor[bot] review threads on GitHub.
 - Running composer test:single without Gene granting the test slot.
@@ -102,7 +110,8 @@ Authority:
 - Every listed finding addressed or explicitly reported unfixed with reason.
 - Commit follows git-commit conventions.
 - Push succeeded; new HEAD SHA recorded.
-- `cursor review` comment posted as Angelo.
+- At most one `cursor review` posted as Angelo for this HEAD, and only after
+  CURSOR REVIEW INVOKE GATE (or explicitly skipped because PENDING / already reviewed).
 - Test output quoted when slot was granted and tests ran.
 
 ## WHAT TO RETURN
