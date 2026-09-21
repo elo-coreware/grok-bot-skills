@@ -32,7 +32,7 @@ pr-plan-doc-retire — not in this audit pass.
 |------|-------|----------------|
 | 1 | Local sweep | Zero unfixed valid in-scope findings on HEAD |
 | 2 | cursor[bot] | Review exists with commit_id == HEAD; all valid in-scope threads addressed in code |
-| 3 | CI | All required checks green on HEAD (`gh pr checks`) |
+| 3 | Verify (touched) | Bugbot CLEAN==HEAD already gated in 1–2; Pint/lint clean; touched tests pass under Gene Pest GRANT on shared machine. Full self-hosted Tests suite green is **not** required. Ambient full-suite red OK unless tip-caused |
 | 4 | Mergeability | mergeable == "MERGEABLE", mergeStateStatus != "DIRTY", not a draft |
 | 5 | Plan retired | pr-plan-doc-retire completed (run after 1–4) |
 
@@ -54,13 +54,23 @@ This skill evaluates gates **1–4 only**. Gate 5 is confirmed after pr-plan-doc
      present in HEAD diff or addressed in a remediation commit since that thread.
    - FAIL or WAITING when no review on HEAD, or valid in-scope items remain unfixed.
 
-3. **Gate 3 — CI.**
+3. **Gate 3 — Verify (touched tests + Pint/lint; Angelo 2026-09-21).**
+   Do **not** require the full self-hosted `Tests` / Run Tests suite green.
+   Do **not** treat ambient full-suite red or pending as FAIL/WAITING.
+
+   Verify on the shared machine under Gene Pest GRANT:
    ```bash
-   gh pr checks <PR> --repo <owner>/<repo>
+   # after GRANTED — touched paths only
+   composer test:single -- <touched test paths>
+   ./vendor/bin/pint --dirty && ./vendor/bin/pint --test   # if PHP touched
    ```
-   - PASS when all required checks are pass/success on HEAD.
-   - WAITING when checks are pending.
-   - FAIL when any required check failed.
+   Optional read of `gh pr checks` is informational only (note ambient debt);
+   it is **not** a pass/fail gate for MERGE-READY.
+   - PASS when touched tests pass under Pest GRANT and Pint/lint is clean on
+     touched PHP (or N/A if non-PHP). Bugbot CLEAN==HEAD is gates 1–2.
+   - WAITING when Pest GRANT not yet available (or Bugbot still pending — gate 2).
+   - FAIL only when touched-test or Pint failure is **tip-caused**.
+   - Ambient full-suite self-hosted Tests red/pending → PASS WITH NOTE (debt OK).
 
 4. **Gate 4 — Mergeability.**
    ```bash
@@ -85,7 +95,7 @@ This skill evaluates gates **1–4 only**. Gate 5 is confirmed after pr-plan-doc
      mergeability. Re-poll; do not report a verdict off an UNKNOWN.
    - **PASS WITH NOTE, do not fail**, on these — they are not Raye/Grace defects:
      - `mergeStateStatus == "UNSTABLE"` — mergeable but commit status not passing.
-       Gate 3 already owns CI; do not double-fail here.
+       Gate 3 owns touched-test/Pint verify (not full suite); do not double-fail here on ambient CI.
      - `mergeStateStatus == "BLOCKED"` — branch protection (e.g. a required
        approving review). Surface it in the verdict so Angelo knows he must
        approve before merging.
@@ -103,10 +113,11 @@ This skill evaluates gates **1–4 only**. Gate 5 is confirmed after pr-plan-doc
 |-----------|--------------------------------------|
 | All pass | Proceed to pr-plan-doc-retire, then MERGE-READY |
 | Gate 2 pending review | WAITING |
-| Gate 3 pending | WAITING |
+| Gate 3 waiting Pest GRANT | WAITING |
 | Gate 4 mergeable == UNKNOWN | WAITING |
 | Gate 1, 2, or 4 fail | BLOCKED |
-| Gate 3 fail (CI red) | BLOCKED |
+| Gate 3 fail (tip-caused touched-test / Pint) | BLOCKED |
+| Ambient full-suite CI red/pending | Not a blocker — PASS WITH NOTE |
 | Gate 4 pass but isDraft, BLOCKED, or UNSTABLE | Proceed, but state it in the verdict |
 
 ## HOW TO VALIDATE
@@ -120,7 +131,7 @@ This skill evaluates gates **1–4 only**. Gate 5 is confirmed after pr-plan-doc
 ## WHAT TO RETURN
 
 Gate table (1–4 pass/fail/waiting), HEAD SHA (reviewed-sha), cursor[bot] review
-SHA, CI summary, mergeable, mergeStateStatus, isDraft, blocker text if any.
+SHA, touched-test/Pint summary (and optional ambient CI note), mergeable, mergeStateStatus, isDraft, blocker text if any.
 
 ## WHAT REQUIRES APPROVAL
 
