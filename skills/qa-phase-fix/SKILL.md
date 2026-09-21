@@ -77,6 +77,26 @@ After every comment, verify authorship of the newest issue comment. Accept only 
 
 The Bugbot invoke body is exactly `cursor review` (or `bugbot run`) — nothing else on that comment.
 
+## CURSOR REVIEW INVOKE GATE (Angelo 2026-09-21; example CorewareHub/coreware-app-backend#6487)
+
+Bots must not spam bare `cursor review` / `bugbot run` while Bugbot is still pending
+(e.g. #6487: invoke at 23:38 UTC, another at 00:27 UTC, then cursor[bot] CLEAN at
+00:29 on SHA 435e6130). **If a cursor Bugbot review is still pending** (existing
+Bugbot run in flight, or a prior `cursor review` / `bugbot run` comment not yet
+processed for current HEAD), do **NOT** post another `cursor review` yet.
+
+**Before posting `cursor review` or `bugbot run`:**
+1. Read current HEAD SHA.
+2. List PR issue comments whose body trims to exactly `cursor review` or `bugbot run` (case-insensitive).
+3. List reviews by `cursor[bot]`.
+4. If any non-stale cursor[bot] review has `commit_id` == HEAD → already reviewed; do **not** post.
+5. If the newest invoke comment has no later cursor[bot] review that covers HEAD (`commit_id` == HEAD with `submitted_at` after that comment, or any review on HEAD after the comment) → treat as **PENDING**; stay WAITING-BUGBOT; do **not** post another invoke.
+6. Only post exactly one new invoke when: HEAD is not yet reviewed by cursor[bot] **AND** there is no pending unprocessed invoke for this PR.
+7. Never post a second `cursor review` for the same HEAD SHA.
+8. After a new commit, you may invoke once only after confirming no pending invoke remains from before that push (or the prior invoke was for an older SHA and Bugbot already reported / timed out — prefer wait for pending to clear or confirm stale before re-invoke).
+
+Apply this gate on steps 10, 12, and 15 (and any fold re-invoke). Never freely re-post `cursor review` while PENDING.
+
 ## BRANCH NAMES
 
 Prefer by plan type (lowercase, hyphens):
@@ -185,11 +205,11 @@ before handoff.
    For Reconcile phases, include in the handoff message the actual assertion-count
    delta vs the plan's authorized number.
 
-10. On the handoff commit only, post `cursor review` under Angelo's identity per IDENTITY above. Wait until `cursor[bot]` has a review whose `commit_id` equals HEAD.
+10. On the handoff commit only, run the **CURSOR REVIEW INVOKE GATE**, then post exactly one `cursor review` under Angelo's identity per IDENTITY above (skip if HEAD already reviewed or an invoke is still PENDING). Wait until `cursor[bot]` has a review whose `commit_id` equals HEAD. Stay WAITING-BUGBOT while PENDING — do not re-comment.
 
 11. Implement in-scope GitHub Bugbot findings on this branch. In-scope means the finding is about a file or hunk in this phase's diff. Do not classify a finding as a false positive to skip it. Unclear items: leave for Katherine. Re-verify with one test command if tests changed. Do not implement a Bugbot item that would change app behavior or invert a contract assertion. If PHP changed again, re-run LOCAL PINT before the next `cursor review`.
 
-12. If step 11 produced a new commit, post `cursor review` again under Angelo's identity and wait for `cursor[bot]` on the new SHA. Repeat until HEAD has a Bugbot review and you are not adding commits.
+12. If step 11 produced a new commit, run the **CURSOR REVIEW INVOKE GATE** on the new HEAD, then post at most one `cursor review` under Angelo's identity (only if HEAD is not yet reviewed and no invoke is PENDING). Wait for `cursor[bot]` on the new SHA. Never a second invoke for the same HEAD. Repeat until HEAD has a Bugbot review and you are not adding commits.
 
 13. **Verify evidence comment (required before Gene/Katherine handoff):** as elo-coreware, post a PR issue comment that Angelo can skim while reviewing. Include:
     - That verify ran on the **cloud agent** (Composer / Cursor cloud computer), not Actions `run-tests-phase.yaml`
@@ -201,7 +221,16 @@ before handoff.
 
 14. Hand the still-draft PR to Gene for Katherine's audit. Report the head SHA, the Bugbot review SHA, the author login of your `cursor review` and verify comments, cloud-agent verify output, lane, and the base branch you used. Do not start the next phase until Gene assigns it (after this one is dual-PASS). Gene may assign your next phase **before Angelo merges** this PR — stack on your dual-PASS tip when he says so (Phase N+1 inherits this tip). Waiting on Bugbot is a valid hold; stay on this phase until Gene says dual-PASS. Non-Pest work (implement/prep/`cursor review`/fold) does **not** need the test slot.
 
-15. When Katherine FAILs: implement every valid in-scope item from her triage table on the same branch, re-verify with one test command, run LOCAL PINT if PHP changed, push, post `cursor review` under Angelo's identity on that new commit, wait for Bugbot, post an updated verify evidence comment, then hand back to Gene. Never mark a Katherine-valid item false-positive to skip it. Still do not invert contract assertions or patch `app/` unless Angelo assigned it / the plan authorizes it.
+15. When Katherine FAILs: implement every valid in-scope item from her triage table on the same branch, re-verify with one test command, run LOCAL PINT if PHP changed, push, run the **CURSOR REVIEW INVOKE GATE**, then post at most one `cursor review` under Angelo's identity on that new commit (skip if PENDING or HEAD already reviewed), wait for Bugbot, post an updated verify evidence comment, then hand back to Gene. Never mark a Katherine-valid item false-positive to skip it. Still do not invert contract assertions or patch `app/` unless Angelo assigned it / the plan authorizes it.
+
+
+## BOT VERIFY / HANDOFF (Angelo standing rule 2026-09-21, via Gene)
+
+Phase PR handoff and dual-PASS must **not** wait on the full self-hosted CI
+`Tests` suite (~60 min). Engineer verify = **touched tests only** on the shared
+machine under Gene Pest GRANT + Bugbot CLEAN==HEAD + local Pint/lint.
+Ambient full-suite CI red ≠ handoff/babysit blocker unless tip-caused.
+Do not tell engineers to wait on Actions / self-hosted full Tests for phase PRs.
 
 ## HOW TO VALIDATE
 
@@ -212,7 +241,7 @@ before handoff.
 - Verify output is pasted, not summarized — both in the Gene handoff **and** in the PR verify evidence comment.
 - Total assertion count across **this phase's** changed tests did not drop, except
   Reconcile phases where the hygiene plan authorized the exact delta.
-- `cursor review` was posted only on the handoff commit and on FAIL-fix commits, never on WIP, and every such comment's author is Angelo (not `cursor[bot]`).
+- `cursor review` was posted only on the handoff commit and on FAIL-fix commits, never on WIP, at most once per HEAD SHA, only after CURSOR REVIEW INVOKE GATE, and every such comment's author is Angelo (not `cursor[bot]`).
 - A verify evidence comment exists on the PR for the handoff HEAD.
 - HEAD has a `cursor[bot]` review before handoff to Gene.
 - The PR is still draft.
