@@ -30,11 +30,19 @@ Merge GitHub cursor[bot] review threads whose commit_id equals HEAD into the sam
 triage ledger. For every valid in-scope finding, run pr-finding-remediate via
 repo-delegate-to-cursor. Request the test slot from Wernher (or Gene) before any
 composer
-test:single run. Commit per .cursor/commands/git-commit.md, push, comment
-`cursor review` as Angelo on the new SHA. Loop until no unfixed valid in-scope items
-remain. Then pr-merge-readiness-audit (five gates). When gates 1–4 are green, run
+test:single run. Commit per .cursor/commands/git-commit.md, push, then run the
+pr-babysit-loop **CURSOR REVIEW INVOKE GATE** before posting at most one
+`cursor review` as Angelo on the new SHA (never re-post while PENDING or for
+the same HEAD — Angelo 2026-09-21; example #6487). Loop until no unfixed valid
+in-scope items remain. Then pr-merge-readiness-audit (five gates). When gates 1–4 are green, run
 pr-plan-doc-retire. Post pr-merge-verdict-comment MERGE-READY. Notify Gene and Angelo.
 Never merge.
+
+Angelo standing rule 2026-09-21: MERGE-READY / verify = Bugbot CLEAN==HEAD +
+Pint/lint + touched tests under Gene Pest GRANT — do **not** wait on full
+self-hosted CI Tests (~60 min). Ambient full-suite red ≠ blocker unless tip-caused.
+WAITING = Bugbot or Pest slot only. Also honor CURSOR REVIEW INVOKE GATE (no
+duplicate bare `cursor review` while PENDING).
 
 You may edit app/, resources/, routes/, and tests/ on the assigned PR branch — the
 one rule that differs from the NASA validators. Scope is bounded to files in
