@@ -37,9 +37,9 @@ For `CorewareHub/coreware-app-backend`:
 | SWEEPING | Running pr-bugbot-sweep on current HEAD |
 | REMEDIATING | Implementing valid in-scope findings (pr-finding-remediate) |
 | WAITING-BUGBOT | Pushed a fix commit; waiting for cursor[bot] review on new SHA |
-| WAITING-CI | Findings clean; waiting for gh pr checks on HEAD |
+| WAITING-PEST | Findings clean; waiting for Gene Pest GRANT to run touched tests |
 | BLOCKED | Cannot proceed without Angelo (conflicts, scope, slot denied, escalation) |
-| READY | All five merge gates green; plan retired; MERGE-READY verdict posted |
+| READY | Gates 1–4 pass per standing-rule verify (Bugbot CLEAN==HEAD + Pint/lint + touched tests under Pest GRANT); plan retired; MERGE-READY posted — full self-hosted Tests green is NOT required |
 
 Exactly one PR at a time. Never start a second PR until the first is MERGE-READY or explicitly handed back to Gene/Angelo.
 
@@ -48,6 +48,25 @@ Exactly one PR at a time. Never start a second PR until the first is MERGE-READY
 
 CI runs `pint --test` on pull_request (no auto-commit). After any PHP remediations on the feature PR, run `./vendor/bin/pint --dirty` (or path-scoped Pint) and commit `:art: pint` if needed, then `./vendor/bin/pint --test` before `cursor review`.
 Never run `composer format`. Docs-only / non-PHP: skip.
+
+## VERIFY / MERGE-READY GATE (Angelo standing rule 2026-09-21, via Gene)
+
+Bot PR verify and MERGE-READY must **not** wait on the full self-hosted CI
+`Tests` / Run Tests suite (~60 min). Do **not** poll `gh pr checks` for that
+suite as a hard babysit gate.
+
+**MERGE-READY gate (all required):**
+1. Bugbot CLEAN == HEAD (`cursor[bot]` review `commit_id` equals HEAD; zero
+   unfixed valid in-scope findings)
+2. Pint / lint clean on touched PHP (local `./vendor/bin/pint --dirty` +
+   `--test`, or path-scoped)
+3. Touched tests only, run on the shared machine under Gene's Pest GRANT
+   (`composer test:single` / equivalent on changed paths)
+
+**Ambient full-suite CI red is OK** and is **not** a babysit blocker unless the
+failure is tip-caused (introduced by this PR's HEAD). Do not hold MERGE-READY,
+poll for ~1h, or post WAITING solely because ambient self-hosted Tests are red
+or still pending.
 
 ## SEQUENCE OF WORK
 
@@ -77,21 +96,25 @@ Never run `composer format`. Docs-only / non-PHP: skip.
    changed materially).
 
 6. **Merge readiness.** When sweep shows zero unfixed valid in-scope items, run
-   pr-merge-readiness-audit (gates 1–4). Route on the outcome:
+   pr-merge-readiness-audit (gates 1–4) under the Angelo 2026-09-21 standing rule.
+   Route on the outcome:
    - Gate 1 or 2 fail → back to SWEEPING or REMEDIATING.
-   - Gate 3 pending, or gate 4 `mergeable == "UNKNOWN"` → WAITING-CI.
-   - Gate 3 red or gate 4 conflicts → post BLOCKED.
+   - Gate 3 waiting on Pest GRANT (touched-test verify not yet run) → WAITING-PEST.
+   - Gate 3 fail because **tip-caused** touched-test / Pint failure → post BLOCKED.
+   - Gate 4 `mergeable == "UNKNOWN"` → brief re-poll mergeability only (not full CI).
+   - Gate 4 conflicts → post BLOCKED.
+   - Ambient full-suite self-hosted Tests red or pending → **ignore** for routing;
+     not a blocker unless tip-caused.
    - Gates 1–4 pass → pr-plan-doc-retire → pr-merge-verdict-comment MERGE-READY →
-     notify Gene and Angelo.
+     notify Gene and Angelo. Do **not** wait for full Tests green first.
 
-7. **WAITING-CI.** Poll `gh pr checks <PR>` until every required check resolves on
-   HEAD, or GitHub finishes computing mergeability. Then re-run
-   pr-merge-readiness-audit — do not skip straight to a verdict off a stale gate
-   table. On red CI, post BLOCKED. If checks stay pending beyond one hour, report
-   WAITING to Gene rather than polling silently.
-
-   The plan retirement commit in step 6 starts a fresh CI run on the new HEAD.
-   Re-enter WAITING-CI for that run before posting MERGE-READY.
+7. **WAITING-PEST (not WAITING-CI).** Do **not** poll the full self-hosted Tests
+   suite (~60 min) and do **not** treat ambient CI red as a hard gate. WAITING
+   means only: (a) Bugbot review not yet on HEAD, or (b) Gene has not yet GRANTED
+   the Pest slot for touched-test verify. When Pest is GRANTED, run touched tests
+   only on the shared machine, RELEASE the slot, re-run pr-merge-readiness-audit,
+   and proceed. Plan-retirement (docs delete) does **not** require re-entering a
+   full-suite CI wait before MERGE-READY.
 
 8. **Handback.** On BLOCKED, post verdict, tell Gene the blocker, release the test
    slot if held, and stop. Angelo or Gene must re-assign to resume.
@@ -100,7 +123,8 @@ Never run `composer format`. Docs-only / non-PHP: skip.
 
 - Only one PR active in Grace's state at any time.
 - Every fix commit followed by `cursor review` on that SHA.
-- Test runs only after Gene grants the slot.
+- Test runs only after Gene grants the slot; verify = touched tests only (never full suite for MERGE-READY).
+- Ambient full-suite CI red/pending is not a babysit blocker unless tip-caused.
 - MERGE-READY never posted before pr-plan-doc-retire completes (when a plan existed).
 - Never merged the PR.
 
