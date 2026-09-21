@@ -4,14 +4,27 @@ description: >-
   Use when Angelo asks Seymour (or devops) to pull Coreware tenant application
   logs (S3) and/or request logs (CloudWatch), observe metrics, or peek AWS infra
   for diagnosis — especially production — only after an explicit in-chat
-  permission grant, and only via read-only commands on Angelo’s local machine.
-  Never remediate, provision, or tune; show Angelo fix commands first.
+  permission grant, and only via AWS read-only commands on Angelo’s local
+  machine. File dumps and analysis go on the shared Grok Bot computer. Never
+  remediate, provision, or tune; show Angelo fix commands first.
 ---
 # Pull tenant production logs (observe-only)
 
 ## When to use
 
 Use when Angelo asks to pull **application logs** and/or **request logs** for one or more Coreware tenants (by name, domain, or Control Tower tenant id) for given date(s), or to **observe metrics / peek AWS infrastructure** for diagnosis. Typical hosts look like `{tenant}.coreware.app` or Control Tower URLs under `controltower.coreware.app/tenants/{id}/…-logs`.
+
+
+## LOCAL vs BOX (Angelo 2026-09-21; Seymour ACK'd)
+
+**Angelo's local computer (machineId / ListMachines):**
+- AWS-related commands **ONLY**: AWS CLI, AWS SSO/login helpers, and AWS observe/peek (S3, CloudWatch, Cost Explorer, ECS, SQS, STS, `describe`/`list`/`get` style) unless Angelo explicitly authorizes mutate.
+- **NO** non-AWS commands on local (no `ls`/`find` under Code, no `gh` for CT PRs, no staging dumps via local Shell, etc.).
+
+**Shared Grok Bot computer (no machineId):**
+- Everything else: file dumps, analysis, plan drafting, non-AWS tooling, reading attachments, writing `data-dumps`/workspace.
+
+**Files Angelo gives Seymour:** save/copy onto the shared remote Grok Bot computer (prefer chat attachments that already land on the box). Not a license to broaden local-shell access.
 
 ## Observe-only standing rule (Angelo 2026-09-18)
 
@@ -44,7 +57,7 @@ The permission must name at least:
 
 If any of those are missing, stop and ask. If the grant is only for peeking landlord metadata, do not widen into tenant DB writes or other accounts.
 
-This work runs **only on Angelo’s registered local computer** (his AWS CLI / SSO). Never pull PROD logs from the shared Grok Bot computer.
+AWS/DB read commands for this skill run **only on Angelo’s registered local computer** (his AWS CLI / SSO). Never pull PROD logs from the shared Grok Bot computer. After the AWS pull, put dumps and analysis on the **box** (see LOCAL vs BOX).
 
 ## PROD web hosts — observe / peek only (Angelo 2026-09-18)
 
@@ -76,22 +89,22 @@ One `SELECT` against the Control Tower landlord DB for the tenant row(s): `id`, 
 
 ## Before any AWS or DB call
 
-1. Restate the grant back to Angelo in one short paragraph (tenants, dates, log types, read-only, local machine only). Wait for confirmation if anything is ambiguous.
+1. Restate the grant back to Angelo in one short paragraph (tenants, dates, log types, read-only, AWS-on-local-only). Wait for confirmation if anything is ambiguous.
 2. Confirm timezone for “day” boundaries. Application files rotate on the app’s log date (often UTC). CloudWatch windows are explicit epochs — Eastern business day ≠ UTC file date. If unclear, ask. When spanning an Eastern day across UTC, download the UTC-dated application files that cover the full window.
-3. Confirm output folder (default under a gitignored `database/data-dumps/…` on the machine Angelo named). Never commit dumps. Treat contents as PII-heavy.
+3. Confirm dump destination on the **shared Grok Bot computer** (e.g. gitignored `data-dumps/…` / workspace under `/home/box` or `/workspace`). AWS commands run on local; do not stage dumps via local Shell beyond what the AWS CLI itself writes. Prefer chat attachments that already land on the box. Never commit dumps. Treat contents as PII-heavy.
 4. Pass credentials via environment / SSO — never echo secrets into argv, chat, or inventory files.
 
 ## Execution order
 
 1. Read-only landlord `SELECT` for the target tenant id(s) → confirm name/domain, resolve S3 bucket + CloudWatch group.
-2. `aws s3 cp` / get-object for each tenant × each needed application log date (try tenant-scoped key, then legacy flat key).
+2. `aws s3 cp` / get-object for each tenant × each needed application log date (try tenant-scoped key, then legacy flat key) — **on Angelo’s local machine only**.
 3. `aws logs filter-log-events` per tenant per agreed window with `"HTTP_REQUEST:TENANT_{id}"`, follow `nextToken` to the end (or Angelo’s cap). Save raw JSON; optionally flatten to timestamp / method / status / duration / url text.
-4. Write an `inventory.txt` listing what was found vs missing, windows used, and sizes. Do not commit.
+4. Copy/save dumps + `inventory.txt` onto the **shared Grok Bot computer** for analysis. Do not commit.
 5. If the pull points at a fix (bad config, restart, IAM change, scale, etc.): **stop and show Angelo the exact proposed command(s)** — do not run them.
 
 ## Report back
 
-- Folder path on Angelo’s machine
+- Dump / analysis path on the **shared Grok Bot computer** (and note that AWS ran on local)
 - Per tenant: files pulled, event counts, any missing objects / empty windows
 - Retention cautions (some CloudWatch groups keep only ~7 days)
 - Whether tenant DB credentials were left unused (preferred)
@@ -104,6 +117,7 @@ One `SELECT` against the Control Tower landlord DB for the tenant row(s): `id`, 
 - Modify `controltower.coreware.app` or `coreware.coreware.app` (observe/peek only)
 - Write to landlord or tenant databases
 - Run remediation, provision services, or tune server settings yourself
-- Run this from the shared bot computer
+- Run AWS/PROD pulls from the shared bot computer
+- Run non-AWS commands on Angelo’s local machine (see LOCAL vs BOX)
 - Merge, deploy, or tip-push as part of a log pull
 - Paste secrets, customer payloads, or full dump contents into chat
