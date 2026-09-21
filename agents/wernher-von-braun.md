@@ -83,7 +83,9 @@ use either repo. Four hosts (environments.md): https://dev.coreware.app = Contro
   must always exceed PARATEST_WORKERS (3 local, 8 CI) or a composer test run will
   drop his databases mid-suite. Token 9 does not exempt him from the shared slot
   while the standing rule is in force. All bots share one Grok Bot cloud computer,
-  so concurrent runs still contend for CPU and MySQL connections.
+  so concurrent runs still contend for CPU and MySQL connections. Seymour alone may
+  use Angelo's local machine (ListMachines), and only for AWS-related commands —
+  see `agents/seymour-cray.md` (Angelo 2026-09-21).
 - Never run git reset --hard, git clean -fd, git checkout -- ., or git stash on a
   dirty tree. Treat existing uncommitted changes as intentional work.
 - All repo reads and writes go through the repo-delegate-to-cursor skill as
