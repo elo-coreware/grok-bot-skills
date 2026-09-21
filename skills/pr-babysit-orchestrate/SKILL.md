@@ -1,52 +1,49 @@
 ---
 name: pr-babysit-orchestrate
 description: >-
-  Use when Angelo or Gene assigns a feature PR to Raye or Grace, either reports
-  status, or the shared test slot must be granted among Margaret, Garman, Grace,
-  Raye, Susan Kare, Jean Bartik, and Adele Goldberg
+  Use when Angelo assigns a feature PR to Grace, Grace reports status, or the
+  shared test slot must be granted between Margaret, Garman, and Grace
 ---
 # pr-babysit-orchestrate
 
 ## WHEN TO USE
 
-- Angelo asks Gene (or Wernher when Gene is offline) to babysit a feature PR
-  (provides PR number or URL).
-- Raye or Grace reports MERGE-READY, BLOCKED, or WAITING and needs relay to Angelo.
-- Grace, Raye, Margaret, Garman, Susan Kare, Jean Bartik, or Adele Goldberg
-  requests the shared test slot (feature engineers only when they run Pest).
-- Daily brief includes a PR readiness row.
-- Feature waterfall (standing rule 2026-09-18): babysit starts only after Aaron PASS
-  on the plan and **that same** feature PR has implementation commits (one PR for
-  plan + implement — never a separate implement PR in the same repo).
+- Angelo asks Gene to babysit a feature PR (provides PR number or URL).
+- Grace reports MERGE-READY, BLOCKED, or WAITING and needs Gene to relay to Angelo.
+- Grace, Margaret, or Garman (pre-fix only) requests the shared test slot.
+- Daily brief includes Grace's PR readiness row.
 
-Gene or Wernher never runs pr-babysit-loop himself. He assigns Raye or Grace,
-arbitrates the test slot, and relays outcomes. He never merges.
+Gene never runs pr-babysit-loop himself. He assigns Grace, arbitrates the test
+slot, and relays outcomes. He never merges.
+
+## BACKEND BRANCHING (Angelo 2026-09-21, clarified)
+
+For `CorewareHub/coreware-app-backend`:
+
+- **Tip names:** `feature/<name>` for features; `fix/<name>` for fixes. Do **not** use tip prefix `dev-test/<name>` as the default.
+- **Normal PR base:** `develop`.
+- **`dev-test` is situational:** use it only when you need to run tests, or need the change to reflect on coreware-app-backend DEV (primary tenant https://development-corestore-alpha.coreware.app). Do not make every backend PR target `dev-test`.
+- Never tip-push experiments onto a protected base. Never commit on `develop`, `dev-test`, `main`, or `master`.
+- Control Tower unchanged: base `develop/develop`; DEV tips `develop/<feature-slug>` on https://dev.coreware.app.
 
 ## REQUIRED INPUTS AND ACCESS
 
 - owner/repo + PR number or URL, branch name (from Angelo or `gh pr view`).
   Allowed: `CorewareHub/coreware-app-backend` (base `develop`) or
   `CorewareHub/boss-control-tower` (base `develop/develop`).
-- **DEV tips** (environments.md): boss-control-tower uses `develop/<feature-slug>`
-  on https://dev.coreware.app — never tip-push experiments onto `develop/develop`
-  (main). Backend DEV primary tenant is
-  https://development-corestore-alpha.coreware.app with tips `dev-test/<feature>`
-  (not `develop/<feature>`); base remains `develop`.
-  PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PRODUCTION) and https://coreware.coreware.app (backend/tenant PRODUCTION): bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
-- Raye or Grace's current state from their last report (or assign fresh).
+- Grace's current state from her last report (or assign fresh).
 - Engineer phase state from qa-phase-orchestrate (for slot conflicts; backend CI only).
-- Direct message to the assignee. Read-only gh for PR status on the chosen repo.
+- Direct message to Grace. Read-only gh for PR status on the chosen repo.
 
 ## TEST SLOT QUEUE
 
 The slot covers test-running work on the shared Grok Bot cloud computer.
-**Angelo standing rule 2026-09-11:** Margaret, Garman, Grace, Raye, Susan Kare,
-Jean Bartik, and Adele Goldberg all contend for **one** slot (GRANTED / QUEUED /
-RELEASED). Garman still verifies on token 9 (`test_tenant_9` / `test_landlord_9`)
-but must queue here — he is **not** outside the queue. Feature engineers join when
-they run Pest. Slot independence after the `scripts/test-lib.sh` ephemeral-sweep
-fix stays suspended until Angelo explicitly lifts the standing rule. Gene records
-that the standing rule is in force; Wernher grants when Gene is offline.
+**Angelo standing rule 2026-09-11:** Margaret, Garman, and Grace all contend for
+**one** slot (GRANTED / QUEUED / RELEASED). Garman still verifies on token 9
+(`test_tenant_9` / `test_landlord_9`) but must queue here — he is **not** outside the
+queue. Slot independence after the `scripts/test-lib.sh` ephemeral-sweep fix stays
+suspended until Angelo explicitly lifts the standing rule. Gene records that the
+standing rule is in force.
 
 **The slot covers test-running work only** — Pest, migrate, or
 `test:generate-schema-dump`, i.e. any delegation whose VERIFY is not `none`.
@@ -56,80 +53,65 @@ Never hold Margaret or Garman off non-Pest phase work (implement, prep, fold, `c
 
 | State | Meaning |
 |-------|---------|
-| GRANTED | Holder may run composer test:single |
+| GRANTED | Holder (Margaret, Grace, or Garman pre-fix) may run composer test:single |
 | QUEUED | Request recorded; wait until current holder releases |
-| RELEASED | Holder finished; Gene/Wernher may grant to next queued request |
+| RELEASED | Holder finished; Gene may grant to next queued request |
 
 **Priority:** Margaret's phase verification takes precedence when she is actively
-implementing and holds an open remediation loop. Garman queues with the others under
-the standing rule. Raye/Grace queue behind phase work unless Angelo explicitly
-prioritizes the feature PR.
+implementing and holds an open remediation loop. Garman queues with Margaret and Grace under the standing rule. Grace queues behind phase work unless Angelo explicitly prioritizes the feature PR.
 
 **Rules:**
-- Gene or Wernher grants explicitly — never assume GRANTED.
-- Holder must message RELEASED when tests finish (pass or fail).
-- If Raye/Grace is QUEUED and blocked on tests, they post WAITING — they do not run
-  tests until GRANTED.
+- Gene grants explicitly — never assume GRANTED.
+- Holder must message Gene RELEASED when tests finish (pass or fail).
+- If Grace is QUEUED and blocked on tests, she posts WAITING — she does not run tests.
 - Never grant two holders simultaneously on token 1.
-- **No slot needed for VERIFY `none` work.** Bugbot sweeps, plan reads, and verdict
-  posting run in parallel alongside engineer phase work. Do not queue read-only work.
+- **No slot needed for VERIFY `none` work.** Grace's pr-bugbot-sweep, plan reads,
+  and verdict posting run in parallel alongside engineer phase work, exactly like
+  Aaron's and Bill's planning agents. Do not queue read-only work — it stalls the
+  loop for no reason.
 
 ## SEQUENCE OF WORK
 
-1. **Assign.** When Angelo provides a PR (or the feature waterfall reaches babysit):
+1. **Assign.** When Angelo provides a PR:
    - Confirm owner/repo is allowed and PR is open, targets the matching base
-     (`develop` or `develop/develop`), and is a feature PR with implementation
-     commits (not a CI phase PR, not a docs/*-FAILING-TESTS-FIX-PLAN.markdown NASA
-     plan PR, not a feature PR that is still docs-only awaiting Aaron).
-   - Feature waterfall: confirm Aaron PASS on the plan and that implement commits
-     exist on **that same** feature PR before starting babysit (one-PR rule
-     2026-09-18 — do not wait for a separate implement PR).
-   - If Raye or Grace already babysits another PR, STOP — one PR at a time across
-     both. Finish or hand back the current one first.
-   - Message the assignee (Raye or Grace): owner/repo, base, PR number, URL, branch,
-     any implementation plan path Angelo mentions. Tell them to run pr-babysit-loop.
+     (`develop` or `develop/develop` per allow-list), and is a feature PR (not a CI phase PR, not a docs/*-FAILING-TESTS-FIX-PLAN.markdown plan PR).
+   - If Grace already babysits another PR, STOP — one PR at a time. Finish or hand back the current one first.
+   - Message Grace: owner/repo, base, PR number, URL, branch, any implementation plan path Angelo mentions. Tell her to run pr-babysit-loop.
 
-2. **Slot requests.** When a slot participant asks for the test slot:
+2. **Slot requests.** When Grace, Margaret, or Garman (pre-fix) asks for the test slot:
    - If slot is free → GRANT to requester, record holder name.
    - If held → QUEUE the requester, tell them who holds it.
    - On RELEASED → grant to next QUEUED if any, else slot is free.
 
-3. **Status relay.** When Raye or Grace posts a verdict comment:
+3. **Status relay.** When Grace posts a verdict comment:
    - **MERGE-READY:** Notify Angelo with PR URL, comment URL, reviewed-sha,
      final-sha. Remind him to merge manually and that the plan file is removed from
-     the branch. Assignee is idle for the next assignment.
-   - **BLOCKED:** Relay blocker to Angelo with comment URL. Assignee waits or handback.
+     the branch. Grace is idle for the next assignment.
+   - **BLOCKED:** Relay blocker to Angelo with comment URL. Grace waits or handback.
    - **WAITING:** Note in daily brief; no Angelo ping unless WAITING exceeds one hour
      on cursor[bot] or CI.
 
-4. **Separation from CI pipeline.** Never assign Raye/Grace a fix/ci-tests-phase-*
-   branch or NASA docs plan PR. Never assign a NASA engineer a feature PR Raye/Grace
-   owns. Katherine audits code on feature PRs (and NASA phase PRs); Raye/Grace
-   babysit feature PRs after implement — different tracks.
+4. **Separation from CI pipeline.** Never assign Grace a fix/ci-tests-phase-* branch or docs plan PR. Never assign an engineer a feature PR Grace owns. Katherine audits phase PRs; Grace babysits feature PRs — different tracks.
 
-5. **Daily brief row.** Add to Gene's brief:
+5. **Daily brief row.** Add to Gene's five-line brief:
    ```
-   Raye|Grace: <owner/repo> PR #N (<branch> → <base>) — <state> — <verdict or blocker> — <next action>
+   Grace: <owner/repo> PR #N (<branch> → <base>) — <state> — <verdict or blocker> — <next action>
    ```
 
 ## HOW TO VALIDATE
 
-- At most one feature PR assigned to Raye or Grace at a time.
+- At most one PR assigned to Grace at a time.
 - At most one test slot GRANTED at a time on token 1.
-- Garman, Kare, Bartik, and Goldberg appear in the queue while the 2026-09-11
-  standing rule is in force when they need Pest.
+- Garman appears in the queue while the 2026-09-11 standing rule is in force.
 - MERGE-READY relay includes comment URL and both SHAs when plan was retired.
-- Raye/Grace never assigned to CI phase work.
-- Babysit targets the same PR that held the plan (no separate implement-PR wait).
+- Grace never assigned to CI phase work.
 
 ## WHAT TO RETURN
 
-Assignee (Raye or Grace), PR, branch, state, test slot holder (or free),
-Garman/Kare/Bartik/Goldberg slot state when relevant, relay messages sent to Angelo,
-daily brief line.
+Grace assignment (PR, branch, state), test slot holder (or free), Garman slot state
+(in queue under standing rule; token 9 DB pair only), relay messages sent to Angelo, daily brief Grace line.
 
 ## WHAT REQUIRES APPROVAL
 
-Assigning Raye/Grace and granting the test slot need no approval. Never merge.
-Escalate to Angelo when Raye/Grace and Margaret both need the slot urgently and
-priority is unclear.
+Assigning Grace and granting the test slot need no approval. Never merge. Escalate
+to Angelo when Grace and Margaret both need the slot urgently and priority is unclear.

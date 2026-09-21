@@ -1,20 +1,23 @@
 ---
 name: pr-babysit-loop
 description: >-
-  Use when Gene, Wernher, or Angelo assigns Raye or Grace one feature PR
-  (plan + implement on the same PR) to babysit until MERGE-READY
+  Use when Gene or Angelo assigns Grace one feature PR to babysit until MERGE-READY
 ---
 # pr-babysit-loop
 
 ## WHEN TO USE
 
-Gene, Wernher, or Angelo assigns Raye or Grace exactly one feature PR with
-implementation commits (not a CI phase PR, not a docs/*-FAILING-TESTS-FIX-PLAN.markdown
-NASA plan PR, not a feature PR that is still docs-only awaiting Aaron). Feature
-waterfall (standing rule 2026-09-18): start only after Aaron PASS and implement
-commits on **that same** feature PR — never wait for a separate implement PR. The
-assignee runs this loop until the PR is MERGE-READY or hands it back with BLOCKED
-and a written reason.
+Gene or Angelo assigns Grace exactly one feature PR (not a CI phase PR, not a docs/*-FAILING-TESTS-FIX-PLAN.markdown plan PR). Grace runs this loop until the PR is MERGE-READY or she hands it back with BLOCKED and a written reason.
+
+## BACKEND BRANCHING (Angelo 2026-09-21, clarified)
+
+For `CorewareHub/coreware-app-backend`:
+
+- **Tip names:** `feature/<name>` for features; `fix/<name>` for fixes. Do **not** use tip prefix `dev-test/<name>` as the default.
+- **Normal PR base:** `develop`.
+- **`dev-test` is situational:** use it only when you need to run tests, or need the change to reflect on coreware-app-backend DEV (primary tenant https://development-corestore-alpha.coreware.app). Do not make every backend PR target `dev-test`.
+- Never tip-push experiments onto a protected base. Never commit on `develop`, `dev-test`, `main`, or `master`.
+- Control Tower unchanged: base `develop/develop`; DEV tips `develop/<feature-slug>` on https://dev.coreware.app.
 
 ## REQUIRED INPUTS AND ACCESS
 
@@ -23,9 +26,6 @@ and a written reason.
 - owner/repo + base for the assigned PR (allowed:
   `CorewareHub/coreware-app-backend` → `develop`, or
   `CorewareHub/boss-control-tower` → `develop/develop`).
-- **DEV branch rule (boss-control-tower):** DEV testing uses `develop/<feature-slug>`
-  on https://dev.coreware.app. Never tip-push experiments onto `develop/develop`
-  (main). PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PRODUCTION) and https://coreware.coreware.app (backend/tenant PRODUCTION): bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify. Backend base remains `develop`.
 - gh authenticated for that owner/repo.
 - Committed implementation plan on the branch when one exists (identification rules
   from .cursor/commands/git-commit.md step 5; BugBot-generated plans excluded).
@@ -41,15 +41,12 @@ and a written reason.
 | BLOCKED | Cannot proceed without Angelo (conflicts, scope, slot denied, escalation) |
 | READY | All five merge gates green; plan retired; MERGE-READY verdict posted |
 
-Exactly one PR at a time. Never start a second PR until the first is MERGE-READY or
-explicitly handed back to Gene/Wernher/Angelo.
+Exactly one PR at a time. Never start a second PR until the first is MERGE-READY or explicitly handed back to Gene/Angelo.
 
 
 ## LOCAL PINT (Angelo 2026-09-15 / develop #6326) — mandatory
 
-CI runs `pint --test` on pull_request (no auto-commit). After any PHP remediations
-on the feature PR, run `./vendor/bin/pint --dirty` (or path-scoped Pint), commit
-`:art: pint` if needed, then `./vendor/bin/pint --test` before `cursor review`.
+CI runs `pint --test` on pull_request (no auto-commit). After any PHP remediations on the feature PR, run `./vendor/bin/pint --dirty` (or path-scoped Pint) and commit `:art: pint` if needed, then `./vendor/bin/pint --test` before `cursor review`.
 Never run `composer format`. Docs-only / non-PHP: skip.
 
 ## SEQUENCE OF WORK
@@ -67,16 +64,16 @@ Never run `composer format`. Docs-only / non-PHP: skip.
    If zero unfixed valid in-scope items → pr-merge-readiness-audit.
 
 4. **REMEDIATING.** For each valid in-scope item (Critical first, then High, then
-   Medium), run pr-finding-remediate. If verification needs tests, message Wernher
-   (or Gene) for the test slot. Do not run composer test:single until GRANTED. If
+   Medium), run pr-finding-remediate. If verification needs tests, message Gene for
+   the test slot. Do not run composer test:single until Gene grants GRANTED. If
    QUEUED, wait. Batch related fixes into one commit when sensible. **Pint gate:**
    if PHP changed, run LOCAL PINT (`./vendor/bin/pint --dirty` + `--test`) and
-   commit style fixes before `cursor review`. After push, comment `cursor review`
-   as Angelo → WAITING-BUGBOT.
+   commit style fixes before `cursor review`. After push, comment `cursor review` as
+   Angelo → WAITING-BUGBOT.
 
 5. **WAITING-BUGBOT.** Poll until cursor[bot] has a review whose commit_id equals
-   HEAD, or timeout and report WAITING verdict to Gene. When review lands, return
-   to SWEEPING (re-triage GitHub threads + optional fresh local sweep if findings
+   HEAD, or timeout and report WAITING verdict to Gene. When review lands, return to
+   SWEEPING (re-triage GitHub threads + optional fresh local sweep if findings
    changed materially).
 
 6. **Merge readiness.** When sweep shows zero unfixed valid in-scope items, run
@@ -97,13 +94,13 @@ Never run `composer format`. Docs-only / non-PHP: skip.
    Re-enter WAITING-CI for that run before posting MERGE-READY.
 
 8. **Handback.** On BLOCKED, post verdict, tell Gene the blocker, release the test
-   slot if held, and stop. Angelo, Gene, or Wernher must re-assign to resume.
+   slot if held, and stop. Angelo or Gene must re-assign to resume.
 
 ## HOW TO VALIDATE
 
-- Only one PR active for the assignee (Raye or Grace) at any time.
+- Only one PR active in Grace's state at any time.
 - Every fix commit followed by `cursor review` on that SHA.
-- Test runs only after Wernher/Gene grants the slot.
+- Test runs only after Gene grants the slot.
 - MERGE-READY never posted before pr-plan-doc-retire completes (when a plan existed).
 - Never merged the PR.
 

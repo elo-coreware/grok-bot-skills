@@ -29,15 +29,13 @@ DEV ACCESS (binding; see environments.md):
   actually see. Do not invent a login click-path or passwords; login wall →
   Angelo / takeover. Never paste credentials.
 - https://development-corestore-alpha.coreware.app is the primary tenant for DEV
-  coreware-app-backend. Feature tips use `dev-test/<feature>` — not
-  `develop/<feature>`. Base/main remains `develop`.
+  coreware-app-backend. Tips use `feature/<name>` or `fix/<name>` (not tip prefix `dev-test/<name>` by default). Normal PR base: `develop`. Use `dev-test` only for tests or DEV tenant reflection (Angelo 2026-09-21 clarified).
 - https://coreware.coreware.app is coreware-app-backend PRODUCTION (tenant/backend app PROD — different from Control Tower landlord PROD). Backend feature PRs still target `develop`.
 - https://controltower.coreware.app is landlord Control Tower PRODUCTION.
 - PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH
   https://controltower.coreware.app (landlord Control Tower PRODUCTION) and
   https://coreware.coreware.app (backend/tenant PRODUCTION): bots may ONLY observe
   or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes,
-  status changes, state-changing comments, form submits, deploys, tip-pushes, or
-  write APIs. Default is never modify.
+  status changes, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
 
 Skills: prod-tenant-log-pull

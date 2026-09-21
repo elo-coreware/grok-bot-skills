@@ -16,11 +16,21 @@ Composer model version unless Angelo says otherwise.
 This skills repo (`elo-coreware/grok-bot-skills`) is **not** a product allow-list
 target. Do not delegate product edits here.
 
+## BACKEND BRANCHING (Angelo 2026-09-21, clarified)
+
+For `CorewareHub/coreware-app-backend`:
+
+- **Tip names:** `feature/<name>` for features; `fix/<name>` for fixes. Do **not** use tip prefix `dev-test/<name>` as the default.
+- **Normal PR base:** `develop`.
+- **`dev-test` is situational:** use it only when you need to run tests, or need the change to reflect on coreware-app-backend DEV (primary tenant https://development-corestore-alpha.coreware.app). Do not make every backend PR target `dev-test`.
+- Never tip-push experiments onto a protected base. Never commit on `develop`, `dev-test`, `main`, or `master`.
+- Control Tower unchanged: base `develop/develop`; DEV tips `develop/<feature-slug>` on https://dev.coreware.app.
+
 ## ALLOWED REPOS
 
 | owner/repo | Base branch | Host notes |
 |------------|-------------|------------|
-| `CorewareHub/coreware-app-backend` | `develop` | Feature PRs target `develop`. DEV tips: `dev-test/<feature>` on primary tenant **https://development-corestore-alpha.coreware.app**. **https://coreware.coreware.app is PRODUCTION** — observe/peek only when Angelo asks; NO modifying. |
+| `CorewareHub/coreware-app-backend` | `develop` | Feature/fix PRs normally target `develop`. Tips: `feature/<name>` or `fix/<name>`. Use `dev-test` only for tests or DEV tenant reflection on primary tenant **https://development-corestore-alpha.coreware.app**. **https://coreware.coreware.app is PRODUCTION** — observe/peek only when Angelo asks; NO modifying. |
 | `CorewareHub/boss-control-tower` | `develop/develop` | DEV: push `develop/<feature-slug>`; served at **https://dev.coreware.app**. Never tip-push onto `develop/develop` (main). **https://controltower.coreware.app is landlord Control Tower PRODUCTION** — observe/peek only when Angelo asks; NO modifying. |
 
 Refuse any other owner/repo unless Angelo explicitly expands the allow-list. NASA CI
@@ -31,10 +41,9 @@ on either allowed product repo.
 ## DEV TIPS (after allowed repos)
 
 - boss-control-tower → tip `develop/<feature-slug>` (DEV host https://dev.coreware.app).
-- coreware-app-backend → tip `dev-test/<feature>` (primary DEV tenant
-  https://development-corestore-alpha.coreware.app); base remains `develop`.
+- coreware-app-backend → tip `feature/<name>` or `fix/<name>` (primary tenant https://development-corestore-alpha.coreware.app); base is normally `develop` (`dev-test` only for tests/DEV).
 - Never tip-push experiments onto `develop/develop` (Control Tower main).
-- PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PRODUCTION) and https://coreware.coreware.app (backend/tenant PRODUCTION): bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
+- PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app and https://coreware.coreware.app: bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
 
 ## DEV ACCESS (binding — do not invert)
 
@@ -46,14 +55,15 @@ on either allowed product repo.
   see. Do not invent a login click-path or passwords. If a bot hits a login wall,
   escalate to Angelo / takeover. Never paste credentials.
 - **https://development-corestore-alpha.coreware.app** is the **primary tenant for
-  DEV coreware-app-backend**. Feature tips use `dev-test/<feature>` — not
-  `develop/<feature>`. Base/main remains `develop`.
+  DEV coreware-app-backend**. Feature tips use `feature/<name>` or `fix/<name>`. Base is normally `develop`. Use `dev-test` only for tests or DEV reflection.
 - **https://coreware.coreware.app** is **CorewareHub/coreware-app-backend PRODUCTION**
   (tenant/backend app PROD — different from Control Tower landlord PROD).
   Backend feature PRs still target `develop` (not PROD).
 - **https://controltower.coreware.app** is **landlord Control Tower PRODUCTION**.
   Do not confuse with https://coreware.coreware.app (backend/tenant PRODUCTION).
-- PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PRODUCTION) and https://coreware.coreware.app (backend/tenant PRODUCTION): bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
+- PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH
+  https://controltower.coreware.app (landlord Control Tower PRODUCTION) and
+  https://coreware.coreware.app (backend/tenant PRODUCTION): bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
 
 ## REQUIRED INPUTS AND ACCESS
 
@@ -62,9 +72,10 @@ on either allowed product repo.
 - **Base branch** matching that repo (`develop` or `develop/develop`) and the exact
   target branch name. Do not default blindly to `develop` when the repo is
   boss-control-tower. For Control Tower DEV work, use `develop/<feature-slug>`
-  (served on https://dev.coreware.app). For backend DEV tips, use `dev-test/<feature>`
+  (served on https://dev.coreware.app). For backend DEV tips, use `feature/<name>` or `fix/<name>`
   (primary tenant https://development-corestore-alpha.coreware.app); base remains
-  `develop`. PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PRODUCTION) and https://coreware.coreware.app (backend/tenant PRODUCTION): bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
+  `develop`. PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH
+  https://controltower.coreware.app and https://coreware.coreware.app: bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
 - Cursor Cloud Agents access.
 - gh authenticated for the chosen owner/repo.
 
@@ -89,9 +100,9 @@ on either allowed product repo.
    follow .cursor/rules/codebase.mdc, .cursor/rules/test-isolation.mdc, and
    .cursor/rules/test-failure-triage.mdc when those files exist in the target repo;
    scaffolding failures: fix the test; contract failures: do not invert assertions to
-   match a bug, escalate, write an ESCALATED plan row, leave the test red; do not
-   patch `app/` unless Angelo assigned that specific bug. "No app changes" means
-   escalate, not invert. Framework-semantics corrections (PR 5778) are allowed;
+   match a bug, escalate, write an ESCALATED plan row, leave the test red; do not patch
+   `app/` unless Angelo assigned that specific bug. "No app changes" means escalate,
+   not invert. Framework-semantics corrections (PR 5778) are allowed;
    product-behavior rewrites (PR 5785 class) are not.
 
    **Feature-PR babysit exception (Raye/Grace):** on a feature PR they were assigned,
@@ -99,35 +110,27 @@ on either allowed product repo.
    `git diff <base>...HEAD --name-only` on that PR (`<base>` = the PR's base branch);
    new files or product-behavior changes beyond the committed implementation plan
    require Angelo's go-ahead. Every other constraint stands verbatim. Do not apply
-   this exception to CI phase work — the NASA engineers' `app/` restriction is
-   unchanged.
+   this exception to CI phase work — the NASA engineers' `app/` restriction is unchanged.
 
    **Feature engineer exception (Kare/Bartik/Goldberg):** on an assigned feature-plan-build or
    feature-implement branch (same feature PR — standing rule 2026-09-18), scope follows the
    committed plan. Product-behavior beyond the plan requires Angelo. Local Pint after PHP
-   edits. Request the shared test slot before Pest. Never open a second PR for the same
-   feature in the same repo.
+   edits. Request the shared test slot before Pest. Never open a second PR for the same feature
+   in the same repo.
 
    VERIFY — the exact verification commands to run, or `none` for read-only/planning work.
    When the delegation is Garman's, prefix verify with `TEST_TOKEN=9` (e.g.
    `TEST_TOKEN=9 composer test:single -- <paths>`).
 
-   REPORT BACK — files changed, tests now passing, commands run with real output, anything unfixed and why, ESCALATED rows.
+   REPORT BACK — files changed, tests now passing, commands run with real output, anything
+   unfixed and why, ESCALATED rows.
 
 3. Launch one agent from the stated base branch using this skill's configured launcher settings.
 
 4. Supervise until it finishes. **Concurrency (Angelo 2026-09-09 / standing rule 2026-09-11):** Exactly one agent
    may run **tests / migrate / schema dump** per database pair at a time. Margaret,
    Grace, Raye, Susan Kare, Jean Bartik, and Adele Goldberg share token 1 (`test_tenant_1` /
-   `test_landlord_1`); Gene or Wernher arbitrates (GRANTED / QUEUED / RELEASED) and
-   Margaret takes precedence unless Angelo prioritizes the feature PR. Garman uses
-   `TEST_TOKEN=9` for his DB pair but stays in the same shared slot — no parallel Pest
-   until Angelo lifts the standing rule. The `scripts/test-lib.sh` ephemeral-sweep fix
-   alone does not restore independence. Aaron, Bill, Raye, and Grace **may** launch
-   additional agents **in parallel** only when VERIFY is `none` (read-only / planning /
-   docs plan PRs / bugbot sweeps — no Pest, no migrate, no `test:generate-schema-dump`).
-   Never launch a second test-running agent on the **same database pair** while another
-   is live.
+   `test_landlord_1`); Gene or Wernher arbitrates (GRANTED / QUEUED / RELEASED) and Margaret takes precedence unless Angelo prioritizes the feature PR. Garman uses `TEST_TOKEN=9` for his DB pair but stays in the same shared slot — no parallel Pest until Angelo lifts the standing rule. The `scripts/test-lib.sh` ephemeral-sweep fix alone does not restore independence. Aaron, Bill, Raye, and Grace **may** launch additional agents **in parallel** only when VERIFY is `none` (read-only / planning / docs plan PRs / bugbot sweeps — no Pest, no migrate, no `test:generate-schema-dump`). Never launch a second test-running agent on the same database pair while another is live.
 
 5. Capture the summary, branch name, and diff.
 
@@ -136,11 +139,13 @@ on either allowed product repo.
 - The run reports a serving model that matches this skill's launcher settings (not an unexpected substitute).
 - owner/repo is on the allow-list and base matches that repo.
 - The branch exists and is not develop / develop/develop / main / master. In create
-  mode it came from the stated base; in existing-branch mode it is the branch named
-  in BRANCH and no new branch was created. boss-control-tower DEV work must use
+  mode it came from the stated base; in existing-branch mode it is the branch named in
+  BRANCH and no new branch was created. boss-control-tower DEV work must use
   `develop/<feature-slug>` on https://dev.coreware.app, not tip-pushes onto
-  `develop/develop`. Backend DEV tips use `dev-test/<feature>` on
-  https://development-corestore-alpha.coreware.app. PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PRODUCTION) and https://coreware.coreware.app (backend/tenant PRODUCTION): bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
+  `develop/develop`. Backend DEV tips use `feature/<name>` or `fix/<name>` on
+  https://development-corestore-alpha.coreware.app. PROD web hosts — observe / peek only
+  (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PRODUCTION) and
+  https://coreware.coreware.app (backend/tenant PRODUCTION): bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
 - Every touched file is inside SCOPE. Out-of-scope edits are a finding, not a bonus.
 - No polarity inversion. No new application-behavior change unless Angelo already approved that specific patch.
 - VERIFY output is quoted real output, not a claim that it passed.
@@ -148,8 +153,7 @@ on either allowed product repo.
 
 ## WHAT TO RETURN
 
-owner/repo, base branch, branch name, serving model, files changed with line counts,
-verify output, unresolved items, ESCALATED rows, and any constraint the agent violated.
+owner/repo, base branch, branch name, serving model, files changed with line counts, verify output, unresolved items, ESCALATED rows, and any constraint the agent violated.
 
 ## WHAT REQUIRES APPROVAL
 

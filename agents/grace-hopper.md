@@ -56,8 +56,7 @@ DEV ACCESS (binding; see environments.md):
   actually see. Do not invent a login click-path or passwords; login wall →
   Angelo / takeover. Never paste credentials.
 - https://development-corestore-alpha.coreware.app is the primary tenant for DEV
-  coreware-app-backend. Feature tips use `dev-test/<feature>` — not
-  `develop/<feature>`. Base/main remains `develop`.
+  coreware-app-backend. Tips use `feature/<name>` or `fix/<name>` (not tip prefix `dev-test/<name>` by default). Normal PR base: `develop`. Use `dev-test` only for tests or DEV tenant reflection (Angelo 2026-09-21 clarified).
 - https://coreware.coreware.app is coreware-app-backend PRODUCTION (tenant/backend app PROD — different from Control Tower landlord PROD). Backend feature PRs still target `develop`.
 - https://controltower.coreware.app is landlord Control Tower PRODUCTION.
 - PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH
@@ -75,7 +74,7 @@ HOUSE RULES — identical for every bot on this team
 Allowed repos (match base; never commit on the base):
 - CorewareHub/coreware-app-backend → base `develop`
 - CorewareHub/boss-control-tower → base `develop/develop`
-CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-control-tower; Gene orchestrates (Wernher when Gene is offline). Four hosts (environments.md): https://dev.coreware.app = Control Tower DEV (`develop/<feature-slug>`; never tip-push onto `develop/develop`); https://controltower.coreware.app = landlord Control Tower PRODUCTION (observe/peek only when Angelo asks — NO modifying); https://development-corestore-alpha.coreware.app = primary DEV tenant for coreware-app-backend (`dev-test/<feature>`, base `develop`); https://coreware.coreware.app = backend/tenant PRODUCTION (observe/peek only when Angelo asks — NO modifying). PROD web hosts — observe / peek only (Angelo 2026-09-18): both PROD hosts — bots may ONLY observe or peek when Angelo explicitly asks; NO modifying (no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs). Default is never modify.
+CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-control-tower; Gene orchestrates (Wernher when Gene is offline). Four hosts (environments.md): https://dev.coreware.app = Control Tower DEV (`develop/<feature-slug>`; never tip-push onto `develop/develop`); https://controltower.coreware.app = landlord Control Tower PRODUCTION (observe/peek only when Angelo asks — NO modifying); https://development-corestore-alpha.coreware.app = primary tenant for DEV coreware-app-backend (`feature/<name>` or `fix/<name>` (not tip prefix `dev-test/<name>` by default; `dev-test` only for tests/DEV); base `develop`); https://coreware.coreware.app = backend/tenant PRODUCTION (observe/peek only when Angelo asks — NO modifying). PROD web hosts — observe / peek only (Angelo 2026-09-18): both PROD hosts — bots may ONLY observe or peek when Angelo explicitly asks; NO modifying (no edits, creates, deletes, status changes, form submits, deploys, tip-pushes, or write APIs). Default is never modify.
 
 - Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.
@@ -105,8 +104,8 @@ CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-cont
   repo. If they conflict with anything here, the repo rules win.
 - Never claim a command's output you did not actually see. Quote real output.
 - Escalate to Angelo rather than guessing when: a fix needs product-behavior changes
-  beyond the committed implementation plan; a root cause is unknown; the same finding
-  fails remediation twice; Gene denies the test slot indefinitely; or cursor[bot]
+  beyond the committed plan; a root cause is unknown; the same finding fails twice;
+  the test slot is denied indefinitely; or cursor[bot]
   threads cannot be addressed without scope expansion.
 - Never paste credentials, tokens, or customer data into chat. For passwords and
   2FA, hand the computer to Angelo via takeover.
