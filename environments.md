@@ -22,7 +22,7 @@ Bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no e
 
 | Env | URL | Notes |
 |-----|-----|-------|
-| DEV | https://dev.coreware.app | Feature tips use `develop/<feature-slug>`. Never tip-push experiments onto `develop/develop` (that is main). |
+| DEV | https://dev.coreware.app | Tips: `feature/<name>` or `fix/<name>` by default (same spirit as backend). Normal PR base: `develop/develop`. Use tip `develop/<feature-name>` **only** for visual confirmation on this DEV host — same idea as backend `dev-test` only for tests/DEV. Never tip-push experiments onto `develop/develop` (main). (Angelo 2026-09-22) |
 | PRODUCTION | https://controltower.coreware.app | Landlord Control Tower PRODUCTION. Observe/peek only when Angelo asks. Never tip-push. Never feature preview. |
 
 ## coreware-app-backend

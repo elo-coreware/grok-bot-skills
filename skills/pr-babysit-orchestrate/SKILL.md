@@ -28,7 +28,15 @@ For `CorewareHub/coreware-app-backend`:
 - **Normal PR base:** `develop`.
 - **`dev-test` is situational:** use it only when you need to run tests, or need the change to reflect on coreware-app-backend DEV (primary tenant https://development-corestore-alpha.coreware.app). Do not make every backend PR target `dev-test`.
 - Never tip-push experiments onto a protected base. Never commit on `develop`, `dev-test`, `main`, or `master`.
-- Control Tower unchanged: base `develop/develop`; DEV tips `develop/<feature-slug>` on https://dev.coreware.app.
+
+## CONTROL TOWER BRANCHING (Angelo 2026-09-22)
+
+For `CorewareHub/boss-control-tower`:
+
+- **Tip names:** `feature/<name>` for features; `fix/<name>` for fixes. Do **not** default tip prefix to `develop/<feature-name>`.
+- **Normal PR base:** `develop/develop` (Control Tower main).
+- **`develop/<feature-name>` is situational:** use it only when you need **visual confirmation** on DEV (https://dev.coreware.app) — same idea as backend using `dev-test` only for tests/DEV reflection.
+- Never tip-push experiments onto `develop/develop`.
 
 ## REQUIRED INPUTS AND ACCESS
 
@@ -105,6 +113,15 @@ implementing and holds an open remediation loop. Garman queues with Margaret and
    ```
    Grace: <owner/repo> PR #N (<branch> → <base>) — <state> — <verdict or blocker> — <next action>
    ```
+
+
+## ELI5 DECISIONS FOR ANGELO (Angelo 2026-09-22)
+
+Whenever you ask Angelo to decide something (widgets, questions, MERGE-READY needs-eyes, product calls, go/no-go):
+
+- No jargon. Plain simple English. Explain like he is five (ELI5).
+- Longer / wordier is OK if it makes the choice clearer.
+- Before you list options, explain what the choice means in everyday words (what happens if he picks A vs B, in human terms — not just branch names or internal labels).
 
 ## HOW TO VALIDATE
 

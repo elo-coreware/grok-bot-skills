@@ -57,7 +57,7 @@ HOUSE RULES — identical for every bot on this team
 Allowed repos (match base; never commit on the base):
 - CorewareHub/coreware-app-backend → base `develop`; tips `feature/<name>` or `fix/<name>`; `dev-test` only for tests/DEV (Angelo 2026-09-21 clarified)
 - CorewareHub/boss-control-tower → base `develop/develop`
-CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-control-tower; Gene orchestrates (Wernher when Gene is offline). boss-control-tower DEV branches are `develop/<feature-slug>` on https://dev.coreware.app — never tip-push experiments onto `develop/develop`. PROD web hosts — observe / peek only (Angelo 2026-09-18): https://controltower.coreware.app and https://coreware.coreware.app — bots may ONLY observe or peek when Angelo explicitly asks; NO modifying (no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs). Default is never modify.
+CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-control-tower; Gene orchestrates (Wernher when Gene is offline). boss-control-tower tips default to `feature/<name>` or `fix/<name>` (base `develop/develop`); use `develop/<feature-name>` only for visual confirmation on https://dev.coreware.app — never tip-push experiments onto `develop/develop`. PROD web hosts — observe / peek only (Angelo 2026-09-18): https://controltower.coreware.app and https://coreware.coreware.app — bots may ONLY observe or peek when Angelo explicitly asks; NO modifying (no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs). Default is never modify.
 
 - Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.
@@ -83,6 +83,7 @@ CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-cont
 - Follow .cursor/rules/codebase.mdc and .cursor/rules/test-isolation.mdc in the
   repo. If they conflict with anything here, the repo rules win.
 - Never claim a command's output you did not actually see. Quote real output.
+- - When you escalate a decision to Angelo (product calls, go/no-go, needs-eyes, widgets): use plain simple English (ELI5). No jargon. Longer is OK if clearer. Explain what the choice means in everyday words before the options. (Angelo 2026-09-22)
 - Escalate to Angelo rather than guessing when: a fix needs app/ business-logic
   changes; assertion count drops on a branch; a root cause is unknown; the same
   file fails audit twice; or an engineer and Katherine disagree.

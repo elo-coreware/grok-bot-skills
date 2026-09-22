@@ -76,7 +76,7 @@ owner/repo + base with the assignment.
 
 DEV ACCESS (binding; see environments.md):
 - https://dev.coreware.app is boss-control-tower DEV only. Feature tips use
-develop/<feature-slug>. Never tip-push experiments onto develop/develop (main).
+tips `feature/<name>` or `fix/<name>` by default (use `develop/<feature-name>` only for visual confirmation on DEV). Never tip-push experiments onto develop/develop (main).
 After push, DEV may lag (ECS/roll); hard-refresh and report what you actually see.
 Do not invent a login click-path or passwords; login wall → Angelo / takeover. Never
 paste credentials.
@@ -119,7 +119,7 @@ Skills: qa-phase-orchestrate, pr-babysit-orchestrate, feature-waterfall-orchestr
 Allowed repos (match base; never commit on the base):
 - CorewareHub/coreware-app-backend → base `develop`; tips `feature/<name>` or `fix/<name>`. Use `dev-test` only for tests or DEV reflection.
 - CorewareHub/boss-control-tower → base `develop/develop`
-CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-control-tower; Gene orchestrates (Wernher when Gene is offline). Four hosts (environments.md): https://dev.coreware.app = Control Tower DEV (`develop/<feature-slug>`; never tip-push onto `develop/develop`); https://controltower.coreware.app = landlord Control Tower PRODUCTION (observe/peek only when Angelo asks — NO modifying); https://development-corestore-alpha.coreware.app = primary DEV tenant for coreware-app-backend (`feature/<name>` or `fix/<name>`, base `develop`; use `dev-test` only for tests/DEV); https://coreware.coreware.app = backend/tenant PRODUCTION (observe/peek only when Angelo asks — NO modifying). PROD web hosts — observe / peek only (Angelo 2026-09-18): both PROD hosts — bots may ONLY observe or peek when Angelo explicitly asks; NO modifying (no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs). Default is never modify.
+CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-control-tower; Gene orchestrates (Wernher when Gene is offline). Four hosts (environments.md): https://dev.coreware.app = Control Tower DEV (tips `feature/<name>` or `fix/<name>` by default; use `develop/<feature-name>` only for visual confirmation on DEV; never tip-push onto `develop/develop`); https://controltower.coreware.app = landlord Control Tower PRODUCTION (observe/peek only when Angelo asks — NO modifying); https://development-corestore-alpha.coreware.app = primary DEV tenant for coreware-app-backend (`feature/<name>` or `fix/<name>`, base `develop`; use `dev-test` only for tests/DEV); https://coreware.coreware.app = backend/tenant PRODUCTION (observe/peek only when Angelo asks — NO modifying). PROD web hosts — observe / peek only (Angelo 2026-09-18): both PROD hosts — bots may ONLY observe or peek when Angelo explicitly asks; NO modifying (no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs). Default is never modify.
 
 - Never commit, stage, or edit anything on develop, develop/develop, dev-test, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.
@@ -130,5 +130,6 @@ CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-cont
 - All repo reads and writes go through the repo-delegate-to-cursor skill as configured in that skill's launcher settings. Do not pin a specific Composer model version unless Angelo says otherwise. If a run is served by an unexpected model, stop and tell Angelo.
 - Follow .cursor/rules/codebase.mdc and .cursor/rules/test-isolation.mdc in the repo. If they conflict with anything here, the repo rules win.
 - Never claim a command's output you did not actually see. Quote real output.
+- **ELI5 decisions for Angelo (2026-09-22):** Whenever you ask Angelo to decide something (widgets, questions, MERGE-READY needs-eyes, product calls, go/no-go): no jargon; plain simple English; longer/wordier is OK if clearer; explain what the choice means in everyday words before listing options.
 - Escalate to Angelo rather than guessing when: a fix needs app/ business-logic changes; assertion count drops on a branch; a root cause is unknown; the same file fails audit twice; or an engineer and Katherine disagree.
 - Never paste credentials, tokens, or customer data into chat. For passwords and 2FA, hand the computer to Angelo via takeover.

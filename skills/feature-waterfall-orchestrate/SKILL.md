@@ -36,7 +36,15 @@ For `CorewareHub/coreware-app-backend`:
 - **Normal PR base:** `develop`.
 - **`dev-test` is situational:** use it only when you need to run tests, or need the change to reflect on coreware-app-backend DEV (primary tenant https://development-corestore-alpha.coreware.app). Do not make every backend PR target `dev-test`.
 - Never tip-push experiments onto a protected base. Never commit on `develop`, `dev-test`, `main`, or `master`.
-- Control Tower unchanged: base `develop/develop`; DEV tips `develop/<feature-slug>` on https://dev.coreware.app.
+
+## CONTROL TOWER BRANCHING (Angelo 2026-09-22)
+
+For `CorewareHub/boss-control-tower`:
+
+- **Tip names:** `feature/<name>` for features; `fix/<name>` for fixes. Do **not** default tip prefix to `develop/<feature-name>`.
+- **Normal PR base:** `develop/develop` (Control Tower main).
+- **`develop/<feature-name>` is situational:** use it only when you need **visual confirmation** on DEV (https://dev.coreware.app) — same idea as backend using `dev-test` only for tests/DEV reflection.
+- Never tip-push experiments onto `develop/develop`.
 
 ## REQUIRED INPUTS AND ACCESS
 
@@ -45,7 +53,7 @@ For `CorewareHub/coreware-app-backend`:
   - `CorewareHub/coreware-app-backend` → `develop`
   - `CorewareHub/boss-control-tower` → `develop/develop`
 - **DEV ACCESS** (environments.md):
-  - https://dev.coreware.app is boss-control-tower DEV only — push `develop/<feature-slug>`; never tip-push onto `develop/develop`. After push, DEV may lag (ECS/roll); hard-refresh. Login wall → Angelo / takeover; never invent passwords or paste credentials.
+  - https://dev.coreware.app is boss-control-tower DEV only — tips default to `feature/<name>` or `fix/<name>`; use `develop/<feature-name>` only for visual confirmation on DEV; never tip-push onto `develop/develop`. After push, DEV may lag (ECS/roll); hard-refresh. Login wall → Angelo / takeover; never invent passwords or paste credentials.
   - https://development-corestore-alpha.coreware.app is the primary tenant for DEV coreware-app-backend — tips `feature/<name>` or `fix/<name>`; base is normally `develop` (`dev-test` only for tests/DEV).
   - https://coreware.coreware.app is coreware-app-backend PRODUCTION (tenant/backend app PROD — different from Control Tower landlord PROD). Backend feature/fix PRs normally target `develop`; use `dev-test` only for tests or DEV reflection.
   - https://controltower.coreware.app is landlord Control Tower PRODUCTION.
@@ -76,12 +84,21 @@ Report every active feature as:
 6. After babysit ready: queue Katherine code audit on that same PR (she has the last word on CODE PRs). Relay to Angelo for merge — never merge yourself.
 7. Keep NASA CI phase work separate from this track.
 
+
+## ELI5 DECISIONS FOR ANGELO (Angelo 2026-09-22)
+
+Whenever you ask Angelo to decide something (widgets, questions, MERGE-READY needs-eyes, product calls, go/no-go):
+
+- No jargon. Plain simple English. Explain like he is five (ELI5).
+- Longer / wordier is OK if it makes the choice clearer.
+- Before you list options, explain what the choice means in everyday words (what happens if he picks A vs B, in human terms — not just branch names or internal labels).
+
 ## HOW TO VALIDATE
 
 - Aaron verdict **with evidence ledger** before implement assignment.
 - Same PR used for plan docs and implement; no second feature PR in the same repo.
 - Babysit only after implement commits exist on that PR; one Raye/Grace PR at a time.
-- DEV tip prefixes stated (CT `develop/<feature-slug>`; backend `feature/<name>` or `fix/<name>`; use `dev-test` only for tests/DEV); PROD host never used for preview.
+- DEV tip prefixes stated (CT `feature/<name>` or `fix/<name>` by default, `develop/<feature-name>` only for visual confirmation on DEV; backend `feature/<name>` or `fix/<name>`, `dev-test` only for tests/DEV); PROD host never used for preview.
 - Status table complete (including ledger URL); single next action.
 
 ## WHAT TO RETURN

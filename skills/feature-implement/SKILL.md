@@ -11,11 +11,19 @@ For `CorewareHub/coreware-app-backend`:
 - **Normal PR base:** `develop`.
 - **`dev-test` is situational:** use it only when you need to run tests, or need the change to reflect on coreware-app-backend DEV (primary tenant https://development-corestore-alpha.coreware.app). Do not make every backend PR target `dev-test`.
 - Never tip-push experiments onto a protected base. Never commit on `develop`, `dev-test`, `main`, or `master`.
-- Control Tower unchanged: base `develop/develop`; DEV tips `develop/<feature-slug>` on https://dev.coreware.app.
 
 # Feature implement
 
 Susan Kare, Jean Bartik, Adele Goldberg, or another assigned feature engineer. After plan PASS only.
+
+## CONTROL TOWER BRANCHING (Angelo 2026-09-22)
+
+For `CorewareHub/boss-control-tower`:
+
+- **Tip names:** `feature/<name>` for features; `fix/<name>` for fixes. Do **not** default tip prefix to `develop/<feature-name>`.
+- **Normal PR base:** `develop/develop` (Control Tower main).
+- **`develop/<feature-name>` is situational:** use it only when you need **visual confirmation** on DEV (https://dev.coreware.app) — same idea as backend using `dev-test` only for tests/DEV reflection.
+- Never tip-push experiments onto `develop/develop`.
 
 ## ONE PR rule (Angelo 2026-09-18)
 
@@ -25,7 +33,7 @@ Implement on the **existing** feature PR/branch that already holds the plan. Do 
 
 1. Confirm plan PASS on the feature PR and Gene assigned this implement.
 2. Implement on that **same** branch/PR. Base remains the repo main (`develop` or `develop/develop`).
-3. DEV checks: boss-control-tower `develop/<feature-slug>` on https://dev.coreware.app (never tip-push onto `develop/develop`). coreware-app-backend `feature/<name>` or `fix/<name>` on https://development-corestore-alpha.coreware.app. Never use https://coreware.coreware.app to preview features.
+3. DEV checks: boss-control-tower tip `feature/<name>` or `fix/<name>` by default on https://dev.coreware.app; use `develop/<feature-name>` only for visual confirmation (never tip-push onto `develop/develop`). coreware-app-backend `feature/<name>` or `fix/<name>` on https://development-corestore-alpha.coreware.app. Never use https://coreware.coreware.app to preview features.
 4. Local Pint before handoff if PHP changed. Never `composer format`.
 5. Request the shared test slot from Gene before any Pest / migrate / schema dump.
 6. Push, comment `cursor review` as Angelo on the handoff commit, ping Gene.
