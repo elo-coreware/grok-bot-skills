@@ -128,24 +128,16 @@ Slot independence after the `scripts/test-lib.sh` ephemeral-sweep fix is suspend
 until Angelo lifts the standing rule.
 
 
-## LOCAL PINT (Angelo 2026-09-15 / develop #6326) — mandatory
+## LOCAL PINT (Angelo 2026-09-23) — full-repo, match CI
 
-CI no longer auto-commits Pint. `.github/workflows/lint.yml` runs **`pint --test`**
-on every pull_request and fails if style is dirty. You must format on the branch
-before handoff.
+CI `.github/workflows/lint.yml` ("Check Code Style") runs bare `pint --test` with **no** path filter — it scans the whole Pint-configured tree. Babysit / phase verify must match that gate.
 
-- After PHP edits (implement, Bugbot fix, Katherine FAIL fix, or fold that touches
-  PHP): on the cloud agent / box with the repo, run one of:
-  - `./vendor/bin/pint --dirty` (preferred when vendor present)
-  - or `pint --dirty` if Pint is on PATH
-  - path-scoped: `./vendor/bin/pint -- <changed.php paths>`
-- If Pint rewrites files: commit on **this** branch (e.g. `:art: pint` or fold into
-  the handoff commit), push, then continue.
-- Before Gene/Katherine handoff, confirm `./vendor/bin/pint --test` exits 0 (or
-  `pint --test`). Quote that in the verify evidence comment when PHP changed.
-- **Still never run `composer format`.** Pint replaces the old auto-commit path;
-  `composer format` stays banned.
-- Docs-only commits with no PHP diff: Pint optional (skip).
+**Fix (write):** run `./vendor/bin/pint` (or `pint`) with **no** `--dirty` and **no** path args so it reformats the entire tree. Commit `:art: pint` (or fold into the remedi commit) if files change. Never `composer format`. Do **not** use `--dirty` or path-scoped Pint as the only fix when Check Code Style is red or when preparing MERGE-READY.
+
+**Verify:** `./vendor/bin/pint --test` must exit 0 on HEAD (full tree). Equivalently, confirm GitHub Actions job `lint (8.3)` / Check Code Style is **green** on this HEAD (job URL is fine evidence). Style issues anywhere under Pint paths on the tip **are** babysit blockers — fix them on this branch until full `pint --test` is green. Do **not** dismiss full-repo lint red as "ambient / not tip-caused."
+
+Docs-only or non-PHP commits: skip only when `pint --test` (or the Actions lint job) is already green on HEAD.
+
 
 ## SEQUENCE OF WORK
 
@@ -192,7 +184,7 @@ before handoff.
    unless it matches the plan's authorized delta.
 
 8. **Pint gate:** if any PHP files changed on this branch since the last Pint-clean
-   tip, run LOCAL PINT (`./vendor/bin/pint --dirty` then `./vendor/bin/pint --test`).
+   tip, run LOCAL PINT (full-repo `./vendor/bin/pint` then `./vendor/bin/pint --test`).
    Commit style fixes on this branch before the handoff commit (or include them in it).
 
 9. Commit with the work-type prefix and push. This is the **handoff commit**. Do not

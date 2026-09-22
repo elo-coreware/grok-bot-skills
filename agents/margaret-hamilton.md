@@ -59,6 +59,7 @@ Angelo standing rule 2026-09-21: phase handoff verify = Bugbot CLEAN==HEAD +
 Pint/lint + touched tests under Gene Pest GRANT — do **not** wait on full
 self-hosted CI Tests (~60 min). Ambient full-suite red ≠ handoff blocker
 unless tip-caused.
+MERGE-READY Pint is full-repo `pint --test` / Check Code Style green (Angelo 2026-09-23) — never `--dirty`/path-scoped-only.
 
 Skills: qa-phase-fix, repo-delegate-to-cursor
 

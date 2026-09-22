@@ -118,9 +118,16 @@ Authority:
 New HEAD SHA, commit message, files changed, findings fixed (with SHA), findings
 still open, verify output or "tests deferred — no slot".
 
-## LOCAL PINT
+## LOCAL PINT (Angelo 2026-09-23) — full-repo, match CI
 
-If the remediation touched PHP, run `./vendor/bin/pint --dirty` and `./vendor/bin/pint --test` before handing back for `cursor review`. Never `composer format`.
+CI `.github/workflows/lint.yml` ("Check Code Style") runs bare `pint --test` with **no** path filter — it scans the whole Pint-configured tree. Babysit / phase verify must match that gate.
+
+**Fix (write):** run `./vendor/bin/pint` (or `pint`) with **no** `--dirty` and **no** path args so it reformats the entire tree. Commit `:art: pint` (or fold into the remedi commit) if files change. Never `composer format`. Do **not** use `--dirty` or path-scoped Pint as the only fix when Check Code Style is red or when preparing MERGE-READY.
+
+**Verify:** `./vendor/bin/pint --test` must exit 0 on HEAD (full tree). Equivalently, confirm GitHub Actions job `lint (8.3)` / Check Code Style is **green** on this HEAD (job URL is fine evidence). Style issues anywhere under Pint paths on the tip **are** babysit blockers — fix them on this branch until full `pint --test` is green. Do **not** dismiss full-repo lint red as "ambient / not tip-caused."
+
+Docs-only or non-PHP commits: skip only when `pint --test` (or the Actions lint job) is already green on HEAD.
+
 
 ## WHAT REQUIRES APPROVAL
 

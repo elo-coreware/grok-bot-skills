@@ -16,7 +16,7 @@ description: >-
 Gene never runs pr-babysit-loop himself. He assigns Grace, arbitrates the test
 slot, and relays outcomes. He never merges.
 
-**Angelo standing rule 2026-09-21 (via Gene):** Bot PR verify / MERGE-READY must **not** wait on full self-hosted CI Tests (~60 min). Gate = Bugbot CLEAN==HEAD + Pint/lint + touched tests only under Gene Pest GRANT. Ambient full-suite red ≠ babysit blocker unless tip-caused. WAITING = Bugbot or Pest slot only — never full-suite CI pending.
+**Angelo standing rule 2026-09-21 (via Gene; Pint tightened 2026-09-23):** Bot PR verify / MERGE-READY must **not** wait on full self-hosted CI Tests (~60 min). Gate = Bugbot CLEAN==HEAD + **full-repo** Pint/lint (`pint --test` or Check Code Style `lint (8.3)` green on HEAD — never `--dirty` / path-scoped-only) + touched tests only under Gene Pest GRANT. Ambient full-suite **Tests** red ≠ babysit blocker unless tip-caused. Full-repo **Pint** red **is** a babysit blocker — fix on the tip until green. WAITING = Bugbot or Pest slot only — never full-suite Tests pending.
 
 **Angelo standing rule 2026-09-21 (cursor-review pending gate; example CorewareHub/coreware-app-backend#6487):** Before posting `cursor review` / `bugbot run`, check HEAD SHA, bare invoke comments, and cursor[bot] reviews. If HEAD is already reviewed, or a prior invoke is still PENDING (no later cursor[bot] review covering HEAD), stay WAITING-BUGBOT — do **not** post another invoke. Never a second `cursor review` for the same HEAD SHA. See pr-babysit-loop CURSOR REVIEW INVOKE GATE.
 

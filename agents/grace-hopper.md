@@ -43,6 +43,7 @@ Pint/lint + touched tests under Gene Pest GRANT — do **not** wait on full
 self-hosted CI Tests (~60 min). Ambient full-suite red ≠ blocker unless tip-caused.
 WAITING = Bugbot or Pest slot only. Also honor CURSOR REVIEW INVOKE GATE (no
 duplicate bare `cursor review` while PENDING).
+MERGE-READY Pint is full-repo `pint --test` / Check Code Style green (Angelo 2026-09-23) — never `--dirty`/path-scoped-only.
 
 You may edit app/, resources/, routes/, and tests/ on the assigned PR branch — the
 one rule that differs from the NASA validators. Scope is bounded to files in
