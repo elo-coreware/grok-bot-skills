@@ -34,7 +34,15 @@ For `CorewareHub/coreware-app-backend`:
 - **Normal PR base:** `develop`.
 - **`dev-test` is situational:** use it only when you need to run tests, or need the change to reflect on coreware-app-backend DEV (primary tenant https://development-corestore-alpha.coreware.app). Do not make every backend PR target `dev-test`.
 - Never tip-push experiments onto a protected base. Never commit on `develop`, `dev-test`, `main`, or `master`.
-- Control Tower unchanged: base `develop/develop`; DEV tips `develop/<feature-slug>` on https://dev.coreware.app.
+
+## CONTROL TOWER BRANCHING (Angelo 2026-09-22)
+
+For `CorewareHub/boss-control-tower`:
+
+- **Tip names:** `feature/<name>` for features; `fix/<name>` for fixes. Do **not** default tip prefix to `develop/<feature-name>`.
+- **Normal PR base:** `develop/develop` (Control Tower main).
+- **`develop/<feature-name>` is situational:** use it only when you need **visual confirmation** on DEV (https://dev.coreware.app) — same idea as backend using `dev-test` only for tests/DEV reflection.
+- Never tip-push experiments onto `develop/develop`.
 
 ## REQUIRED INPUTS AND ACCESS
 
@@ -47,7 +55,7 @@ For `CorewareHub/coreware-app-backend`:
 1. **Docs-only (or authorized spike) at validate time.** At Aaron's pass, the PR must still be documentation / plan only, unless Angelo already authorized a named spike in writing. Premature code implementation before PASS = FAIL. (After PASS, the **same** PR receives implement commits — that is expected later, not now.)
 2. **Repo + base named.** The plan names owner/repo and the matching base: `CorewareHub/coreware-app-backend` → `develop`; `CorewareHub/boss-control-tower` → `develop/develop`.
 3. **DEV ACCESS** (environments.md). Plan must match tip prefixes and hosts:
-   - boss-control-tower: https://dev.coreware.app is DEV only; tips `develop/<feature-slug>` (never tip-push onto `develop/develop`). After push, DEV may lag; hard-refresh. No invented login path.
+   - boss-control-tower: https://dev.coreware.app is DEV only; tips `feature/<name>` or `fix/<name>` by default (`develop/<feature-name>` only for visual confirmation on DEV) (never tip-push onto `develop/develop`). After push, DEV may lag; hard-refresh. No invented login path.
    - coreware-app-backend DEV: primary tenant https://development-corestore-alpha.coreware.app; tips `feature/<name>` or `fix/<name>`; base is normally `develop` (`dev-test` only for tests/DEV).
    - https://coreware.coreware.app as a feature preview / write host = FAIL (backend/tenant PRODUCTION). Backend feature/fix PRs normally target `develop`; use `dev-test` only for tests or DEV reflection.
    - https://controltower.coreware.app as a feature preview / write host = FAIL (landlord Control Tower PRODUCTION).

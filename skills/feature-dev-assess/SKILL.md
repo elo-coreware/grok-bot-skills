@@ -15,9 +15,17 @@ For `CorewareHub/coreware-app-backend`:
 - **Normal PR base:** `develop`.
 - **`dev-test` is situational:** use it only when you need to run tests, or need the change to reflect on coreware-app-backend DEV (primary tenant https://development-corestore-alpha.coreware.app). Do not make every backend PR target `dev-test`.
 - Never tip-push experiments onto a protected base. Never commit on `develop`, `dev-test`, `main`, or `master`.
-- Control Tower unchanged: base `develop/develop`; DEV tips `develop/<feature-slug>` on https://dev.coreware.app.
 
 # Feature DEV assess
+
+## CONTROL TOWER BRANCHING (Angelo 2026-09-22)
+
+For `CorewareHub/boss-control-tower`:
+
+- **Tip names:** `feature/<name>` for features; `fix/<name>` for fixes. Do **not** default tip prefix to `develop/<feature-name>`.
+- **Normal PR base:** `develop/develop` (Control Tower main).
+- **`develop/<feature-name>` is situational:** use it only when you need **visual confirmation** on DEV (https://dev.coreware.app) — same idea as backend using `dev-test` only for tests/DEV reflection.
+- Never tip-push experiments onto `develop/develop`.
 
 ## When to use
 
@@ -25,7 +33,7 @@ Run this after a feature ships to DEV, when Angelo asks for another verification
 
 ## Environments (hard rules)
 
-- Control Tower DEV: `https://dev.coreware.app` on branch tip `develop/<feature-slug>`. Never tip-push experiments onto `develop/develop`.
+- Control Tower DEV: `https://dev.coreware.app` — tips `feature/<name>` or `fix/<name>` by default; use tip `develop/<feature-name>` only for visual confirmation. Never tip-push experiments onto `develop/develop`.
 - Backend / tenant DEV: primary tenant `https://development-corestore-alpha.coreware.app`. Backend feature tips use `feature/<name>` or `fix/<name>`, not `develop/<feature>`.
 - Never use `https://coreware.coreware.app` to preview or experiment (that host is PRODUCTION).
 - PROD web hosts — observe / peek only (Angelo 2026-09-18; clarified 2026-09-20): `https://controltower.coreware.app` and `https://coreware.coreware.app`. When Angelo asks for a PROD recheck: peek/observe ONLY. NO modifying (no edits, creates, deletes, status changes, write form submits, deploys, tip-pushes, or write APIs). Default is never modify.

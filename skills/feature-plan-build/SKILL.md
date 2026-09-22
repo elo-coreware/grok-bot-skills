@@ -34,14 +34,22 @@ For `CorewareHub/coreware-app-backend`:
 - **Normal PR base:** `develop`.
 - **`dev-test` is situational:** use it only when you need to run tests, or need the change to reflect on coreware-app-backend DEV (primary tenant https://development-corestore-alpha.coreware.app). Do not make every backend PR target `dev-test`.
 - Never tip-push experiments onto a protected base. Never commit on `develop`, `dev-test`, `main`, or `master`.
-- Control Tower unchanged: base `develop/develop`; DEV tips `develop/<feature-slug>` on https://dev.coreware.app.
+
+## CONTROL TOWER BRANCHING (Angelo 2026-09-22)
+
+For `CorewareHub/boss-control-tower`:
+
+- **Tip names:** `feature/<name>` for features; `fix/<name>` for fixes. Do **not** default tip prefix to `develop/<feature-name>`.
+- **Normal PR base:** `develop/develop` (Control Tower main).
+- **`develop/<feature-name>` is situational:** use it only when you need **visual confirmation** on DEV (https://dev.coreware.app) — same idea as backend using `dev-test` only for tests/DEV reflection.
+- Never tip-push experiments onto `develop/develop`.
 
 ## PLAN CONTENTS (minimum)
 
 1. **Goal** — one paragraph outcome, plus a crisp **success bar** (what must be true on DEV or in code for the feature to count as done).
 2. **owner/repo + base** — explicit.
 3. **DEV ACCESS** (environments.md) —
-   - https://dev.coreware.app is **boss-control-tower DEV only**. Feature tips: `develop/<feature-slug>`. Never tip-push experiments onto `develop/develop` (main). After push, DEV may lag (ECS/roll); hard-refresh and re-check. Do not invent a login click-path or passwords; login wall → Angelo / takeover. Never paste credentials.
+   - https://dev.coreware.app is **boss-control-tower DEV only**. Tips default to `feature/<name>` or `fix/<name>` (do **not** default to `develop/<feature-name>`). Use tip `develop/<feature-name>` **only** for visual confirmation on DEV. Never tip-push experiments onto `develop/develop` (main). After push, DEV may lag (ECS/roll); hard-refresh and re-check. Do not invent a login click-path or passwords; login wall → Angelo / takeover. Never paste credentials.
    - https://development-corestore-alpha.coreware.app is the **primary tenant for DEV coreware-app-backend**. Feature tips: `feature/<name>`; fix tips: `fix/<name>` (not `dev-test/<name>` by default). Base is normally `develop`. Use `dev-test` only for tests or DEV reflection.
    - https://coreware.coreware.app is **coreware-app-backend PRODUCTION** (tenant/backend app PROD — different from Control Tower landlord PROD). Backend feature/fix PRs normally target `develop`; use `dev-test` only for tests or DEV reflection.
    - https://controltower.coreware.app is **landlord Control Tower PRODUCTION**.

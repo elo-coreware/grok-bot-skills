@@ -39,8 +39,7 @@ CorewareHub/boss-control-tower → base `develop/develop`. Always pass owner/rep
 with assignments.
 
 DEV ACCESS (binding; see environments.md):
-- https://dev.coreware.app is boss-control-tower DEV only. Feature tips use
-  `develop/<feature-slug>`. Never tip-push experiments onto `develop/develop`
+- https://dev.coreware.app is boss-control-tower DEV only. Tips default to `feature/<name>` or `fix/<name>` (do **not** default to `develop/<feature-name>`). Use tip `develop/<feature-name>` **only** for visual confirmation on DEV. Never tip-push experiments onto `develop/develop`
   (main). After push, DEV may lag (ECS/roll); hard-refresh and report what you
   actually see. Do not invent a login click-path or passwords; login wall →
   Angelo / takeover. Never paste credentials.
@@ -67,7 +66,7 @@ Allowed repos (match base; never commit on the base):
 - CorewareHub/coreware-app-backend → base `develop`
 - CorewareHub/boss-control-tower → base `develop/develop`
 CI test-health (NASA track) is backend-only. Feature babysit and feature engineers may
-use either repo. Four hosts (environments.md): https://dev.coreware.app = Control Tower DEV (`develop/<feature-slug>`; never tip-push onto `develop/develop`); https://controltower.coreware.app = landlord Control Tower PRODUCTION (observe/peek only when Angelo asks — NO modifying); https://development-corestore-alpha.coreware.app = primary DEV tenant for coreware-app-backend (`feature/<name>` or `fix/<name>` (not tip prefix `dev-test/<name>` by default; `dev-test` only for tests/DEV); base `develop`); https://coreware.coreware.app = backend/tenant PRODUCTION (observe/peek only when Angelo asks — NO modifying). PROD web hosts — observe / peek only (Angelo 2026-09-18): both PROD hosts — bots may ONLY observe or peek when Angelo explicitly asks; NO modifying (no edits, creates, deletes, status changes, form submits, deploys, tip-pushes, or write APIs). Default is never modify.
+use either repo. Four hosts (environments.md): https://dev.coreware.app = Control Tower DEV (tips `feature/<name>` or `fix/<name>` by default; use `develop/<feature-name>` only for visual confirmation on DEV; never tip-push onto `develop/develop`); https://controltower.coreware.app = landlord Control Tower PRODUCTION (observe/peek only when Angelo asks — NO modifying); https://development-corestore-alpha.coreware.app = primary DEV tenant for coreware-app-backend (`feature/<name>` or `fix/<name>` (not tip prefix `dev-test/<name>` by default; `dev-test` only for tests/DEV); base `develop`); https://coreware.coreware.app = backend/tenant PRODUCTION (observe/peek only when Angelo asks — NO modifying). PROD web hosts — observe / peek only (Angelo 2026-09-18): both PROD hosts — bots may ONLY observe or peek when Angelo explicitly asks; NO modifying (no edits, creates, deletes, status changes, form submits, deploys, tip-pushes, or write APIs). Default is never modify.
 
 - Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.
@@ -95,6 +94,7 @@ use either repo. Four hosts (environments.md): https://dev.coreware.app = Contro
 - Follow .cursor/rules/codebase.mdc and .cursor/rules/test-isolation.mdc in the
   repo. If they conflict with anything here, the repo rules win.
 - Never claim a command's output you did not actually see. Quote real output.
+- **ELI5 decisions for Angelo (2026-09-22):** Whenever you ask Angelo to decide something (widgets, questions, MERGE-READY needs-eyes, product calls, go/no-go): no jargon; plain simple English; longer/wordier is OK if clearer; explain what the choice means in everyday words before listing options.
 - Escalate to Angelo rather than guessing when: a fix needs app/ business-logic
   changes; assertion count drops on a branch; a root cause is unknown; the same
   file fails audit twice; or an engineer and Katherine disagree.

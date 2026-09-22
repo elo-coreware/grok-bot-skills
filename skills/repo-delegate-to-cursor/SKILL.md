@@ -24,14 +24,22 @@ For `CorewareHub/coreware-app-backend`:
 - **Normal PR base:** `develop`.
 - **`dev-test` is situational:** use it only when you need to run tests, or need the change to reflect on coreware-app-backend DEV (primary tenant https://development-corestore-alpha.coreware.app). Do not make every backend PR target `dev-test`.
 - Never tip-push experiments onto a protected base. Never commit on `develop`, `dev-test`, `main`, or `master`.
-- Control Tower unchanged: base `develop/develop`; DEV tips `develop/<feature-slug>` on https://dev.coreware.app.
+
+## CONTROL TOWER BRANCHING (Angelo 2026-09-22)
+
+For `CorewareHub/boss-control-tower`:
+
+- **Tip names:** `feature/<name>` for features; `fix/<name>` for fixes. Do **not** default tip prefix to `develop/<feature-name>`.
+- **Normal PR base:** `develop/develop` (Control Tower main).
+- **`develop/<feature-name>` is situational:** use it only when you need **visual confirmation** on DEV (https://dev.coreware.app) — same idea as backend using `dev-test` only for tests/DEV reflection.
+- Never tip-push experiments onto `develop/develop`.
 
 ## ALLOWED REPOS
 
 | owner/repo | Base branch | Host notes |
 |------------|-------------|------------|
 | `CorewareHub/coreware-app-backend` | `develop` | Feature/fix PRs normally target `develop`. Tips: `feature/<name>` or `fix/<name>`. Use `dev-test` only for tests or DEV tenant reflection on primary tenant **https://development-corestore-alpha.coreware.app**. **https://coreware.coreware.app is PRODUCTION** — observe/peek only when Angelo asks; NO modifying. |
-| `CorewareHub/boss-control-tower` | `develop/develop` | DEV: push `develop/<feature-slug>`; served at **https://dev.coreware.app**. Never tip-push onto `develop/develop` (main). **https://controltower.coreware.app is landlord Control Tower PRODUCTION** — observe/peek only when Angelo asks; NO modifying. |
+| `CorewareHub/boss-control-tower` | `develop/develop` | Tips default to `feature/<name>` or `fix/<name>`; base `develop/develop`. Use tip `develop/<feature-name>` only for visual confirmation at **https://dev.coreware.app**. Never tip-push onto `develop/develop` (main). **https://controltower.coreware.app is landlord Control Tower PRODUCTION** — observe/peek only when Angelo asks; NO modifying. |
 
 Refuse any other owner/repo unless Angelo explicitly expands the allow-list. NASA CI
 test-health work stays on `coreware-app-backend`. Grace, Raye, Gene/Wernher
@@ -40,7 +48,7 @@ on either allowed product repo.
 
 ## DEV TIPS (after allowed repos)
 
-- boss-control-tower → tip `develop/<feature-slug>` (DEV host https://dev.coreware.app).
+- boss-control-tower → tip `feature/<name>` or `fix/<name>` by default; use `develop/<feature-name>` only for visual confirmation on DEV (https://dev.coreware.app).
 - coreware-app-backend → tip `feature/<name>` or `fix/<name>` (primary tenant https://development-corestore-alpha.coreware.app); base is normally `develop` (`dev-test` only for tests/DEV).
 - Never tip-push experiments onto `develop/develop` (Control Tower main).
 - PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH https://controltower.coreware.app and https://coreware.coreware.app: bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
@@ -48,8 +56,8 @@ on either allowed product repo.
 ## DEV ACCESS (binding — do not invert)
 
 - **https://dev.coreware.app** is **boss-control-tower DEV only**. How changes reflect
-  there: push the feature tip to branch `develop/<feature-slug>` on
-  `CorewareHub/boss-control-tower`. That branch is what DEV serves.
+  there: push a tip named `feature/<name>` or `fix/<name>` by default on
+  `CorewareHub/boss-control-tower` (use tip `develop/<feature-name>` only when you need visual confirmation on DEV). That tip is what DEV can serve when you need the visual check.
   `develop/develop` is the main branch — never tip-push experiments onto it. After
   push, DEV may lag (ECS/roll); hard-refresh and re-check. Report what you actually
   see. Do not invent a login click-path or passwords. If a bot hits a login wall,
@@ -71,7 +79,7 @@ on either allowed product repo.
 - **owner/repo** (required) — one of the allowed repos above.
 - **Base branch** matching that repo (`develop` or `develop/develop`) and the exact
   target branch name. Do not default blindly to `develop` when the repo is
-  boss-control-tower. For Control Tower DEV work, use `develop/<feature-slug>`
+  boss-control-tower. For Control Tower work, tip `feature/<name>` or `fix/<name>` by default; use `develop/<feature-name>` only when you need visual confirmation on DEV
   (served on https://dev.coreware.app). For backend DEV tips, use `feature/<name>` or `fix/<name>`
   (primary tenant https://development-corestore-alpha.coreware.app); base remains
   `develop`. PROD web hosts — observe / peek only (Angelo 2026-09-18) for BOTH
@@ -140,9 +148,7 @@ on either allowed product repo.
 - owner/repo is on the allow-list and base matches that repo.
 - The branch exists and is not develop / develop/develop / main / master. In create
   mode it came from the stated base; in existing-branch mode it is the branch named in
-  BRANCH and no new branch was created. boss-control-tower DEV work must use
-  `develop/<feature-slug>` on https://dev.coreware.app, not tip-pushes onto
-  `develop/develop`. Backend DEV tips use `feature/<name>` or `fix/<name>` on
+  BRANCH and no new branch was created. boss-control-tower tips default to `feature/<name>` or `fix/<name>`; use `develop/<feature-name>` only for visual confirmation on https://dev.coreware.app; never tip-push onto `develop/develop`. Backend DEV tips use `feature/<name>` or `fix/<name>` on
   https://development-corestore-alpha.coreware.app. PROD web hosts — observe / peek only
   (Angelo 2026-09-18) for BOTH https://controltower.coreware.app (landlord Control Tower PRODUCTION) and
   https://coreware.coreware.app (backend/tenant PRODUCTION): bots may ONLY observe or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes, status changes, state-changing comments, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
