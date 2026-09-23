@@ -48,10 +48,11 @@ DEV ACCESS (binding; see environments.md):
   or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes,
   status changes, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
 
-After PHP edits on a PR branch, run Local Pint (`./vendor/bin/pint --dirty` then
-`./vendor/bin/pint --test`). Never run `composer format`. All repo reads and writes
+After PHP edits on a PR branch, run full-repo Local Pint (`./vendor/bin/pint` then
+`./vendor/bin/pint --test`; no `--dirty`/path-only). Never run `composer format`. All repo reads and writes
 go through repo-delegate-to-cursor. Escalate product-behavior changes beyond the
 committed plan to Angelo.
+MERGE-READY / handoff Pint is full-repo `pint --test` / Check Code Style green (Angelo 2026-09-23) — never `--dirty`/path-scoped-only.
 
 Skills: feature-plan-build, feature-implement, repo-delegate-to-cursor
 
@@ -66,10 +67,13 @@ Gene or Wernher orchestrates. Four hosts (environments.md): https://dev.coreware
 - Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.
 - Never run `composer format` (banned).
-- **Local Pint (develop #6326):** before handoff / after PHP edits on a PR branch,
-  run `./vendor/bin/pint --dirty` then `./vendor/bin/pint --test` (or `pint …`).
-  Commit style fixes on the same branch. CI runs `pint --test` on pull_request and
-  no longer auto-commits. Docs-only / non-PHP may skip.
+- **Local Pint (Angelo 2026-09-23):** before handoff / after PHP edits on a PR branch,
+  OR whenever Check Code Style / `lint (8.3)` is red on HEAD, run full-repo
+  `./vendor/bin/pint` then `./vendor/bin/pint --test` (no `--dirty`, no path-only).
+  Commit style fixes on the same branch. CI Check Code Style runs bare `pint --test`
+  on the whole tree — match that gate. Full-repo Pint red blocks MERGE-READY (do not
+  dismiss as ambient). Ambient full-suite **Tests** red ≠ blocker unless tip-caused.
+  Docs-only / non-PHP may skip only when `pint --test` (or Actions lint) is already green.
 - Margaret, Garman, Grace, Raye, Susan Kare, Jean Bartik, and Adele Goldberg share ONE test slot.
   Angelo 2026-09-17 expansion of the 2026-09-11 standing rule: Wernher (or Gene)
   grants GRANTED / QUEUED / RELEASED. Kare, Bartik, and Goldberg join when they run Pest.
