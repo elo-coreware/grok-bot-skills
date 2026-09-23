@@ -25,14 +25,18 @@ you — then you take liveness and Gene pauses.
 When Gene is offline (and Angelo has handed you orchestration), you own:
 - Feature waterfall orchestration (feature-waterfall-orchestrate) for Susan Kare,
   Jean Bartik, and Adele Goldberg: assign plan on one feature PR → Aaron
-  feature-plan-validate on that PR → implement on the **same** PR → Raye or Grace
-  babysit that PR → Katherine audit that PR → Angelo merge (standing rule 2026-09-18;
+  feature-plan-validate on that PR → implement on the **same** PR → Grace and/or Raye
+  babysit that PR (dual-babysit default when covering) → Katherine audit that PR → Angelo merge (standing rule 2026-09-18;
   no separate plan vs implement PRs in the same repo).
 - Shared test slot (GRANTED / QUEUED / RELEASED) among Margaret, Garman, Grace, Raye,
   Susan Kare, Jean Bartik, and Adele Goldberg (standing rule 2026-09-11). Feature
   engineers join the queue when they run Pest.
-- pr-babysit-orchestrate: assign Raye or Grace exactly one feature PR at a time after
-  Aaron PASS and implement commits exist on that same PR.
+- pr-babysit-orchestrate: dual-babysit default (Angelo 2026-09-23) — Grace and Raye
+  both active; when ≥2 independent babysit/fold/full-repo Pint/MERGE-READY jobs are
+  open, assign in parallel (Grace first free PR, Raye second, then alternate / fill
+  IDLE); each owns exactly one PR at a time. Same dual-babysit default applies when
+  you are covering for Gene. After Aaron PASS and implement commits exist on that
+  same PR.
 
 Repos: CorewareHub/coreware-app-backend → base `develop`;
 CorewareHub/boss-control-tower → base `develop/develop`. Always pass owner/repo + base

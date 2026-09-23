@@ -52,10 +52,16 @@ For `CorewareHub/boss-control-tower`:
 Exactly one PR at a time. Never start a second PR until the first is MERGE-READY or explicitly handed back to Gene/Angelo.
 
 
-## LOCAL PINT (Angelo 2026-09-15 / develop #6326) — mandatory
+## LOCAL PINT (Angelo 2026-09-23) — full-repo, match CI
 
-CI runs `pint --test` on pull_request (no auto-commit). After any PHP remediations on the feature PR, run `./vendor/bin/pint --dirty` (or path-scoped Pint) and commit `:art: pint` if needed, then `./vendor/bin/pint --test` before `cursor review`.
-Never run `composer format`. Docs-only / non-PHP: skip.
+CI `.github/workflows/lint.yml` ("Check Code Style") runs bare `pint --test` with **no** path filter — it scans the whole Pint-configured tree. Babysit / phase verify must match that gate.
+
+**Fix (write):** run `./vendor/bin/pint` (or `pint`) with **no** `--dirty` and **no** path args so it reformats the entire tree. Commit `:art: pint` (or fold into the remedi commit) if files change. Never `composer format`. Do **not** use `--dirty` or path-scoped Pint as the only fix when Check Code Style is red or when preparing MERGE-READY.
+
+**Verify:** `./vendor/bin/pint --test` must exit 0 on HEAD (full tree). Equivalently, confirm GitHub Actions job `lint (8.3)` / Check Code Style is **green** on this HEAD (job URL is fine evidence). Style issues anywhere under Pint paths on the tip **are** babysit blockers — fix them on this branch until full `pint --test` is green. Do **not** dismiss full-repo lint red as "ambient / not tip-caused."
+
+Docs-only or non-PHP commits: skip only when `pint --test` (or the Actions lint job) is already green on HEAD.
+
 
 ## VERIFY / MERGE-READY GATE (Angelo standing rule 2026-09-21, via Gene)
 
@@ -66,8 +72,9 @@ suite as a hard babysit gate.
 **MERGE-READY gate (all required):**
 1. Bugbot CLEAN == HEAD (`cursor[bot]` review `commit_id` equals HEAD; zero
    unfixed valid in-scope findings)
-2. Pint / lint clean on touched PHP (local `./vendor/bin/pint --dirty` +
-   `--test`, or path-scoped)
+2. Pint / lint **full-repo** clean: local `./vendor/bin/pint` (write) then
+   `./vendor/bin/pint --test` exit 0, **or** GitHub Actions Check Code Style /
+   `lint (8.3)` green on HEAD (no `--dirty` / path-scoped-only)
 3. Touched tests only, run on the shared machine under Gene's Pest GRANT
    (`composer test:single` / equivalent on changed paths)
 
@@ -112,7 +119,7 @@ processed for current HEAD), do **NOT** post another `cursor review` yet.
    Medium), run pr-finding-remediate. If verification needs tests, message Gene for
    the test slot. Do not run composer test:single until Gene grants GRANTED. If
    QUEUED, wait. Batch related fixes into one commit when sensible. **Pint gate:**
-   if PHP changed, run LOCAL PINT (`./vendor/bin/pint --dirty` + `--test`) and
+   if PHP changed **or** Check Code Style is red on HEAD, run LOCAL PINT (full-repo write + `--test`) and
    commit style fixes before `cursor review`. After push, run the
    **CURSOR REVIEW INVOKE GATE** above; only then comment exactly one
    `cursor review` as Angelo → WAITING-BUGBOT. Never post a second invoke

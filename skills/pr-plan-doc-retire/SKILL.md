@@ -82,10 +82,10 @@ Plan identification — same rules as `.cursor/commands/git-commit.md` step 5:
    - Bugbot CLEAN still asserted against `reviewed-sha` (gates 1–2); deletion-only
      delta means no new Bugbot on final-sha is required.
    - Pint/lint: N/A for docs-only deletion; if any PHP slipped into the retire
-     commit, run local Pint before MERGE-READY.
+     commit, run full-repo local Pint (`./vendor/bin/pint` then `./vendor/bin/pint --test`; match Check Code Style) before MERGE-READY.
    - Touched tests: N/A for deletion-only plan retire.
 
-   Ambient full-suite CI red/pending on final-sha is OK unless tip-caused.
+   Ambient full-suite **Tests** red/pending on final-sha is OK unless tip-caused; full-repo **Pint** red is not.
    Optional informational `gh pr checks` note is fine; it is not a hard gate.
 
 ## RULES

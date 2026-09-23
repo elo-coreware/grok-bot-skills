@@ -122,8 +122,9 @@ on either allowed product repo.
 
    **Feature engineer exception (Kare/Bartik/Goldberg):** on an assigned feature-plan-build or
    feature-implement branch (same feature PR — standing rule 2026-09-18), scope follows the
-   committed plan. Product-behavior beyond the plan requires Angelo. Local Pint after PHP
-   edits. Request the shared test slot before Pest. Never open a second PR for the same feature
+   committed plan. Product-behavior beyond the plan requires Angelo. Full-repo Local Pint after PHP
+   edits (`./vendor/bin/pint` then `./vendor/bin/pint --test`; no `--dirty`; match Check Code Style).
+   Request the shared test slot before Pest. Never open a second PR for the same feature
    in the same repo.
 
    VERIFY — the exact verification commands to run, or `none` for read-only/planning work.
