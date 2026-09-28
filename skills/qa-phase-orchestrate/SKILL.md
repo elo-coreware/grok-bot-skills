@@ -78,20 +78,22 @@ run concurrently — `database/schema/*.sql` and `.dump-meta.json` are global. G
 serializes them; the second engineer merges `origin/develop` after the first dump
 lands.
 
-**Test gate (Angelo standing rule 2026-09-11):** Garman stays in the shared
-Margaret/Grace slot queue even on `TEST_TOKEN=9`. Slot independence after the
-`scripts/test-lib.sh` ephemeral-sweep fix is suspended until Angelo explicitly
-lifts the standing rule. Gene records that the standing rule is in force.
+**Test gate (Angelo standing rule 2026-09-28 afternoon):** Two Mac clone Pest slots
+(CLONE_A = token **11** / `test_landlord_11`+`test_tenant_11`; CLONE_B = token **1** /
+`test_landlord_1`+`test_tenant_1`). Do not override A→1 or B→11. Garman `TEST_TOKEN=9`
+only when Gene assigns a slot whose env expects 9 — default mapping stays A=11 / B=1;
+token is not a third slot. Gene or Wernher grants GRANTED / QUEUED / RELEASED per slot.
+Two Pest runs may be live at once (one per clone). Schema-dump is serialized on **main**
+only (not on clones).
 
-**PARALLELISM / ANTI-HOLD (Angelo 2026-09-11):** In DUAL mode Margaret and Garman
+**PARALLELISM / ANTI-HOLD (Angelo 2026-09-11; host update 2026-09-28 afternoon):** In DUAL mode Margaret and Garman
 implement, prep, fold develop, and run `cursor review` **in parallel**. Ready
 unmerged PRs may stack — assign the next OPEN phase in a lane immediately after
-that lane's dual-PASS; **do not wait for Angelo to merge**. The shared test slot
-(GRANTED / QUEUED / RELEASED) covers **Pest / migrate / schema-dump only**
-(standing rule above still applies). Those commands run on the **shared Grok Bot
-computer** only (Angelo 2026-09-28) — never Angelo's Mac / `machineId`; if PHP is
-missing on the box, fix the box toolchain first. A stale schema dump is not a
-phase blocker: agents notify Angelo (FYI) and regenerate under GRANT themselves.
+that lane's dual-PASS; **do not wait for Angelo to merge**. The two clone slots
+(GRANTED / QUEUED / RELEASED per slot) cover **Pest / migrate-for-tests**. Run those
+on Angelo's Mac clones via ListMachines/`machineId` — not cloud agents for routine
+verify, not the Grok Bot box, not the main checkout. A stale schema dump is not a
+phase blocker: agents notify Angelo (FYI) and regenerate on **main** under GRANT.
 Katherine audits are a **separate**
 one-at-a-time queue; an engineer waiting on Bugbot or Katherine must **not** block
 the other lane's next phase assignment. Never idle an engineer solely because a
@@ -171,9 +173,9 @@ the same module (separate PRs by design — Reconcile vs Author):
    dual-PASS parent exists in-lane (see STACKING + POST-MERGE FOLD). Point them at
    the **plan section** for this phase (not only chat). Remind them: draft, handoff
    commit with work-type prefix, `cursor review` as Angelo via GitHub MCP (not WIP),
-   implement in-scope Bugbot items, re-invoke after any new commit, cloud-agent verify
+   implement in-scope Bugbot items, re-invoke after any new commit, Mac-clone Pest verify
    (`composer test:single` for Margaret; `TEST_TOKEN=9 composer test:single` for
-   Garman) with quoted output, do not mark ready. Angelo himself runs/observes
+   Garman; granted clone cwd via ListMachines/`machineId`) with quoted output, do not mark ready. Angelo himself runs/observes
    `run-tests-phase.yaml` for now — do not block the owning engineer on
    workflow_dispatch. Authority: `.cursor/rules/test-failure-triage.mdc`.
    Scaffolding failures: fix the test. Contract failures: escalate, write an ESCALATED

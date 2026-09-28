@@ -75,23 +75,16 @@ use either repo. Four hosts (environments.md): https://dev.coreware.app = Contro
 - Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.
 - Never run composer format.
-- Margaret, Garman, Grace, Raye, Susan Kare, Jean Bartik, and Adele Goldberg share ONE test slot.
-  Angelo 2026-09-17 expansion of the 2026-09-11 standing rule: Wernher (or Gene)
-  grants GRANTED / QUEUED / RELEASED. Kare, Bartik, and Goldberg join when they run Pest.
-  You grant the slot; you never run tests yourself. Only one Pest / migrate /
-  schema-dump at a time — even Garman on TEST_TOKEN=9 must queue. Slot independence
-  after the scripts/test-lib.sh ephemeral-sweep fix is suspended until Angelo
-  explicitly lifts this standing rule.
-- Garman still uses test_tenant_9 / test_landlord_9 via TEST_TOKEN=9; his token
-  must always exceed PARATEST_WORKERS (3 local, 8 CI) or a composer test run will
-  drop his databases mid-suite. Token 9 does not exempt him from the shared slot
-  while the standing rule is in force. All bots share one Grok Bot cloud computer,
-  so concurrent runs still contend for CPU and MySQL connections. Seymour alone may
-  use Angelo's local machine (ListMachines), and only for AWS-related commands —
-  see `agents/seymour-cray.md` (Angelo 2026-09-21). Never use Angelo's Mac as a
-  Pest / migrate / schema-dump host or fallback.
-- **Pest host (Angelo 2026-09-28):** Run Pest / migrate / schema-dump on the shared Grok Bot computer only. If PHP is missing there, install/fix the box toolchain first — never fall back to Angelo's Mac (Seymour AWS-only).
-- **Schema dump (Angelo 2026-09-28):** Stale dump → notify Angelo (FYI) AND regenerate yourself under Pest GRANT. Dump work is not a MERGE-READY / phase blocker unless regen fails for a reason you cannot fix.
+- Margaret, Garman, Grace, Raye, Susan Kare, Jean Bartik, and Adele Goldberg share **TWO** Mac clone Pest slots (Angelo 2026-09-28 afternoon; supersedes 2026-09-11 one-slot and morning box-only Pest). Gene or Wernher arbitrates GRANTED / QUEUED / RELEASED **per slot** (CLONE_A `/Users/angelo/code/coreware-app-backend-clone` = token **11**; CLONE_B `/Users/angelo/code/coreware-app-backend-clone-ii` = token **1**). Two Pest runs may be live at once — one per clone. Schema-dump regen is serialized separately on the **main** checkout only (not on clones). The slots do not serialize non-Pest work (implement / prep / fold / `cursor review`) or Katherine waits.
+- Default clone DB pairs: CLONE_A = TEST_TOKEN **11** (`test_landlord_11` / `test_tenant_11`); CLONE_B = TEST_TOKEN **1** (`test_landlord_1` / `test_tenant_1`). Do not override A→1 or B→11. Garman `TEST_TOKEN=9` only when Gene assigns a slot whose env expects 9 — default mapping stays A=11 / B=1. His token must always exceed PARATEST_WORKERS (3 local, 8 CI) or a composer test run will drop his databases mid-suite. Token choice does not create a third Pest slot. Seymour remains sole bot for AWS on Angelo's Mac; Pest-runner bots may use ListMachines/`machineId` only for Pest inside the two clone paths; schema-dump agents may use `machineId` only on main for dump regen — see `agents/seymour-cray.md` and `environments.md`.
+- **Pest host (Angelo 2026-09-28 afternoon):** Two local Pest slots on Angelo's Mac (`machineId` `ae407d63-7055-4ee5-87b3-df3ee1734ca3` / Angelos-MacBook-Air.local):
+  - Slot A / CLONE_A: `/Users/angelo/code/coreware-app-backend-clone` — TEST_TOKEN **11** (`test_landlord_11` / `test_tenant_11`)
+  - Slot B / CLONE_B: `/Users/angelo/code/coreware-app-backend-clone-ii` — TEST_TOKEN **1** (`test_landlord_1` / `test_tenant_1`)
+  **Token map:** A=11 / B=1 (Angelo confirmed). Do not override A→1 or B→11. Gene or Wernher arbitrates GRANTED / QUEUED / RELEASED **per slot**. Two Pest runs may be live at once — one per clone. If A is busy, grant B (and vice versa). Pest-runner bots (Margaret, Garman, Grace, Raye, Susan Kare, Jean Bartik, Adele Goldberg) use ListMachines/`machineId` with working directory = the granted clone path. Checkout/pull the PR tip into the granted clone before Pest (do not dirty the other clone). Garman `TEST_TOKEN=9` only when Gene assigns a slot whose env expects 9 — default mapping stays A=11 / B=1; token choice does not create a third slot.
+- **Main checkout OFF LIMITS for Pest:** `/Users/angelo/code/coreware-app-backend` — FORBIDDEN for Pest, `composer test:*`, migrate for tests, any test runner. ALLOWED: data dumping, log reading, codebase analysis/read, and **schema dump regeneration only**. Clones must NOT run schema dump — main is the only valid schema-dump tree. Serialize dump regen (one at a time on main) under Gene Pest GRANT or a dedicated SCHEMA-DUMP GRANT.
+- **No cloud-agent Pest for normal verify:** Do NOT launch Cursor cloud agents for routine Pest / `composer test:single` / MERGE-READY touched-test verify. Prefer Mac clone slots. Cloud-agent Pest is emergency-only if Angelo explicitly allows for that run. Grok Bot box is for bot chat/orchestration — never fall back to cloud Pest just because the box lacks MySQL.
+- **ListMachines exception:** Seymour remains sole bot for AWS on that Mac. Pest-runner bots may use ListMachines/`machineId` **only** for Pest/test inside the two clone paths; schema-dump agents may use `machineId` **only** on main for dump regen. Non-AWS non-Pest work stays off the Mac unless Angelo asks.
+- **Schema dump (Angelo 2026-09-28):** Stale dump → notify Angelo (FYI, plain English) AND regenerate yourself under GRANT on **main** checkout only. Not a MERGE-READY/phase blocker unless regen fails unfixably. Commit `:robot: regenerate test schema dump`.
 - Never run git reset --hard, git clean -fd, git checkout -- ., or git stash on a
   dirty tree. Treat existing uncommitted changes as intentional work.
 - All repo reads and writes go through the repo-delegate-to-cursor skill as

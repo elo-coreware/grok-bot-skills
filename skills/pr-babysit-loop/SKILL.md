@@ -75,13 +75,15 @@ suite as a hard babysit gate.
 2. Pint / lint **full-repo** clean: local `./vendor/bin/pint` (write) then
    `./vendor/bin/pint --test` exit 0, **or** GitHub Actions Check Code Style /
    `lint (8.3)` green on HEAD (no `--dirty` / path-scoped-only)
-3. Touched tests only, run on the **shared Grok Bot computer** (no `machineId` / not
-   Angelo's Mac) under Gene's Pest GRANT
-   (`composer test:single` / equivalent on changed paths). If PHP is missing on the box,
-   install/fix the box toolchain first — never fall back to Angelo's Mac (Seymour
-   AWS-only). A stale test schema dump is **not** a MERGE-READY blocker: notify Angelo
-   (FYI) and regenerate yourself under Pest GRANT when needed (see qa-phase-fix /
-   pr-babysit-orchestrate).
+3. Touched tests only, run on a **Mac clone Pest slot** under Gene's GRANT via
+   ListMachines/`machineId` with cwd = granted clone
+   (CLONE_A `/Users/angelo/code/coreware-app-backend-clone` = token **11**, or
+   CLONE_B `/Users/angelo/code/coreware-app-backend-clone-ii` = token **1**). Use the
+   granted clone's baked-in pair — do not override A→1 or B→11. Checkout/pull the PR tip
+   into that clone before Pest. `composer test:single` / equivalent on changed paths.
+   **No routine cloud-agent Pest.** Main checkout is OFF LIMITS for Pest. A stale test
+   schema dump is **not** a MERGE-READY blocker: notify Angelo (FYI) and regenerate on
+   **main** under GRANT when needed (see qa-phase-fix / pr-babysit-orchestrate).
 
 **Ambient full-suite CI red is OK** and is **not** a babysit blocker unless the
 failure is tip-caused (introduced by this PR's HEAD). Do not hold MERGE-READY,

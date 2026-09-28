@@ -116,16 +116,17 @@ Do not treat `cursor/**` as a reason to skip verify.
 
 `.github/workflows/run-tests-phase.yaml` is `workflow_dispatch` only (no push branch filter). Cloud-agent `gh` cannot dispatch it (integration 403). **Angelo runs and observes that workflow himself when he wants Actions evidence.** Do not block handoff, audit, or the next phase on a missing Actions Pest run.
 
-**Required verify path:** always run cloud-agent verify and quote real output. That is
-the gate the owning engineer owns — not Actions.
+**Required verify path:** always run Mac-clone Pest verify (under Gene/Wernher slot GRANT)
+via ListMachines/`machineId` and quote real output. That is the gate the owning engineer
+owns — not Actions. **No routine cloud-agent Pest** (emergency-only if Angelo explicitly allows).
 
-- Margaret: `composer test:single -- <changed paths>`
-- Garman: `TEST_TOKEN=9 composer test:single -- <changed paths>`
+- Margaret: `composer test:single -- <changed paths>` (in granted clone cwd)
+- Garman: `TEST_TOKEN=9 composer test:single -- <changed paths>` (in granted clone cwd)
 
-Angelo standing rule 2026-09-11: Garman always requests the test slot from Gene
-and does not run concurrently with Margaret or Grace — even on `TEST_TOKEN=9`.
-Slot independence after the `scripts/test-lib.sh` ephemeral-sweep fix is suspended
-until Angelo lifts the standing rule.
+Angelo standing rule 2026-09-28 afternoon: request a Mac clone Pest slot (CLONE_A = token **11**
+or CLONE_B = token **1**) from Gene before every test run. Two slots may run concurrently (one per clone).
+Do not override A→1 or B→11. Garman `TEST_TOKEN=9` only when Gene assigns a slot whose env expects 9 —
+default mapping stays A=11 / B=1; token choice does not create a third slot.
 
 
 ## LOCAL PINT (Angelo 2026-09-23) — full-repo, match CI
@@ -172,14 +173,16 @@ Docs-only or non-PHP commits: skip only when `pint --test` (or the Actions lint 
    at a time for your own runs. Quote the real output. Do not start another phase's
    tests while this command runs.
 
-6. **Schema dump (Angelo 2026-09-28):** If a migration changed **or** the test schema dump
+6. **Schema dump (Angelo 2026-09-28 afternoon):** If a migration changed **or** the test schema dump
    is stale (out of date vs migrations / regenerate needed), regenerate it yourself under
-   Gene Pest GRANT on the shared Grok Bot computer (never Angelo's Mac). Notify Angelo
-   (FYI, plain English) so he can look if he wants — dump work is **not** a phase / handoff
-   / MERGE-READY blocker. Do not WAITING / BLOCKED / stop the phase solely because the dump
-   is stale or Angelo has not replied. Commit as a separate `:robot: regenerate test schema dump` commit:
+   Gene Pest GRANT or SCHEMA-DUMP GRANT on the **main** checkout only
+   (`/Users/angelo/code/coreware-app-backend` via ListMachines/`machineId`). Clones must NOT
+   run schema dump. Notify Angelo (FYI, plain English) so he can look if he wants — dump work
+   is **not** a phase / handoff / MERGE-READY blocker. Do not WAITING / BLOCKED / stop the phase
+   solely because the dump is stale or Angelo has not replied. Commit as a separate
+   `:robot: regenerate test schema dump` commit:
    `php -d memory_limit=2G artisan test:generate-schema-dump --env=testing`
-   Commit all three schema files together. Keep the dump delta surgical — do not mass-rewrite unrelated dump noise (Bugbot TOO_LARGE risk). In DUAL mode only one engineer regenerates the dump at a time — Gene serializes migration phases; the other merges `origin/develop` afterward. Escalate as a hard blocker only if dump regen fails for a reason you cannot fix (permissions, missing DB, unknown root cause) — then tell Angelo what failed.
+   Commit all three schema files together. Keep the dump delta surgical — do not mass-rewrite unrelated dump noise (Bugbot TOO_LARGE risk). Serialize dump regen — only one dump at a time on main; Gene serializes migration phases; the other merges `origin/develop` afterward. Escalate as a hard blocker only if dump regen fails for a reason you cannot fix (permissions, missing DB, unknown root cause) — then tell Angelo what failed.
 
 7. Update **your locked** plan doc: mark **this** phase COMPLETE with the actual delta (failure
    count for Fix; tests added for Author; assertion delta for Reconcile) and the
@@ -209,14 +212,14 @@ Docs-only or non-PHP commits: skip only when `pint --test` (or the Actions lint 
 12. If step 11 produced a new commit, run the **CURSOR REVIEW INVOKE GATE** on the new HEAD, then post at most one `cursor review` under Angelo's identity (only if HEAD is not yet reviewed and no invoke is PENDING). Wait for `cursor[bot]` on the new SHA. Never a second invoke for the same HEAD. Repeat until HEAD has a Bugbot review and you are not adding commits.
 
 13. **Verify evidence comment (required before Gene/Katherine handoff):** as elo-coreware, post a PR issue comment that Angelo can skim while reviewing. Include:
-    - That verify ran on the **cloud agent** (Composer / Cursor cloud computer), not Actions `run-tests-phase.yaml`
-    - Exact verify command(s) (`composer test:single` or `TEST_TOKEN=9 composer test:single`)
+    - That verify ran on a **Mac clone Pest slot** (CLONE_A or CLONE_B path + `machineId`), not Actions `run-tests-phase.yaml`, and not a routine cloud agent
+    - Exact verify command(s) (`composer test:single` or `TEST_TOKEN=9 composer test:single`) and granted clone path
     - Verbatim `Tests: … passed (… assertions)` line(s)
     - HEAD SHA this verify covers
     - If PHP changed: note that `./vendor/bin/pint --test` (or `pint --test`) was clean on that SHA
     Do this after the final successful verify on the handoff SHA (and again after any Bugbot-fix re-verify). This is separate from `cursor review`.
 
-14. Hand the still-draft PR to Gene for Katherine's audit. Report the head SHA, the Bugbot review SHA, the author login of your `cursor review` and verify comments, cloud-agent verify output, lane, and the base branch you used. Do not start the next phase until Gene assigns it (after this one is dual-PASS). Gene may assign your next phase **before Angelo merges** this PR — stack on your dual-PASS tip when he says so (Phase N+1 inherits this tip). Waiting on Bugbot is a valid hold; stay on this phase until Gene says dual-PASS. Non-Pest work (implement/prep/`cursor review`/fold) does **not** need the test slot.
+14. Hand the still-draft PR to Gene for Katherine's audit. Report the head SHA, the Bugbot review SHA, the author login of your `cursor review` and verify comments, Mac-clone verify output (slot/path), lane, and the base branch you used. Do not start the next phase until Gene assigns it (after this one is dual-PASS). Gene may assign your next phase **before Angelo merges** this PR — stack on your dual-PASS tip when he says so (Phase N+1 inherits this tip). Waiting on Bugbot is a valid hold; stay on this phase until Gene says dual-PASS. Non-Pest work (implement/prep/`cursor review`/fold) does **not** need a clone slot.
 
 15. When Katherine FAILs: implement every valid in-scope item from her triage table on the same branch, re-verify with one test command, run LOCAL PINT if PHP changed, push, run the **CURSOR REVIEW INVOKE GATE**, then post at most one `cursor review` under Angelo's identity on that new commit (skip if PENDING or HEAD already reviewed), wait for Bugbot, post an updated verify evidence comment, then hand back to Gene. Never mark a Katherine-valid item false-positive to skip it. Still do not invert contract assertions or patch `app/` unless Angelo assigned it / the plan authorizes it.
 

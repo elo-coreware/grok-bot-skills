@@ -35,10 +35,11 @@ Implement on the **existing** feature PR/branch that already holds the plan. Do 
 2. Implement on that **same** branch/PR. Base remains the repo main (`develop` or `develop/develop`).
 3. DEV checks: boss-control-tower tip `feature/<name>` or `fix/<name>` by default on https://dev.coreware.app; use `develop/<feature-name>` only for visual confirmation (never tip-push onto `develop/develop`). coreware-app-backend `feature/<name>` or `fix/<name>` on https://development-corestore-alpha.coreware.app. Never use https://coreware.coreware.app to preview features.
 4. Full-repo local Pint before handoff if PHP changed or Check Code Style is red (`./vendor/bin/pint` then `./vendor/bin/pint --test`; never `--dirty`-only). Never `composer format`.
-5. Request the shared test slot from Gene before any Pest / migrate / schema dump.
-   Run those on the **shared Grok Bot computer only** (never Angelo's Mac / `machineId`).
-   If PHP is missing on the box, install/fix the box toolchain first. Stale schema dump:
-   notify Angelo (FYI) and regenerate yourself under GRANT — not a blocker.
+5. Request a Mac clone Pest slot (CLONE_A = token **11** or CLONE_B = token **1**) from Gene before any Pest / migrate
+   for tests. Run Pest via ListMachines/`machineId` with cwd = granted clone path; do not override A→1 or B→11.
+   Schema dump only on **main** under GRANT (clones must not dump). **No routine
+   cloud-agent Pest.** Stale schema dump: notify Angelo (FYI) and regenerate on main
+   under GRANT — not a blocker.
 6. Push, comment `cursor review` as Angelo on the handoff commit, ping Gene.
 7. Gene assigns Raye or Grace to babysit **this same PR**. You stop unless Gene assigns a follow-up on that PR.
 
