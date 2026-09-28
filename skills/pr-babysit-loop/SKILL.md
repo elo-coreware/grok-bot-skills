@@ -77,8 +77,9 @@ suite as a hard babysit gate.
    `lint (8.3)` green on HEAD (no `--dirty` / path-scoped-only)
 3. Touched tests only, run on a **Mac clone Pest slot** under Gene's GRANT via
    ListMachines/`machineId` with cwd = granted clone
-   (CLONE_A `/Users/angelo/code/coreware-app-backend-clone` or
-   CLONE_B `/Users/angelo/code/coreware-app-backend-clone-ii`). Checkout/pull the PR tip
+   (CLONE_A `/Users/angelo/code/coreware-app-backend-clone` = token **11**, or
+   CLONE_B `/Users/angelo/code/coreware-app-backend-clone-ii` = token **1**). Use the
+   granted clone's baked-in pair — do not override A→1 or B→11. Checkout/pull the PR tip
    into that clone before Pest. `composer test:single` / equivalent on changed paths.
    **No routine cloud-agent Pest.** Main checkout is OFF LIMITS for Pest. A stale test
    schema dump is **not** a MERGE-READY blocker: notify Angelo (FYI) and regenerate on

@@ -53,15 +53,16 @@ Seymour remains the sole bot for **AWS** on Angelo's local computer (ListMachine
 
 Supersedes morning 2026-09-28 "box-only Pest / never Mac" and 2026-09-11 one shared slot.
 
-| Slot | Path | Role |
-|------|------|------|
-| Slot A / CLONE_A | `/Users/angelo/code/coreware-app-backend-clone` | Pest / `composer test:*` / migrate for tests |
-| Slot B / CLONE_B | `/Users/angelo/code/coreware-app-backend-clone-ii` | Pest / `composer test:*` / migrate for tests |
-| Main (OFF LIMITS for Pest) | `/Users/angelo/code/coreware-app-backend` | Data dump, log read, codebase analysis/read, **schema dump regen only** |
+| Slot | Path | DB pair (TEST_TOKEN) | Role |
+|------|------|----------------------|------|
+| Slot A / CLONE_A | `/Users/angelo/code/coreware-app-backend-clone` | **11** (`test_landlord_11` / `test_tenant_11`) | Pest / `composer test:*` / migrate for tests |
+| Slot B / CLONE_B | `/Users/angelo/code/coreware-app-backend-clone-ii` | **1** (`test_landlord_1` / `test_tenant_1`) | Pest / `composer test:*` / migrate for tests |
+| Main (OFF LIMITS for Pest) | `/Users/angelo/code/coreware-app-backend` | — | Data dump, log read, codebase analysis/read, **schema dump regen only** |
 
+- **Token map (Angelo confirmed):** CLONE_A = 11, CLONE_B = 1. Do not override clone-A to token 1 or clone-B to token 11.
 - Mac: `machineId` `ae407d63-7055-4ee5-87b3-df3ee1734ca3` / Angelos-MacBook-Air.local.
 - Gene or Wernher arbitrates GRANTED / QUEUED / RELEASED **per slot**. Two Pest runs may be live at once — one per clone. If A is busy, grant B (and vice versa).
 - Working directory for Pest = the granted clone path. Checkout/pull the PR tip into that clone before Pest (do not dirty the other clone).
-- Garman still uses `TEST_TOKEN=9` when the clone's env expects it; token choice does not create a third slot.
+- Garman `TEST_TOKEN=9` only when Gene assigns a slot whose env expects 9 — default slot mapping stays A=11 / B=1. Token choice does not create a third slot.
 - **Main FORBIDDEN for Pest / test runners.** Clones must **NOT** run schema dump — main is the only valid schema-dump tree. Serialize dump regen (one at a time) under Gene Pest GRANT or SCHEMA-DUMP GRANT.
 - **No routine cloud-agent Pest.** Prefer Mac clone slots. Cloud-agent Pest is emergency-only if Angelo explicitly allows for that run. Grok Bot box is for bot chat/orchestration — never fall back to cloud Pest just because the box lacks MySQL.

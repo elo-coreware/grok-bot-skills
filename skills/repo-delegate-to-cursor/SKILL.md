@@ -136,11 +136,12 @@ on either allowed product repo.
 
 3. Launch one agent from the stated base branch using this skill's configured launcher settings.
 
-4. Supervise until it finishes. **Concurrency (Angelo 2026-09-28 afternoon; supersedes 2026-09-11 one-slot):** Gene or Wernher arbitrates **TWO** Mac clone Pest slots (GRANTED / QUEUED / RELEASED per slot). Two Pest runs may be live at once — one per clone. Margaret, Grace, Raye, Susan Kare, Jean Bartik, and Adele Goldberg typically use token 1; Garman uses `TEST_TOKEN=9` when the clone env expects it — token is not a third slot. Margaret takes precedence unless Angelo prioritizes the feature PR. Aaron, Bill, Raye, and Grace **may** launch additional agents **in parallel** only when VERIFY is `none` (read-only / planning / docs plan PRs / bugbot sweeps — no Pest, no migrate, no `test:generate-schema-dump`). Never launch a second test-running agent on the **same clone** while another is live there.
+4. Supervise until it finishes. **Concurrency (Angelo 2026-09-28 afternoon; supersedes 2026-09-11 one-slot):** Gene or Wernher arbitrates **TWO** Mac clone Pest slots (GRANTED / QUEUED / RELEASED per slot). Two Pest runs may be live at once — one per clone. Use each clone's baked-in DB pair (CLONE_A = token **11**, CLONE_B = token **1**). Do not override A→1 or B→11. Garman `TEST_TOKEN=9` only when Gene assigns a slot whose env expects 9 — default mapping stays A=11 / B=1; token is not a third slot. Margaret takes precedence unless Angelo prioritizes the feature PR. Aaron, Bill, Raye, and Grace **may** launch additional agents **in parallel** only when VERIFY is `none` (read-only / planning / docs plan PRs / bugbot sweeps — no Pest, no migrate, no `test:generate-schema-dump`). Never launch a second test-running agent on the **same clone** while another is live there.
 
    **Pest host (Angelo 2026-09-28 afternoon):** Run Pest / `composer test:*` / migrate for tests on Angelo's Mac via ListMachines/`machineId` (`ae407d63-7055-4ee5-87b3-df3ee1734ca3`) with working directory = granted clone:
-   - CLONE_A: `/Users/angelo/code/coreware-app-backend-clone`
-   - CLONE_B: `/Users/angelo/code/coreware-app-backend-clone-ii`
+   - CLONE_A: `/Users/angelo/code/coreware-app-backend-clone` — TEST_TOKEN **11** (`test_landlord_11` / `test_tenant_11`)
+   - CLONE_B: `/Users/angelo/code/coreware-app-backend-clone-ii` — TEST_TOKEN **1** (`test_landlord_1` / `test_tenant_1`)
+   **Token map:** A=11 / B=1. Do not override A→1 or B→11.
    Checkout/pull the PR tip into the granted clone before Pest. Main checkout `/Users/angelo/code/coreware-app-backend` is OFF LIMITS for Pest — schema-dump regen only (serialized; clones must not dump). **No routine cloud-agent Pest** — emergency-only if Angelo explicitly allows. Grok Bot box is orchestration, not Pest host.
 
 5. Capture the summary, branch name, and diff.

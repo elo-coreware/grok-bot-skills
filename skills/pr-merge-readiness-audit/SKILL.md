@@ -58,7 +58,7 @@ This skill evaluates gates **1–4 only**. Gate 5 is confirmed after pr-plan-doc
    Do **not** treat ambient full-suite red or pending as FAIL/WAITING.
 
    Verify on a **Mac clone Pest slot** under Gene Pest GRANT via ListMachines/`machineId`
-   (CLONE_A or CLONE_B; cwd = granted clone). Checkout/pull the PR tip into that clone
+   (CLONE_A = token **11** or CLONE_B = token **1**; cwd = granted clone; do not override A→1 or B→11). Checkout/pull the PR tip into that clone
    before Pest. **No routine cloud-agent Pest.** Main checkout is OFF LIMITS for Pest.
    A stale test schema dump is not a Gate 3 WAITING/FAIL by itself — notify Angelo (FYI)
    and regenerate on **main** under GRANT when needed.

@@ -123,9 +123,10 @@ owns — not Actions. **No routine cloud-agent Pest** (emergency-only if Angelo 
 - Margaret: `composer test:single -- <changed paths>` (in granted clone cwd)
 - Garman: `TEST_TOKEN=9 composer test:single -- <changed paths>` (in granted clone cwd)
 
-Angelo standing rule 2026-09-28 afternoon: request a Mac clone Pest slot (CLONE_A or
-CLONE_B) from Gene before every test run. Two slots may run concurrently (one per clone).
-Garman's `TEST_TOKEN=9` does not create a third slot.
+Angelo standing rule 2026-09-28 afternoon: request a Mac clone Pest slot (CLONE_A = token **11**
+or CLONE_B = token **1**) from Gene before every test run. Two slots may run concurrently (one per clone).
+Do not override A→1 or B→11. Garman `TEST_TOKEN=9` only when Gene assigns a slot whose env expects 9 —
+default mapping stays A=11 / B=1; token choice does not create a third slot.
 
 
 ## LOCAL PINT (Angelo 2026-09-23) — full-repo, match CI

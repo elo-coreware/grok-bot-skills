@@ -79,7 +79,9 @@ serializes them; the second engineer merges `origin/develop` after the first dum
 lands.
 
 **Test gate (Angelo standing rule 2026-09-28 afternoon):** Two Mac clone Pest slots
-(CLONE_A / CLONE_B). Garman still uses `TEST_TOKEN=9` when the clone env expects it —
+(CLONE_A = token **11** / `test_landlord_11`+`test_tenant_11`; CLONE_B = token **1** /
+`test_landlord_1`+`test_tenant_1`). Do not override A→1 or B→11. Garman `TEST_TOKEN=9`
+only when Gene assigns a slot whose env expects 9 — default mapping stays A=11 / B=1;
 token is not a third slot. Gene or Wernher grants GRANTED / QUEUED / RELEASED per slot.
 Two Pest runs may be live at once (one per clone). Schema-dump is serialized on **main**
 only (not on clones).

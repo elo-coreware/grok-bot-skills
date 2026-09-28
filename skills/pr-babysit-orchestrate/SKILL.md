@@ -60,12 +60,14 @@ For `CorewareHub/boss-control-tower`:
 
 ## TEST SLOT QUEUE (two Mac clone slots)
 
-**Angelo standing rule 2026-09-28 afternoon** (supersedes 2026-09-11 one-slot and morning box-only Pest): Margaret, Garman, Grace, Raye, Susan Kare, Jean Bartik, and Adele Goldberg contend for **TWO** independent Mac clone Pest slots. Gene or Wernher arbitrates GRANTED / QUEUED / RELEASED **per slot**. Garman still verifies with `TEST_TOKEN=9` when the clone env expects it — token choice does **not** create a third slot.
+**Angelo standing rule 2026-09-28 afternoon** (supersedes 2026-09-11 one-slot and morning box-only Pest): Margaret, Garman, Grace, Raye, Susan Kare, Jean Bartik, and Adele Goldberg contend for **TWO** independent Mac clone Pest slots. Gene or Wernher arbitrates GRANTED / QUEUED / RELEASED **per slot**. Garman `TEST_TOKEN=9` only when Gene assigns a slot whose env expects 9 — default mapping stays A=11 / B=1; token choice does **not** create a third slot.
 
-| Slot | Path |
-|------|------|
-| Slot A / CLONE_A | `/Users/angelo/code/coreware-app-backend-clone` |
-| Slot B / CLONE_B | `/Users/angelo/code/coreware-app-backend-clone-ii` |
+| Slot | Path | DB pair (TEST_TOKEN) |
+|------|------|----------------------|
+| Slot A / CLONE_A | `/Users/angelo/code/coreware-app-backend-clone` | **11** (`test_landlord_11` / `test_tenant_11`) |
+| Slot B / CLONE_B | `/Users/angelo/code/coreware-app-backend-clone-ii` | **1** (`test_landlord_1` / `test_tenant_1`) |
+
+**Token map:** A=11 / B=1 (Angelo confirmed). Do not override clone-A to token 1 or clone-B to token 11.
 
 Mac: `machineId` `ae407d63-7055-4ee5-87b3-df3ee1734ca3` / Angelos-MacBook-Air.local. Two Pest runs may be live at once — one per clone. If A is busy, grant B (and vice versa). Queue waiters separately per slot or as a fair shared queue that assigns the first free clone.
 
