@@ -88,7 +88,11 @@ implement, prep, fold develop, and run `cursor review` **in parallel**. Ready
 unmerged PRs may stack — assign the next OPEN phase in a lane immediately after
 that lane's dual-PASS; **do not wait for Angelo to merge**. The shared test slot
 (GRANTED / QUEUED / RELEASED) covers **Pest / migrate / schema-dump only**
-(standing rule above still applies). Katherine audits are a **separate**
+(standing rule above still applies). Those commands run on the **shared Grok Bot
+computer** only (Angelo 2026-09-28) — never Angelo's Mac / `machineId`; if PHP is
+missing on the box, fix the box toolchain first. A stale schema dump is not a
+phase blocker: agents notify Angelo (FYI) and regenerate under GRANT themselves.
+Katherine audits are a **separate**
 one-at-a-time queue; an engineer waiting on Bugbot or Katherine must **not** block
 the other lane's next phase assignment. Never idle an engineer solely because a
 merge is pending or Katherine is busy on the other lane.

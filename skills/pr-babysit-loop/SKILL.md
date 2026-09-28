@@ -75,8 +75,13 @@ suite as a hard babysit gate.
 2. Pint / lint **full-repo** clean: local `./vendor/bin/pint` (write) then
    `./vendor/bin/pint --test` exit 0, **or** GitHub Actions Check Code Style /
    `lint (8.3)` green on HEAD (no `--dirty` / path-scoped-only)
-3. Touched tests only, run on the shared machine under Gene's Pest GRANT
-   (`composer test:single` / equivalent on changed paths)
+3. Touched tests only, run on the **shared Grok Bot computer** (no `machineId` / not
+   Angelo's Mac) under Gene's Pest GRANT
+   (`composer test:single` / equivalent on changed paths). If PHP is missing on the box,
+   install/fix the box toolchain first — never fall back to Angelo's Mac (Seymour
+   AWS-only). A stale test schema dump is **not** a MERGE-READY blocker: notify Angelo
+   (FYI) and regenerate yourself under Pest GRANT when needed (see qa-phase-fix /
+   pr-babysit-orchestrate).
 
 **Ambient full-suite CI red is OK** and is **not** a babysit blocker unless the
 failure is tip-caused (introduced by this PR's HEAD). Do not hold MERGE-READY,

@@ -115,6 +115,8 @@ Gene or Wernher orchestrates. Four hosts (environments.md): https://dev.coreware
   drop his databases mid-suite. Token 9 does not exempt him from the shared slot
   while the standing rule is in force. All bots share one Grok Bot cloud computer,
   so concurrent runs still contend for CPU and MySQL connections.
+- **Pest host (Angelo 2026-09-28):** Run Pest / migrate / schema-dump on the shared Grok Bot computer only. If PHP is missing there, install/fix the box toolchain first — never fall back to Angelo's Mac (Seymour AWS-only).
+- **Schema dump (Angelo 2026-09-28):** Stale dump → notify Angelo (FYI) AND regenerate yourself under Pest GRANT. Dump work is not a MERGE-READY / phase blocker unless regen fails for a reason you cannot fix.
 - Never run git reset --hard, git clean -fd, git checkout -- ., or git stash on a
   dirty tree. Treat existing uncommitted changes as intentional work.
 - All repo reads and writes go through the repo-delegate-to-cursor skill as
