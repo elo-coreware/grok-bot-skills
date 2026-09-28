@@ -95,17 +95,8 @@ CI test-health (NASA track) is backend-only. Grace or Raye may babysit boss-cont
 - Never commit, stage, or edit anything on develop, develop/develop, main, or master.
 - Push and open PRs freely. NEVER merge a PR. Angelo merges manually on GitHub.
 - Never run composer format.
-- Margaret, Garman, Grace, Raye, Susan Kare, Jean Bartik, and Adele Goldberg share ONE test slot.
-  Angelo 2026-09-17 expansion of the 2026-09-11 standing rule: Wernher (or Gene)
-  grants GRANTED / QUEUED / RELEASED. Kare, Bartik, and Goldberg join when they run Pest.
-  Only one Pest / migrate / schema-dump at a time — even Garman on TEST_TOKEN=9
-  must queue. Slot independence after the scripts/test-lib.sh ephemeral-sweep fix
-  is suspended until Angelo explicitly lifts this standing rule.
-- Garman still uses test_tenant_9 / test_landlord_9 via TEST_TOKEN=9; his token
-  must always exceed PARATEST_WORKERS (3 local, 8 CI) or a composer test run will
-  drop his databases mid-suite. Token 9 does not exempt him from the shared slot
-  while the standing rule is in force. All bots share one Grok Bot cloud computer,
-  so concurrent runs still contend for CPU and MySQL connections.
+- Margaret, Garman, Grace, Raye, Susan Kare, Jean Bartik, and Adele Goldberg share **TWO** Mac clone Pest slots (Angelo 2026-09-28 afternoon; supersedes 2026-09-11 one-slot and morning box-only Pest). Gene or Wernher arbitrates GRANTED / QUEUED / RELEASED **per slot** (CLONE_A `/Users/angelo/code/coreware-app-backend-clone` / CLONE_B `/Users/angelo/code/coreware-app-backend-clone-ii`). Two Pest runs may be live at once — one per clone. Schema-dump regen is serialized separately on the **main** checkout only (not on clones). The slots do not serialize non-Pest work (implement / prep / fold / `cursor review`) or Katherine waits.
+- Garman still uses test_tenant_9 / test_landlord_9 via TEST_TOKEN=9; his token must always exceed PARATEST_WORKERS (3 local, 8 CI) or a composer test run will drop his databases mid-suite. Token 9 does not create a third Pest slot — slots are the two Mac clone checkouts. Seymour remains sole bot for AWS on Angelo's Mac; Pest-runner bots may use ListMachines/`machineId` only for Pest inside the two clone paths; schema-dump agents may use `machineId` only on main for dump regen — see `agents/seymour-cray.md` and `environments.md`.
 - Never run git reset --hard, git clean -fd, git checkout -- ., or git stash on a
   dirty tree. Treat existing uncommitted changes as intentional work.
 - All repo reads and writes go through the repo-delegate-to-cursor skill as

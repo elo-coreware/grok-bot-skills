@@ -58,54 +58,41 @@ For `CorewareHub/boss-control-tower`:
 - Engineer phase state from qa-phase-orchestrate (for slot conflicts; backend CI only).
 - Direct message to Grace and/or Raye. Read-only gh for PR status on the chosen repo.
 
-## TEST SLOT QUEUE
+## TEST SLOT QUEUE (two Mac clone slots)
 
-The slot covers test-running work on the shared Grok Bot cloud computer.
-**Angelo standing rule 2026-09-11:** Margaret, Garman, Grace, and Raye all contend for
-**one** slot (GRANTED / QUEUED / RELEASED). Garman still verifies on token 9
-(`test_tenant_9` / `test_landlord_9`) but must queue here — he is **not** outside the
-queue. Slot independence after the `scripts/test-lib.sh` ephemeral-sweep fix stays
-suspended until Angelo explicitly lifts the standing rule. Gene records that the
-standing rule is in force.
+**Angelo standing rule 2026-09-28 afternoon** (supersedes 2026-09-11 one-slot and morning box-only Pest): Margaret, Garman, Grace, Raye, Susan Kare, Jean Bartik, and Adele Goldberg contend for **TWO** independent Mac clone Pest slots. Gene or Wernher arbitrates GRANTED / QUEUED / RELEASED **per slot**. Garman still verifies with `TEST_TOKEN=9` when the clone env expects it — token choice does **not** create a third slot.
 
-**Pest host (Angelo 2026-09-28):** Default host for Pest, `composer test:*`, migrate, and
-`test:generate-schema-dump` is the **shared Grok Bot computer** (no `machineId` / not
-Angelo's Mac). Before first Pest on a fresh box, ensure PHP + required extensions +
-Composer are available there. If PHP is missing, install/fix the box toolchain first —
-do **not** silently switch to Angelo's machine. Angelo's local machine remains reserved
-for Seymour AWS-only work — never use it as a Pest fallback. Host choice does not change
-the one-slot rule (GRANTED / QUEUED / RELEASED still applies).
+| Slot | Path |
+|------|------|
+| Slot A / CLONE_A | `/Users/angelo/code/coreware-app-backend-clone` |
+| Slot B / CLONE_B | `/Users/angelo/code/coreware-app-backend-clone-ii` |
 
-**Schema dump (Angelo 2026-09-28):** If the test schema dump is stale (out of date vs
-migrations / regenerate needed): notify Angelo (FYI, plain English) so he can look if he
-wants — dump regeneration is **not** a blocker. Do not WAITING / BLOCKED / stop the phase
-or babysit loop solely because the dump is stale or Angelo has not replied. Agents **must
-regenerate the dump themselves** when needed under Gene Pest GRANT (e.g.
-`php -d memory_limit=2G artisan test:generate-schema-dump --env=testing`), and commit as
-a separate `:robot: regenerate test schema dump` commit when that is the existing
-convention. Escalate as a hard blocker only if dump regen fails for a reason agents cannot
-fix (permissions, missing DB, unknown root cause) — then tell Angelo what failed.
+Mac: `machineId` `ae407d63-7055-4ee5-87b3-df3ee1734ca3` / Angelos-MacBook-Air.local. Two Pest runs may be live at once — one per clone. If A is busy, grant B (and vice versa). Queue waiters separately per slot or as a fair shared queue that assigns the first free clone.
 
-**The slot covers test-running work only** — Pest, migrate, or
-`test:generate-schema-dump`, i.e. any delegation whose VERIFY is not `none`.
-This matches the concurrency rule in repo-delegate-to-cursor; keep the two in step.
+**Pest host:** Run Pest / `composer test:*` / migrate for tests **only** inside the granted clone path via ListMachines/`machineId` (Shell/composer with working directory = granted clone). Checkout/pull the PR tip into that clone before Pest — do not dirty the other clone. **Do not** use the main checkout `/Users/angelo/code/coreware-app-backend` for Pest. **Do not** launch Cursor cloud agents for routine Pest / MERGE-READY touched-test verify (emergency-only if Angelo explicitly allows). Grok Bot box is orchestration, not Pest host.
 
-Never hold Margaret or Garman off non-Pest phase work (implement, prep, fold, `cursor review`) because the slot is busy or a merge is pending — only Pest/migrate/schema-dump wait on GRANTED.
+**Main checkout OFF LIMITS for Pest** — allowed there: data dump, log read, codebase analysis/read, and **schema dump regen only**. Clones must NOT run schema dump.
+
+**Schema dump (Angelo 2026-09-28):** If the test schema dump is stale: notify Angelo (FYI, plain English) — dump regeneration is **not** a blocker. Agents **must regenerate on main** under Gene Pest GRANT or SCHEMA-DUMP GRANT (e.g. `php -d memory_limit=2G artisan test:generate-schema-dump --env=testing`), and commit `:robot: regenerate test schema dump` when that is the convention. Serialize dump regen — only one dump at a time on main. Escalate as a hard blocker only if dump regen fails for a reason agents cannot fix.
+
+**The slots cover Pest / migrate-for-tests work** — any delegation whose VERIFY is not `none`. Schema-dump is a separate serialized grant on main. Matches repo-delegate-to-cursor; keep in step.
+
+Never hold Margaret or Garman off non-Pest phase work (implement, prep, fold, `cursor review`) because both slots are busy or a merge is pending — only Pest/migrate wait on a clone GRANT; schema-dump waits on the main dump GRANT.
 
 | State | Meaning |
 |-------|---------|
-| GRANTED | Holder (Margaret, Grace, Raye, or Garman pre-fix) may run composer test:single |
-| QUEUED | Request recorded; wait until current holder releases |
-| RELEASED | Holder finished; Gene may grant to next queued request |
+| GRANTED (slot A or B) | Holder may run composer test:single in that clone path |
+| QUEUED | Request recorded; wait until a free clone is granted |
+| RELEASED | Holder finished that slot; Gene may grant it to next waiter |
 
 **Priority:** Margaret's phase verification takes precedence when she is actively
-implementing and holds an open remediation loop. Garman queues with Margaret, Grace, and Raye under the standing rule. Grace and Raye queue behind phase work unless Angelo explicitly prioritizes the feature PR.
+implementing and holds an open remediation loop. Grace and Raye queue behind phase work unless Angelo explicitly prioritizes the feature PR. Prefer granting the free clone rather than queuing when the other slot is open.
 
 **Rules:**
-- Gene grants explicitly — never assume GRANTED.
-- Holder must message Gene RELEASED when tests finish (pass or fail).
+- Gene grants explicitly — never assume GRANTED. Name the slot/path in the grant.
+- Holder must message Gene RELEASED when tests finish (pass or fail), naming the slot.
 - If Grace or Raye is QUEUED and blocked on tests, she posts WAITING — she does not run tests.
-- Never grant two holders simultaneously on token 1.
+- Never grant two holders the **same** clone simultaneously. Two holders on different clones is allowed.
 - **No slot needed for VERIFY `none` work.** Grace's and Raye's pr-bugbot-sweep, plan reads,
   verdict posting, fold, and full-repo Pint run in parallel alongside engineer phase work, exactly like
   Aaron's and Bill's planning agents. Do not queue read-only / non-Pest work — it stalls the
@@ -120,10 +107,10 @@ implementing and holds an open remediation loop. Garman queues with Margaret, Gr
    - "Others" / free capacity → prefer IDLE Grace for babysit/fold/Pint; Adele (or tip-owning feature engineer) only for implement-shaped work. Do not yank Raye's current PR while Grace is IDLE.
    - Message the assignee (Grace or Raye): owner/repo, base, PR number, URL, branch, any implementation plan path Angelo mentions. Tell her to run pr-babysit-loop.
 
-2. **Slot requests.** When Grace, Raye, Margaret, or Garman (pre-fix) asks for the test slot:
-   - If slot is free → GRANT to requester, record holder name.
-   - If held → QUEUE the requester, tell them who holds it.
-   - On RELEASED → grant to next QUEUED if any, else slot is free.
+2. **Slot requests.** When Grace, Raye, Margaret, Garman, or a feature engineer asks for a Pest slot:
+   - If either clone is free → GRANT that slot (prefer free clone; name path), record holder + slot.
+   - If both held → QUEUE the requester, tell them who holds A and B.
+   - On RELEASED for a slot → grant that free clone to next QUEUED if any.
 
 3. **Status relay.** When Grace or Raye posts a verdict comment:
    - **MERGE-READY:** Notify Angelo with PR URL, comment URL, reviewed-sha,
