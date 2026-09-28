@@ -68,6 +68,24 @@ queue. Slot independence after the `scripts/test-lib.sh` ephemeral-sweep fix sta
 suspended until Angelo explicitly lifts the standing rule. Gene records that the
 standing rule is in force.
 
+**Pest host (Angelo 2026-09-28):** Default host for Pest, `composer test:*`, migrate, and
+`test:generate-schema-dump` is the **shared Grok Bot computer** (no `machineId` / not
+Angelo's Mac). Before first Pest on a fresh box, ensure PHP + required extensions +
+Composer are available there. If PHP is missing, install/fix the box toolchain first —
+do **not** silently switch to Angelo's machine. Angelo's local machine remains reserved
+for Seymour AWS-only work — never use it as a Pest fallback. Host choice does not change
+the one-slot rule (GRANTED / QUEUED / RELEASED still applies).
+
+**Schema dump (Angelo 2026-09-28):** If the test schema dump is stale (out of date vs
+migrations / regenerate needed): notify Angelo (FYI, plain English) so he can look if he
+wants — dump regeneration is **not** a blocker. Do not WAITING / BLOCKED / stop the phase
+or babysit loop solely because the dump is stale or Angelo has not replied. Agents **must
+regenerate the dump themselves** when needed under Gene Pest GRANT (e.g.
+`php -d memory_limit=2G artisan test:generate-schema-dump --env=testing`), and commit as
+a separate `:robot: regenerate test schema dump` commit when that is the existing
+convention. Escalate as a hard blocker only if dump regen fails for a reason agents cannot
+fix (permissions, missing DB, unknown root cause) — then tell Angelo what failed.
+
 **The slot covers test-running work only** — Pest, migrate, or
 `test:generate-schema-dump`, i.e. any delegation whose VERIFY is not `none`.
 This matches the concurrency rule in repo-delegate-to-cursor; keep the two in step.

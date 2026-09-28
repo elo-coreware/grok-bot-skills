@@ -46,3 +46,5 @@ Never mutate PROD to verify.
 ## Seymour / devops local access (Angelo 2026-09-21; Seymour ACK'd)
 
 Seymour is the only bot with ListMachines / machineId access to Angelo's local computer, and that access is **AWS-related commands only** (CLI, SSO/login helpers, observe/peek). Non-AWS work (file dumps, analysis, attachments, workspace) stays on the shared Grok Bot computer. Full rule: `agents/seymour-cray.md` and skill `prod-tenant-log-pull`.
+
+**Pest host (Angelo 2026-09-28):** Pest, `composer test:*`, migrate, and `test:generate-schema-dump` run on the **shared Grok Bot computer only**. Never use Angelo's Mac / `machineId` as a Pest fallback (even when the box has no PHP — fix the box toolchain instead). Angelo's Mac stays Seymour AWS-only.

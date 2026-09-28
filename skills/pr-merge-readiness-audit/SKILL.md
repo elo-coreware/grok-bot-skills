@@ -57,7 +57,10 @@ This skill evaluates gates **1–4 only**. Gate 5 is confirmed after pr-plan-doc
    Do **not** require the full self-hosted `Tests` / Run Tests suite green.
    Do **not** treat ambient full-suite red or pending as FAIL/WAITING.
 
-   Verify on the shared machine under Gene Pest GRANT:
+   Verify on the **shared Grok Bot computer** (no `machineId` / not Angelo's Mac) under
+   Gene Pest GRANT. If PHP is missing on the box, install/fix the box toolchain first —
+   never fall back to Angelo's Mac (Seymour AWS-only). A stale test schema dump is not a
+   Gate 3 WAITING/FAIL by itself — notify Angelo (FYI) and regenerate under GRANT when needed.
    ```bash
    # after GRANTED — touched paths only
    composer test:single -- <touched test paths>

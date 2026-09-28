@@ -172,9 +172,14 @@ Docs-only or non-PHP commits: skip only when `pint --test` (or the Actions lint 
    at a time for your own runs. Quote the real output. Do not start another phase's
    tests while this command runs.
 
-6. Only if a migration changed, regenerate the schema dump as a separate ":robot: regenerate test schema dump" commit:
+6. **Schema dump (Angelo 2026-09-28):** If a migration changed **or** the test schema dump
+   is stale (out of date vs migrations / regenerate needed), regenerate it yourself under
+   Gene Pest GRANT on the shared Grok Bot computer (never Angelo's Mac). Notify Angelo
+   (FYI, plain English) so he can look if he wants — dump work is **not** a phase / handoff
+   / MERGE-READY blocker. Do not WAITING / BLOCKED / stop the phase solely because the dump
+   is stale or Angelo has not replied. Commit as a separate `:robot: regenerate test schema dump` commit:
    `php -d memory_limit=2G artisan test:generate-schema-dump --env=testing`
-   Commit all three schema files together. Keep the dump delta surgical — do not mass-rewrite unrelated dump noise (Bugbot TOO_LARGE risk). In DUAL mode only one engineer regenerates the dump at a time — Gene serializes migration phases; the other merges `origin/develop` afterward.
+   Commit all three schema files together. Keep the dump delta surgical — do not mass-rewrite unrelated dump noise (Bugbot TOO_LARGE risk). In DUAL mode only one engineer regenerates the dump at a time — Gene serializes migration phases; the other merges `origin/develop` afterward. Escalate as a hard blocker only if dump regen fails for a reason you cannot fix (permissions, missing DB, unknown root cause) — then tell Angelo what failed.
 
 7. Update **your locked** plan doc: mark **this** phase COMPLETE with the actual delta (failure
    count for Fix; tests added for Author; assertion delta for Reconcile) and the

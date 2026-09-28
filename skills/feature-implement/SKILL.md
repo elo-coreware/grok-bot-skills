@@ -36,6 +36,9 @@ Implement on the **existing** feature PR/branch that already holds the plan. Do 
 3. DEV checks: boss-control-tower tip `feature/<name>` or `fix/<name>` by default on https://dev.coreware.app; use `develop/<feature-name>` only for visual confirmation (never tip-push onto `develop/develop`). coreware-app-backend `feature/<name>` or `fix/<name>` on https://development-corestore-alpha.coreware.app. Never use https://coreware.coreware.app to preview features.
 4. Full-repo local Pint before handoff if PHP changed or Check Code Style is red (`./vendor/bin/pint` then `./vendor/bin/pint --test`; never `--dirty`-only). Never `composer format`.
 5. Request the shared test slot from Gene before any Pest / migrate / schema dump.
+   Run those on the **shared Grok Bot computer only** (never Angelo's Mac / `machineId`).
+   If PHP is missing on the box, install/fix the box toolchain first. Stale schema dump:
+   notify Angelo (FYI) and regenerate yourself under GRANT — not a blocker.
 6. Push, comment `cursor review` as Angelo on the handoff commit, ping Gene.
 7. Gene assigns Raye or Grace to babysit **this same PR**. You stop unless Gene assigns a follow-up on that PR.
 
