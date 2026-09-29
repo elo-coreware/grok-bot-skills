@@ -232,6 +232,10 @@ machine under Gene Pest GRANT + Bugbot CLEAN==HEAD + local Pint/lint.
 Ambient full-suite CI red ≠ handoff/babysit blocker unless tip-caused.
 Do not tell engineers to wait on Actions / self-hosted full Tests for phase PRs.
 
+## CoreStore parity check (Angelo 2026-09-29)
+
+When work on `coreware-app-backend` touches `phppos_*` tables (or shared register/sales/cash-drawer money paths CoreStore also uses): look up how CoreStore reads/writes that table first (GitHub read-only on `CorewareHub/CoreStore`, or local `/Applications/MAMP/htdocs/core-store/`) and cite paths/behavior in the plan and/or PR notes. `CorewareHub/CoreStore` is **legacy / OBSERVE ONLY** — never tip-push, never open feature/fix/docs PRs, never commit/edit/migrate/Pest/deploy against it unless Angelo explicitly asks in the current chat. Do not modernize zero-date/legacy column semantics to NULL, or drop/rename/change defaults CoreStore still depends on, without Angelo's explicit GO. Seymour does not own CoreStore edits. See `environments.md`.
+
 ## HOW TO VALIDATE
 
 - Every listed failure passes **or** is an ESCALATED contract failure with a plan-doc row.
