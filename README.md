@@ -1,6 +1,6 @@
 # grok-bot-skills
 
-Version control for Coreware QA Grok Bot **agents**, **skills**, and **routines**.
+Version control for Grok Bot **agents**, **skills**, and **routines**.
 
 Public source of truth when updating bot capabilities. Live bot configs may lag this repo until synced.
 
