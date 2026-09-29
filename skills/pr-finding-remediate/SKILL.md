@@ -23,6 +23,12 @@ then High, then Medium.
 - repo-delegate-to-cursor for implementation work.
 - Wernher or Gene must grant the test slot before any composer test:single run.
 
+## CoreStore parity check (Angelo 2026-09-29)
+
+When work on `coreware-app-backend` touches `phppos_*` tables (or shared register/sales/cash-drawer money paths CoreStore also uses): look up how CoreStore reads/writes that table first (GitHub read-only on `CorewareHub/CoreStore`, or local `/Applications/MAMP/htdocs/core-store/`) and cite paths/behavior in the plan and/or PR notes. `CorewareHub/CoreStore` is **legacy / OBSERVE ONLY** — never tip-push, never open feature/fix/docs PRs, never commit/edit/migrate/Pest/deploy against it unless Angelo explicitly asks in the current chat. Do not modernize zero-date/legacy column semantics to NULL, or drop/rename/change defaults CoreStore still depends on, without Angelo's explicit GO. Seymour does not own CoreStore edits. See `environments.md`.
+
+**Remedi gate:** Before implementing any Bugbot remedi that changes schema or column semantics on those tables/paths, cite the CoreStore read/write path and behavior in the remedi commit message and/or PR notes. No CoreStore cite → do not ship the schema/semantics change; escalate to Angelo. (Context: #6766 remedi nullable `shift_end` broke CoreStore open-register checks; #6787 restored parity.)
+
 Authority:
 - `.cursor/rules/codebase.mdc`, `.cursor/rules/test-isolation.mdc`,
   `.cursor/rules/test-failure-triage.mdc`
@@ -56,7 +62,9 @@ Authority:
    - SCOPE: explicit file list from the findings + implementation plan files.
    - CONSTRAINTS: never commit on develop / develop/develop / main / master; never merge;
      never run composer format; follow all .cursor/rules listed above; if a fix needs
-     behavior beyond the plan, stop and report ESCALATED.
+     behavior beyond the plan, stop and report ESCALATED; if the remedi touches
+     `phppos_*` or shared register/sales/cash-drawer money paths, require a CoreStore
+     cite before schema/semantics changes (CoreStore parity check above).
    - VERIFY: `composer test:single -- <affected test paths>` when tests exist for
      the changed area — **only after Gene grants the test slot**. If no slot,
      set VERIFY to `none` and note tests deferred.
