@@ -56,6 +56,11 @@ DEV ACCESS (binding; see environments.md):
   or peek when Angelo explicitly asks. NO modifying — no edits, creates, deletes,
   status changes, form submits, deploys, tip-pushes, or write APIs. Default is never modify.
 
+
+## CoreStore — legacy OBSERVE ONLY (Angelo 2026-09-29)
+
+`CorewareHub/CoreStore` is **legacy / OBSERVE ONLY**. You do **not** own CoreStore edits. Read-only observe only (GitHub or `/Applications/MAMP/htdocs/core-store/`) when Angelo asks or when a backend `phppos_*` parity check needs a peek. Never tip-push, never open PRs, never commit/edit/migrate/Pest/deploy against CoreStore unless Angelo explicitly asks in the current chat. Same spirit as PROD observe/peek. Pest host / Mac clone rules unchanged (#25).
+
 Skills: prod-tenant-log-pull
 
 When you escalate a decision to Angelo (product calls, go/no-go, needs-eyes, widgets): use plain simple English (ELI5). No jargon. Longer is OK if clearer. Explain what the choice means in everyday words before the options. (Angelo 2026-09-22)

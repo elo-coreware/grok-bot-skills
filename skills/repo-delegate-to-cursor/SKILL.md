@@ -25,6 +25,10 @@ For `CorewareHub/coreware-app-backend`:
 - **`dev-test` is situational:** use it only when you need to run tests, or need the change to reflect on coreware-app-backend DEV (primary tenant https://development-corestore-alpha.coreware.app). Do not make every backend PR target `dev-test`.
 - Never tip-push experiments onto a protected base. Never commit on `develop`, `dev-test`, `main`, or `master`.
 
+## CoreStore parity check (Angelo 2026-09-29)
+
+When work on `coreware-app-backend` touches `phppos_*` tables (or shared register/sales/cash-drawer money paths CoreStore also uses): look up how CoreStore reads/writes that table first (GitHub read-only on `CorewareHub/CoreStore`, or local `/Applications/MAMP/htdocs/core-store/`) and cite paths/behavior in the plan and/or PR notes. `CorewareHub/CoreStore` is **legacy / OBSERVE ONLY** — never tip-push, never open feature/fix/docs PRs, never commit/edit/migrate/Pest/deploy against it unless Angelo explicitly asks in the current chat. Do not modernize zero-date/legacy column semantics to NULL, or drop/rename/change defaults CoreStore still depends on, without Angelo's explicit GO. Seymour does not own CoreStore edits. See `environments.md`.
+
 ## CONTROL TOWER BRANCHING (Angelo 2026-09-22)
 
 For `CorewareHub/boss-control-tower`:
@@ -40,11 +44,12 @@ For `CorewareHub/boss-control-tower`:
 |------------|-------------|------------|
 | `CorewareHub/coreware-app-backend` | `develop` | Feature/fix PRs normally target `develop`. Tips: `feature/<name>` or `fix/<name>`. Use `dev-test` only for tests or DEV tenant reflection on primary tenant **https://development-corestore-alpha.coreware.app**. **https://coreware.coreware.app is PRODUCTION** — observe/peek only when Angelo asks; NO modifying. |
 | `CorewareHub/boss-control-tower` | `develop/develop` | Tips default to `feature/<name>` or `fix/<name>`; base `develop/develop`. Use tip `develop/<feature-name>` only for visual confirmation at **https://dev.coreware.app**. Never tip-push onto `develop/develop` (main). **https://controltower.coreware.app is landlord Control Tower PRODUCTION** — observe/peek only when Angelo asks; NO modifying. |
+| `CorewareHub/CoreStore` | *(none — observe only)* | **Legacy / OBSERVE ONLY** (Angelo 2026-09-29). Never tip-push, never open feature/fix/docs PRs, never commit/edit/migrate/Pest/deploy unless Angelo explicitly asks in the current chat. Local observe: `/Applications/MAMP/htdocs/core-store/`. Read-only GitHub/local peeks for `phppos_*` parity only. Seymour does not own CoreStore edits. |
 
-Refuse any other owner/repo unless Angelo explicitly expands the allow-list. NASA CI
+Refuse any other owner/repo unless Angelo explicitly expands the allow-list. `CoreStore` is on the allow-list for **read-only observe / phppos_* parity** only — never as a tip-push or PR target. NASA CI
 test-health work stays on `coreware-app-backend`. Grace, Raye, Gene/Wernher
 orchestrating them, and feature engineers (Susan Kare, Jean Bartik) may be delegated
-on either allowed product repo.
+on either allowed product repo (not CoreStore).
 
 ## DEV TIPS (after allowed repos)
 

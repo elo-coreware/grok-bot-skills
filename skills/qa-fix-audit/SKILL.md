@@ -24,6 +24,12 @@ Gene assigns a phase PR (or another PR) for Katherine's audit. This is not plan-
   - `.cursor/commands/bugbot-triage.md`
 - GitHub PR reviews and review threads from `cursor[bot]` (Cursor Bugbot **app**). Fetch them. A review whose `commit_id` is not the current head SHA is stale. They are inputs to triage, not a substitute for lowercase `/bugbot`.
 
+## CoreStore parity check (Angelo 2026-09-29)
+
+When work on `coreware-app-backend` touches `phppos_*` tables (or shared register/sales/cash-drawer money paths CoreStore also uses): look up how CoreStore reads/writes that table first (GitHub read-only on `CorewareHub/CoreStore`, or local `/Applications/MAMP/htdocs/core-store/`) and cite paths/behavior in the plan and/or PR notes. `CorewareHub/CoreStore` is **legacy / OBSERVE ONLY** — never tip-push, never open feature/fix/docs PRs, never commit/edit/migrate/Pest/deploy against it unless Angelo explicitly asks in the current chat. Do not modernize zero-date/legacy column semantics to NULL, or drop/rename/change defaults CoreStore still depends on, without Angelo's explicit GO. Seymour does not own CoreStore edits. See `environments.md`.
+
+**Audit step:** If the PR diff touches those tables/paths and the PR/plan notes lack a CoreStore parity cite (paths/behavior) → **FAIL**. Use **PASS WITH NOTES** only when a cite is incomplete but intent is clear — prefer **FAIL** when zero-date / NULLability / defaults changed. Never tip-push or edit CoreStore.
+
 ## SEQUENCE OF WORK
 
 1. Confirm head SHA. If `cursor[bot]` has no review whose `commit_id` equals that SHA, STOP. Do not PASS. Do not `gh pr ready`. Return WAITING to Gene: "Bugbot app has not reviewed this SHA; the owning engineer must comment `cursor review` on the handoff commit." Do not invent a PASS with a note that Bugbot was missing.
@@ -44,9 +50,11 @@ Gene assigns a phase PR (or another PR) for Katherine's audit. This is not plan-
 
 9. Immediately run `.cursor/commands/bugbot-triage.md` on **the combined finding list** — her own lowercase `/bugbot` findings plus the GitHub `cursor[bot]` threads. Classify each as valid bug, false positive, out of scope, or needs clarification. Only **valid + in-scope** bugs feed the verdict. Do not invent extra findings during triage. Do not implement. Do not mark a finding false-positive just to unblock ready.
 
-10. Verdict is PASS, PASS WITH NOTES, or FAIL. file:line (+ hunk for bugbot items) for every finding. Explicit verdict line for every changed file so nothing is silently skipped. Valid in-scope bugbot Critical/High/Medium that is still unfixed in the HEAD diff → FAIL. Untriaged bugbot output (lowercase or GitHub app) is not evidence.
+10. **CoreStore parity.** If the `develop...HEAD` diff touches `phppos_*` tables or shared register/sales/cash-drawer money paths, require a CoreStore cite in the PR/plan notes (paths/behavior). Missing cite → FAIL. Incomplete cite with clear intent → PASS WITH NOTES only; prefer FAIL when zero-date / NULLability / defaults changed. Never tip-push or edit CoreStore.
 
-11. qa-pr-verdict-comment. Convert draft to ready **only** when the verdict is PASS or PASS WITH NOTES **and** `cursor[bot]` reviewed this SHA **and** no valid in-scope Bugbot item remains unfixed. Leave draft on FAIL, WAITING, or a stale Bugbot review. Never merge. Never GitHub review-approve. Never resolve `cursor[bot]` threads yourself.
+11. Verdict is PASS, PASS WITH NOTES, or FAIL. file:line (+ hunk for bugbot items) for every finding. Explicit verdict line for every changed file so nothing is silently skipped. Valid in-scope bugbot Critical/High/Medium that is still unfixed in the HEAD diff → FAIL. Untriaged bugbot output (lowercase or GitHub app) is not evidence.
+
+12. qa-pr-verdict-comment. Convert draft to ready **only** when the verdict is PASS or PASS WITH NOTES **and** `cursor[bot]` reviewed this SHA **and** no valid in-scope Bugbot item remains unfixed. Leave draft on FAIL, WAITING, or a stale Bugbot review. Never merge. Never GitHub review-approve. Never resolve `cursor[bot]` threads yourself.
 
 ## HOW TO VALIDATE
 
@@ -56,6 +64,7 @@ Gene assigns a phase PR (or another PR) for Katherine's audit. This is not plan-
 - Validity scan, cheating grep, triage.mdc classification, lowercase bugbot, GitHub `cursor[bot]` threads, and bugbot-triage all ran.
 - Bugbot-triage table exists and covers both sources. False positives and out-of-scope items are not FAIL reasons.
 - Polarity inversions and missing ESCALATED rows were treated as FAIL.
+- CoreStore parity checked when the diff touches `phppos_*` or shared register/sales/cash-drawer money paths (missing cite → FAIL).
 - `gh pr ready` ran only after both Katherine's verdict and Bugbot-on-this-SHA were clean.
 - Verdict was never upgraded to unblock a schedule.
 

@@ -37,6 +37,10 @@ For `CorewareHub/coreware-app-backend`:
 - **`dev-test` is situational:** use it only when you need to run tests, or need the change to reflect on coreware-app-backend DEV (primary tenant https://development-corestore-alpha.coreware.app). Do not make every backend PR target `dev-test`.
 - Never tip-push experiments onto a protected base. Never commit on `develop`, `dev-test`, `main`, or `master`.
 
+## CoreStore parity check (Angelo 2026-09-29)
+
+When work on `coreware-app-backend` touches `phppos_*` tables (or shared register/sales/cash-drawer money paths CoreStore also uses): look up how CoreStore reads/writes that table first (GitHub read-only on `CorewareHub/CoreStore`, or local `/Applications/MAMP/htdocs/core-store/`) and cite paths/behavior in the plan and/or PR notes. `CorewareHub/CoreStore` is **legacy / OBSERVE ONLY** — never tip-push, never open feature/fix/docs PRs, never commit/edit/migrate/Pest/deploy against it unless Angelo explicitly asks in the current chat. Do not modernize zero-date/legacy column semantics to NULL, or drop/rename/change defaults CoreStore still depends on, without Angelo's explicit GO. Seymour does not own CoreStore edits. See `environments.md`.
+
 ## CONTROL TOWER BRANCHING (Angelo 2026-09-22)
 
 For `CorewareHub/boss-control-tower`:

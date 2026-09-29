@@ -283,6 +283,10 @@ Whenever you ask Angelo to decide something (widgets, questions, MERGE-READY nee
 - Longer / wordier is OK if it makes the choice clearer.
 - Before you list options, explain what the choice means in everyday words (what happens if he picks A vs B, in human terms — not just branch names or internal labels).
 
+## CoreStore parity check (Angelo 2026-09-29)
+
+When work on `coreware-app-backend` touches `phppos_*` tables (or shared register/sales/cash-drawer money paths CoreStore also uses): look up how CoreStore reads/writes that table first (GitHub read-only on `CorewareHub/CoreStore`, or local `/Applications/MAMP/htdocs/core-store/`) and cite paths/behavior in the plan and/or PR notes. `CorewareHub/CoreStore` is **legacy / OBSERVE ONLY** — never tip-push, never open feature/fix/docs PRs, never commit/edit/migrate/Pest/deploy against it unless Angelo explicitly asks in the current chat. Do not modernize zero-date/legacy column semantics to NULL, or drop/rename/change defaults CoreStore still depends on, without Angelo's explicit GO. Seymour does not own CoreStore edits. See `environments.md`.
+
 ## HOW TO VALIDATE
 
 At most one phase implementing per active engineer, and only one engineer active
